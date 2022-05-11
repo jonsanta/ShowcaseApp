@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/appBG"
+    tools:context=".MainActivity"
+    tools:layout_editor_absoluteX="-41dp"
+    tools:layout_editor_absoluteY="36dp">
+
+    <Button
+        android:id="@+id/btn_bd"
+        android:layout_width="155dp"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_bd"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        app:layout_constraintVertical_bias="0.22000003"
+        tools:ignore="DuplicateSpeakableTextCheck" />
+
+    <Button
+        android:id="@+id/btn_camara"
+        android:layout_width="155dp"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_camara"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_bd"
+        app:layout_constraintVertical_bias="0.120000005" />
+
+    <Button
+        android:id="@+id/btn_galeria"
+        android:layout_width="155dp"
+        android:layout_height="wrap_content"
+        android:text="Galeria"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_camara"
+        app:layout_constraintVertical_bias="0.3" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="339dp"
+        android:layout_height="379dp"
+        android:background="@drawable/border"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.13">
+
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="326dp"
+            android:layout_height="256dp"
+            android:layout_gravity="center"
+            android:background="#001B8AEC"
+            android:contentDescription="@string/logo_veterinario"
+            app:srcCompat="@drawable/logovet" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="38dp" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="121dp"
+            android:layout_height="55dp"
+            android:layout_gravity="bottom|center"
+            android:orientation="horizontal"
+            tools:layout_editor_absoluteX="-9dp"
+            tools:layout_editor_absoluteY="381dp">
+
+            <ImageButton
+                android:id="@+id/btn_start"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/start_button"
+                android:foreground="?android:attr/selectableItemBackground"
+                app:srcCompat="@drawable/play"
+                tools:ignore="SpeakableTextPresentCheck" />
+
+            <ImageButton
+                android:id="@+id/btn_pause"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/pause_button"
+                android:foreground="?android:attr/selectableItemBackground"
+                app:srcCompat="@drawable/pause"
+                tools:ignore="SpeakableTextPresentCheck" />
+        </LinearLayout>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
