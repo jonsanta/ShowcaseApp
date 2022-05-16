@@ -14,6 +14,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.gridlayout.widget.GridLayout
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -36,27 +38,25 @@ class MainActivity4 : AppCompatActivity() {
             finish()//Cerramos la ventana y volvemos al MainActivity
         }
     }
+
     private fun cargarGaleria() //Cargar en un Thread secundario
     {
         //Lista que contiene todas las imágenes capturadas con la aplicación
-        val directorioImagenes = File("${getExternalFilesDir(null)}/PacImagenes/").listFiles()
-        val bitmaps = mutableListOf<Bitmap>()
-        lifecycleScope.launch{
-            withContext(Dispatchers.IO){
-                for(x in directorioImagenes)
-                {
-                    val fileInputStream = FileInputStream(x) //FileInputStream al que pasamos la imagen
-                    val options = BitmapFactory.Options()
-                    options.inPreferredConfig = Bitmap.Config.RGB_565 //Reducimos un poco la calidad de dicha imagen
-                    val bitmap = BitmapFactory.decodeStream(fileInputStream, null, options)//Generamos el bitmap
-                    if (bitmap != null) {
-                        cargarImagenes(bitmap) //Pasamos el bitmap generado al método que se encargara de mostrarla en el activity
-                        bitmaps.add(bitmap) //List for RecyclerView
-                    }
-                }
+        val directorio = File("${getExternalFilesDir(null)}/PacImagenes/").listFiles()
+        if(directorio.size > bitmaps.size)
+        {
+            lifecycleScope.launch{
+                withContext(Dispatchers.IO){tarea(directorio)}
             }
         }
+        val recyclerview = findViewById<RecyclerView>(R.id.galeria)
+        recyclerview.layoutManager = LinearLayoutManager(this)
+
+        val adapter = ListAdapter(bitmaps)
+
+        recyclerview.adapter = adapter
     }
+
     //Función para manejar runOnUiThread (Es necesaria su ejecución en el Hilo que maneja la interfaz del activity)
     fun cargarImagenes(bitmap: Bitmap){
         runOnUiThread(Runnable {
@@ -73,6 +73,7 @@ class MainActivity4 : AppCompatActivity() {
             imageView.layoutParams = marginParams
 
             //Si el dispositivo se encuentra en modo vertical, asignaremos la imagen al LinearLayout existente
+            /*
             if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
                 if (findViewById<LinearLayout>(R.id.LinearLayoutImagenes) != null)
                     findViewById<LinearLayout>(R.id.LinearLayoutImagenes).addView(imageView)
@@ -86,6 +87,7 @@ class MainActivity4 : AppCompatActivity() {
                 imageViewResized.adjustViewBounds = true
                 findViewById<GridLayout>(R.id.GridLayoutImagenes).addView(imageViewResized)
             }
+            */
         })
     }
 
@@ -102,4 +104,19 @@ class MainActivity4 : AppCompatActivity() {
             Toast.makeText(this, "No se han concedido los permisos", Toast.LENGTH_SHORT).show()
     }
 
+    companion object{
+        val bitmaps = mutableListOf<Bitmap>()
+        fun tarea(directorio : Array<File>){
+            for(x in directorio)
+            {
+                val fileInputStream = FileInputStream(x) //FileInputStream al que pasamos la imagen
+                val options = BitmapFactory.Options()
+                options.inPreferredConfig = Bitmap.Config.RGB_565 //Reducimos un poco la calidad de dicha imagen
+                val bitmap = BitmapFactory.decodeStream(fileInputStream, null, options)//Generamos el bitmap
+                if (bitmap != null) {
+                    bitmaps.add(bitmap) //List for RecyclerView
+                }
+            }
+        }
+    }
 }
