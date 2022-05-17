@@ -7,25 +7,16 @@
     android:background="@color/appBG"
     tools:context=".MainActivity4">
 
-    <ScrollView
-        android:id="@+id/scrollView3"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/galeria"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="SpeakableTextPresentCheck">
-
-        <androidx.gridlayout.widget.GridLayout
-            android:id="@+id/GridLayoutImagenes"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:background="@android:drawable/editbox_dropdown_dark_frame"
-            android:textAlignment="center"
-            app:columnCount="3" />
-    </ScrollView>
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/btn_volver4"
@@ -37,7 +28,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.02"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/scrollView3"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.04000002"
         tools:ignore="SpeakableTextPresentCheck" />
 

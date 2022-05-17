@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 
-class ListAdapter(private val mList: List<Bitmap>) : RecyclerView.Adapter<ListAdapter.ViewHolder>() {
+class ImagesAdapter(private val mList: List<Bitmap>) : RecyclerView.Adapter<ImagesAdapter.ViewHolder>() {
 
     // create new views
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

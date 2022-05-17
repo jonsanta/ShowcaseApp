@@ -3,17 +3,15 @@ package com.example.ShowcaseApp
 import android.Manifest
 import android.content.pm.PackageManager
 import android.content.res.Configuration
+import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
-import android.view.Gravity
 import android.widget.Button
-import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.gridlayout.widget.GridLayout
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.Dispatchers
@@ -42,53 +40,24 @@ class MainActivity4 : AppCompatActivity() {
     private fun cargarGaleria() //Cargar en un Thread secundario
     {
         //Lista que contiene todas las imágenes capturadas con la aplicación
-        val directorio = File("${getExternalFilesDir(null)}/PacImagenes/").listFiles()
-        if(directorio.size > bitmaps.size)
-        {
-            lifecycleScope.launch{
-                withContext(Dispatchers.IO){tarea(directorio)}
-            }
-        }
         val recyclerview = findViewById<RecyclerView>(R.id.galeria)
-        recyclerview.layoutManager = LinearLayoutManager(this)
+        var land = false
+        if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) recyclerview.layoutManager = LinearLayoutManager(this)
+        else if(resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            recyclerview.layoutManager = GridLayoutManager(this, 3)
+            land = true
+        }
 
-        val adapter = ListAdapter(bitmaps)
-
-        recyclerview.adapter = adapter
-    }
-
-    //Función para manejar runOnUiThread (Es necesaria su ejecución en el Hilo que maneja la interfaz del activity)
-    fun cargarImagenes(bitmap: Bitmap){
-        runOnUiThread(Runnable {
-            val imageView = ImageView(this)//Generamos un nuevo ImageView que contendrá una imagen
-            imageView.setImageBitmap(bitmap)//Asignamos el bitmap recibido al ImageView creado
-
-            //Parámetros para Formatear el diseño de la galería vertical
-            imageView.adjustViewBounds = true
-            val marginParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT)
-            marginParams.setMargins(0, 0, 0, 20)
-            marginParams.gravity = Gravity.CENTER
-            imageView.layoutParams = marginParams
-
-            //Si el dispositivo se encuentra en modo vertical, asignaremos la imagen al LinearLayout existente
-            /*
-            if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
-                if (findViewById<LinearLayout>(R.id.LinearLayoutImagenes) != null)
-                    findViewById<LinearLayout>(R.id.LinearLayoutImagenes).addView(imageView)
-            }//Si el dispositivo se encuentra en modo horizontal, asignaremos la imagen al GridLayout existente
-            else if(findViewById<GridLayout>(R.id.GridLayoutImagenes) != null) {
-                //Redimensionaremos los bitmap recibidos
-                val resized = Bitmap.createScaledBitmap(bitmap, 730, 500, true)
-                //Creamos el ImageView
-                val imageViewResized = ImageView(this)
-                imageViewResized.setImageBitmap(resized)
-                imageViewResized.adjustViewBounds = true
-                findViewById<GridLayout>(R.id.GridLayoutImagenes).addView(imageViewResized)
-            }
-            */
-        })
+        val directorio = File("${getExternalFilesDir(null)}/PacImagenes/").listFiles()
+        if(directorio != null && bitmaps != null)
+        {
+            if(directorio.size > bitmaps.size)
+                lifecycleScope.launch{
+                    recyclerview.adapter = ImagesAdapter(withContext(Dispatchers.IO){tarea(directorio, land)})
+                }
+            else if(!land) recyclerview.adapter = ImagesAdapter(bitmaps)
+            else recyclerview.adapter = ImagesAdapter(landBitmaps)
+        }
     }
 
     private fun checkPermissions() : Boolean //Devuelve true si los permisos están concedidos, de lo contrario false
@@ -106,17 +75,23 @@ class MainActivity4 : AppCompatActivity() {
 
     companion object{
         val bitmaps = mutableListOf<Bitmap>()
-        fun tarea(directorio : Array<File>){
-            for(x in directorio)
+        val landBitmaps = mutableListOf<Bitmap>()
+        fun tarea(directorio : Array<File>, land: Boolean) : List<Bitmap>{
+            for(x in bitmaps.size until directorio.size)
             {
-                val fileInputStream = FileInputStream(x) //FileInputStream al que pasamos la imagen
+                val fileInputStream = FileInputStream(directorio.get(x)) //FileInputStream al que pasamos la imagen
                 val options = BitmapFactory.Options()
                 options.inPreferredConfig = Bitmap.Config.RGB_565 //Reducimos un poco la calidad de dicha imagen
                 val bitmap = BitmapFactory.decodeStream(fileInputStream, null, options)//Generamos el bitmap
                 if (bitmap != null) {
-                    bitmaps.add(bitmap) //List for RecyclerView
+                    val resizedBitmap = Bitmap.createScaledBitmap(bitmap, Resources.getSystem().getDisplayMetrics().widthPixels, 1500, true)
+                    val landBitmap = Bitmap.createScaledBitmap(bitmap, 730, 800, true)
+                    bitmaps.add(resizedBitmap) //List for RecyclerView
+                    landBitmaps.add(landBitmap)
                 }
             }
+            if(!land) return bitmaps
+            else return landBitmaps
         }
     }
 }

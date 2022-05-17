@@ -75,8 +75,8 @@ class MainActivity3 : AppCompatActivity() {
     private fun checkPermissions() : Boolean //Devuelve true si los permisos están concedidos, de lo contrario false
     {
         return (checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
-        || checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
-        || checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
+                && checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+                && checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
     }
 
     override fun onRequestPermissionsResult(requestCode : Int, permissions : Array<out String>, grantResults : IntArray){
