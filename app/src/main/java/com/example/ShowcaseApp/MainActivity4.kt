@@ -53,7 +53,6 @@ class MainActivity4 : AppCompatActivity() {
         {
             if(directorio.size > bitmaps.size)
                 lifecycleScope.launch{
-                    System.out.println("Linux Commit")
                     recyclerview.adapter = ImagesAdapter(withContext(Dispatchers.IO){tarea(directorio, land)})
                 }
             else if(!land) recyclerview.adapter = ImagesAdapter(bitmaps)
