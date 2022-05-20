@@ -27,9 +27,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DesarrolloMP8JonSantamariaZamora">
         <activity
-            android:name=".Activity3"
-            android:exported="false" />
-        <activity
             android:name="com.example.ShowcaseApp.MainActivity4"
             android:exported="false" />
         <activity

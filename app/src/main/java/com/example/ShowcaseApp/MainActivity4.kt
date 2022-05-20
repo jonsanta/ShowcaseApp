@@ -1,6 +1,8 @@
 package com.example.ShowcaseApp
 
 import android.Manifest
+import android.app.Activity
+import android.content.Context
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.content.res.Resources
@@ -10,6 +12,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -34,6 +37,7 @@ class MainActivity4 : AppCompatActivity() {
 
         findViewById<Button>(R.id.btn_volver4).setOnClickListener{
             finish()//Cerramos la ventana y volvemos al MainActivity
+            items.clear()
         }
     }
 
@@ -47,10 +51,11 @@ class MainActivity4 : AppCompatActivity() {
             recyclerview.layoutManager = GridLayoutManager(this, 3)
             land = true
         }
-
         val directorio = File("${getExternalFilesDir(null)}/PacImagenes/").listFiles()
         if(directorio != null && bitmaps != null)
         {
+            val activity : Activity = this
+
             if(directorio.size > bitmaps.size)
                 lifecycleScope.launch{
                     recyclerview.adapter = ImagesAdapter(withContext(Dispatchers.IO){tarea(directorio, land)})
@@ -76,6 +81,8 @@ class MainActivity4 : AppCompatActivity() {
     companion object{
         val bitmaps = mutableListOf<Bitmap>()
         val landBitmaps = mutableListOf<Bitmap>()
+        val views = mutableListOf<ImagesAdapter.ViewHolder>()
+
         fun tarea(directorio : Array<File>, land: Boolean) : List<Bitmap>{
             for(x in bitmaps.size until directorio.size)
             {
@@ -92,6 +99,10 @@ class MainActivity4 : AppCompatActivity() {
             }
             if(!land) return bitmaps
             else return landBitmaps
+        }
+
+        fun editMode(){
+            for(item in views) item.checkBox.isVisible = !item.checkBox.isVisible
         }
     }
 }
