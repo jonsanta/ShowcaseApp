@@ -2,7 +2,6 @@ package com.example.ShowcaseApp
 
 import android.Manifest
 import android.app.Activity
-import android.content.Context
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.content.res.Resources
@@ -37,7 +36,7 @@ class MainActivity4 : AppCompatActivity() {
 
         findViewById<Button>(R.id.btn_volver4).setOnClickListener{
             finish()//Cerramos la ventana y volvemos al MainActivity
-            items.clear()
+            views.clear()
         }
     }
 
