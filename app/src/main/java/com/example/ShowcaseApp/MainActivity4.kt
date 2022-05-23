@@ -102,6 +102,7 @@ class MainActivity4 : AppCompatActivity() {
 
         fun editMode(){
             for(item in views) item.checkBox.isVisible = !item.checkBox.isVisible
+            //buscar otros métodos
         }
     }
 }
