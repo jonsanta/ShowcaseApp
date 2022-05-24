@@ -10,9 +10,6 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 
 class ImagesAdapter(private val mList: List<Bitmap>) : RecyclerView.Adapter<ImagesAdapter.ViewHolder>() {
-    var isEditMode = false
-    val selectedPhotos = mutableSetOf<Int>()
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         // inflates the card_view_design view
         // that is used to hold list item
@@ -25,15 +22,15 @@ class ImagesAdapter(private val mList: List<Bitmap>) : RecyclerView.Adapter<Imag
     // binds the list items to a view
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val bitmap = mList[position]
-        MainActivity4.views.add(holder)
+        MainActivity4.setViews(holder)
 
         // sets the image to the imageview from our itemHolder class
         holder.photo.setImageBitmap(bitmap)
         holder.photo.adjustViewBounds = true
-        holder.checkBox.isClickable = false
-
-        if(isEditMode) holder.checkBox.isVisible = true
-        else holder.checkBox.isVisible = false
+        //Enables checkbox depending on isEditMode flag && Set true the checkbox if was checked before (Used for portrait -> land redraw)
+        holder.checkBox.isClickable = MainActivity4.isEditMode()
+        holder.checkBox.isVisible = MainActivity4.isEditMode()
+        holder.checkBox.isChecked = MainActivity4.isSelectedPhoto(position)
 
         editMode(holder, position)
     }
@@ -50,24 +47,22 @@ class ImagesAdapter(private val mList: List<Bitmap>) : RecyclerView.Adapter<Imag
     }
     fun editMode(holder : ViewHolder, position: Int){
         holder.photo.setOnLongClickListener() {
-            if(!isEditMode) {
-                selectedPhotos.add(position)
-                holder.checkBox.isChecked = true
-                isEditMode = true
-                MainActivity4.editMode()
+            if(!MainActivity4.isEditMode()) { //If edit mode is false and long click event
+                MainActivity4.setSelectedPhotos(position) //Select photo
+                MainActivity4.setEditMode(true)// enable editMode
+                holder.checkBox.isChecked = true //checkbox true
             }
             else buttonAction(holder, position)
             true
         }
 
         holder.photo.setOnClickListener(){
-            if(isEditMode) buttonAction(holder, position)
+            if(MainActivity4.isEditMode()) buttonAction(holder, position) //While editMode is true if click event
         }
     }
 
     fun buttonAction(holder : ViewHolder, position: Int){
-        if(selectedPhotos.contains(position)) selectedPhotos.remove(position)
-        else selectedPhotos.add(position)
+        MainActivity4.setSelectedPhotos(position) //Select-Remove Photo
         holder.checkBox.isChecked = !holder.checkBox.isChecked
     }
 }

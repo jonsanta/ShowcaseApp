@@ -1,7 +1,6 @@
 package com.example.ShowcaseApp
 
 import android.Manifest
-import android.app.Activity
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.content.res.Resources
@@ -37,6 +36,8 @@ class MainActivity4 : AppCompatActivity() {
         findViewById<Button>(R.id.btn_volver4).setOnClickListener{
             finish()//Cerramos la ventana y volvemos al MainActivity
             views.clear()
+            selectedPhotos.clear()
+            editMode = false
         }
     }
 
@@ -45,23 +46,19 @@ class MainActivity4 : AppCompatActivity() {
         //Lista que contiene todas las imágenes capturadas con la aplicación
         val recyclerview = findViewById<RecyclerView>(R.id.galeria)
         var land = false
-        if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) recyclerview.layoutManager = LinearLayoutManager(this)
-        else if(resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT)
+            recyclerview.layoutManager = LinearLayoutManager(this)
+        else{
             recyclerview.layoutManager = GridLayoutManager(this, 3)
             land = true
         }
         val directorio = File("${getExternalFilesDir(null)}/PacImagenes/").listFiles()
-        if(directorio != null && bitmaps != null)
-        {
-            val activity : Activity = this
-
+        if(directorio != null)
             if(directorio.size > bitmaps.size)
                 lifecycleScope.launch{
                     recyclerview.adapter = ImagesAdapter(withContext(Dispatchers.IO){tarea(directorio, land)})
                 }
-            else if(!land) recyclerview.adapter = ImagesAdapter(bitmaps)
-            else recyclerview.adapter = ImagesAdapter(landBitmaps)
-        }
+            else recyclerview.adapter = ImagesAdapter(getBitmaps(land))
     }
 
     private fun checkPermissions() : Boolean //Devuelve true si los permisos están concedidos, de lo contrario false
@@ -78,9 +75,11 @@ class MainActivity4 : AppCompatActivity() {
     }
 
     companion object{
-        val bitmaps = mutableListOf<Bitmap>()
-        val landBitmaps = mutableListOf<Bitmap>()
-        val views = mutableListOf<ImagesAdapter.ViewHolder>()
+        private val bitmaps = mutableListOf<Bitmap>()
+        private val landBitmaps = mutableListOf<Bitmap>()
+        private val views = mutableListOf<ImagesAdapter.ViewHolder>()
+        private val selectedPhotos = mutableSetOf<Int>()
+        private var editMode = false
 
         fun tarea(directorio : Array<File>, land: Boolean) : List<Bitmap>{
             for(x in bitmaps.size until directorio.size)
@@ -96,13 +95,35 @@ class MainActivity4 : AppCompatActivity() {
                     landBitmaps.add(landBitmap)
                 }
             }
+            return getBitmaps(land)
+        }
+
+        fun getBitmaps(land: Boolean) : List<Bitmap>{
             if(!land) return bitmaps
             else return landBitmaps
         }
 
-        fun editMode(){
-            for(item in views) item.checkBox.isVisible = !item.checkBox.isVisible
-            //buscar otros métodos
+        fun setViews(holder: ImagesAdapter.ViewHolder){
+            views.add(holder)
+        }
+
+        fun setSelectedPhotos(photo: Int){
+            if(selectedPhotos.contains(photo)) selectedPhotos.remove(photo)
+            else selectedPhotos.add(photo)
+        }
+
+        fun isSelectedPhoto(photo : Int) : Boolean{
+            if(selectedPhotos.contains(photo)) return true
+            else return false
+        }
+
+        fun isEditMode() : Boolean{
+            return editMode
+        }
+
+        fun setEditMode(flag : Boolean){
+            editMode = flag
+            for(item in views) item.checkBox.isVisible = flag
         }
     }
 }
