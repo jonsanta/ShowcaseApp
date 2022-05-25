@@ -116,6 +116,8 @@ class MainActivity4 : AppCompatActivity() {
             if(selectedPhotos.contains(photo)) return true
             else return false
         }
+        
+        //ADD REMOVE FUNCTIONALITY
 
         fun isEditMode() : Boolean{
             return editMode
