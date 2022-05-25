@@ -116,7 +116,15 @@ class MainActivity4 : AppCompatActivity() {
             if(selectedPhotos.contains(photo)) return true
             else return false
         }
-        
+
+        fun removeSelected(){
+            for(item in selectedPhotos){
+                bitmaps.removeAt(item)
+                landBitmaps.removeAt(item)
+                views.removeAt(item)
+                selectedPhotos.remove(item)
+            }
+        }
         //ADD REMOVE FUNCTIONALITY
 
         fun isEditMode() : Boolean{
