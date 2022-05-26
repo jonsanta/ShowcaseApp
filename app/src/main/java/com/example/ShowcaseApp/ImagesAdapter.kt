@@ -65,4 +65,6 @@ class ImagesAdapter(private val mList: List<Bitmap>) : RecyclerView.Adapter<Imag
         MainActivity4.setSelectedPhotos(position) //Select-Remove Photo
         holder.checkBox.isChecked = !holder.checkBox.isChecked
     }
+
+
 }

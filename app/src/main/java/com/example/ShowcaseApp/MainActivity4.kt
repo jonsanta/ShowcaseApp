@@ -24,6 +24,7 @@ import java.io.FileInputStream
 
 class MainActivity4 : AppCompatActivity() {
     private val READ_REQUEST_CODE = 123
+    private lateinit var recyclerView: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,26 +40,39 @@ class MainActivity4 : AppCompatActivity() {
             selectedPhotos.clear()
             editMode = false
         }
+
+        findViewById<Button>(R.id.remove).setOnClickListener(){
+            val directorio = File("${getExternalFilesDir(null)}/PacImagenes/").listFiles()
+            if(!selectedPhotos.isEmpty())
+                for(item in selectedPhotos){
+                    bitmaps.removeAt(item)
+                    landBitmaps.removeAt(item)
+                    views.removeAt(item)
+                    directorio.get(item).delete()
+                }
+            selectedPhotos.clear()
+            recyclerView.adapter?.notifyDataSetChanged()
+        }
     }
 
     private fun cargarGaleria() //Cargar en un Thread secundario
     {
         //Lista que contiene todas las imágenes capturadas con la aplicación
-        val recyclerview = findViewById<RecyclerView>(R.id.galeria)
+        recyclerView = findViewById<RecyclerView>(R.id.galeria)
         var land = false
         if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT)
-            recyclerview.layoutManager = LinearLayoutManager(this)
+            recyclerView.layoutManager = LinearLayoutManager(this)
         else{
-            recyclerview.layoutManager = GridLayoutManager(this, 3)
+            recyclerView.layoutManager = GridLayoutManager(this, 3)
             land = true
         }
         val directorio = File("${getExternalFilesDir(null)}/PacImagenes/").listFiles()
         if(directorio != null)
             if(directorio.size > bitmaps.size)
                 lifecycleScope.launch{
-                    recyclerview.adapter = ImagesAdapter(withContext(Dispatchers.IO){tarea(directorio, land)})
+                    recyclerView.adapter = ImagesAdapter(withContext(Dispatchers.IO){tarea(directorio, land)})
                 }
-            else recyclerview.adapter = ImagesAdapter(getBitmaps(land))
+            else recyclerView.adapter = ImagesAdapter(getBitmaps(land))
     }
 
     private fun checkPermissions() : Boolean //Devuelve true si los permisos están concedidos, de lo contrario false
@@ -116,16 +130,6 @@ class MainActivity4 : AppCompatActivity() {
             if(selectedPhotos.contains(photo)) return true
             else return false
         }
-
-        fun removeSelected(){
-            for(item in selectedPhotos){
-                bitmaps.removeAt(item)
-                landBitmaps.removeAt(item)
-                views.removeAt(item)
-                selectedPhotos.remove(item)
-            }
-        }
-        //ADD REMOVE FUNCTIONALITY
 
         fun isEditMode() : Boolean{
             return editMode
