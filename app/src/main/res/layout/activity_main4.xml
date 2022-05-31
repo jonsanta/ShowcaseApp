@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/appBG"
     tools:context=".MainActivity4">
 
     <LinearLayout
@@ -12,8 +11,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:background="#D7AEA9A9"
+        android:background="@color/appBG"
         android:orientation="horizontal"
+        android:elevation="0sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,24 +24,32 @@
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:text="FOTOS"
             android:textColor="#000000"
             android:textSize="30sp"
             android:textStyle="bold" />
 
-        <Button
+        <Space
+            android:layout_width="5dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0" />
+
+        <TextView
             android:id="@+id/remove"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Button" />
+            android:gravity="center|start"
+            android:textColor="#000000"
+            android:textSize="23sp" />
+
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/galeria"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:background="@color/appBG"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -55,12 +63,13 @@
         android:layout_height="49dp"
         android:background="?attr/homeAsUpIndicator"
         android:contentDescription="@string/empty"
+        app:backgroundTint="@null"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.03"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.01999998"
+        app:layout_constraintVertical_bias="0.060000002"
         tools:ignore="SpeakableTextPresentCheck"
         tools:text="@string/empty" />
 

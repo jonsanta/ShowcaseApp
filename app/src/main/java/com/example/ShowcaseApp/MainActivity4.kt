@@ -8,6 +8,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -41,7 +42,7 @@ class MainActivity4 : AppCompatActivity() {
             editMode = false
         }
 
-        findViewById<Button>(R.id.remove).setOnClickListener(){
+        findViewById<TextView>(R.id.remove).setOnClickListener(){
             val directorio = File("${getExternalFilesDir(null)}/PacImagenes/").listFiles()
             if(!selectedPhotos.isEmpty())
                 for(item in selectedPhotos){
@@ -52,6 +53,7 @@ class MainActivity4 : AppCompatActivity() {
                 }
             selectedPhotos.clear()
             recyclerView.adapter?.notifyDataSetChanged()
+            textView.setText("Nada seleccionado")
         }
     }
 
@@ -59,6 +61,7 @@ class MainActivity4 : AppCompatActivity() {
     {
         //Lista que contiene todas las imágenes capturadas con la aplicación
         recyclerView = findViewById<RecyclerView>(R.id.galeria)
+        textView = findViewById<TextView>(R.id.remove)
         var land = false
         if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT)
             recyclerView.layoutManager = LinearLayoutManager(this)
@@ -94,6 +97,7 @@ class MainActivity4 : AppCompatActivity() {
         private val views = mutableListOf<ImagesAdapter.ViewHolder>()
         private val selectedPhotos = mutableSetOf<Int>()
         private var editMode = false
+        private lateinit var textView: TextView
 
         fun tarea(directorio : Array<File>, land: Boolean) : List<Bitmap>{
             for(x in bitmaps.size until directorio.size)
@@ -124,6 +128,10 @@ class MainActivity4 : AppCompatActivity() {
         fun setSelectedPhotos(photo: Int){
             if(selectedPhotos.contains(photo)) selectedPhotos.remove(photo)
             else selectedPhotos.add(photo)
+
+            if(selectedPhotos.size == 0) textView.setText("Nada seleccionado")
+            else if(selectedPhotos.size > 1) textView.setText("${selectedPhotos.size} elementos seleccionados")
+            else textView.setText("${selectedPhotos.size} elemento seleccionado")
         }
 
         fun isSelectedPhoto(photo : Int) : Boolean{

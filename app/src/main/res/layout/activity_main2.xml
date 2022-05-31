@@ -21,7 +21,8 @@
         app:layout_constraintHorizontal_bias="0.23"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout3"
-        app:layout_constraintVertical_bias="0.101" />
+        app:layout_constraintVertical_bias="0.101"
+        app:backgroundTint="@null"/>
 
     <Button
         android:id="@+id/btn_eliminar"
@@ -33,7 +34,8 @@
         app:layout_constraintHorizontal_bias="0.77"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_consultar"
-        app:layout_constraintVertical_bias="0.07999998" />
+        app:layout_constraintVertical_bias="0.07999998"
+        app:backgroundTint="@null"/>
 
     <Button
         android:id="@+id/btn_consultar"
@@ -45,7 +47,8 @@
         app:layout_constraintHorizontal_bias="0.77"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout3"
-        app:layout_constraintVertical_bias="0.101" />
+        app:layout_constraintVertical_bias="0.101"
+        app:backgroundTint="@null"/>
 
     <Button
         android:id="@+id/btn_modificar"
@@ -57,7 +60,8 @@
         app:layout_constraintHorizontal_bias="0.236"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_insertar"
-        app:layout_constraintVertical_bias="0.076" />
+        app:layout_constraintVertical_bias="0.076"
+        app:backgroundTint="@null"/>
 
     <Button
         android:id="@+id/btn_volver2"
@@ -69,7 +73,8 @@
         app:layout_constraintHorizontal_bias="0.878"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.938" />
+        app:layout_constraintVertical_bias="0.938"
+        app:backgroundTint="@null"/>
 
     <TextView
         android:id="@+id/titulo_consulta"
