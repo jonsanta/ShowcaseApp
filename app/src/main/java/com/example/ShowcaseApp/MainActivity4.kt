@@ -7,6 +7,7 @@ import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
@@ -42,6 +43,11 @@ class MainActivity4 : AppCompatActivity() {
             editMode = false
         }
 
+        findViewById<TextView>(R.id.discard).setOnClickListener(){
+            selectedPhotos.clear()
+            setEditMode(false)
+        }
+
         findViewById<TextView>(R.id.remove).setOnClickListener(){
             val directorio = File("${getExternalFilesDir(null)}/PacImagenes/").listFiles()
             if(!selectedPhotos.isEmpty())
@@ -61,7 +67,9 @@ class MainActivity4 : AppCompatActivity() {
     {
         //Lista que contiene todas las imágenes capturadas con la aplicación
         recyclerView = findViewById<RecyclerView>(R.id.galeria)
-        textView = findViewById<TextView>(R.id.remove)
+        textView = findViewById<TextView>(R.id.selectText)
+        textView2 = findViewById<TextView>(R.id.discard)
+        textView3 = findViewById<TextView>(R.id.remove)
         var land = false
         if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT)
             recyclerView.layoutManager = LinearLayoutManager(this)
@@ -98,6 +106,8 @@ class MainActivity4 : AppCompatActivity() {
         private val selectedPhotos = mutableSetOf<Int>()
         private var editMode = false
         private lateinit var textView: TextView
+        private lateinit var textView2: TextView
+        private lateinit var textView3: TextView
 
         fun tarea(directorio : Array<File>, land: Boolean) : List<Bitmap>{
             for(x in bitmaps.size until directorio.size)
@@ -143,9 +153,27 @@ class MainActivity4 : AppCompatActivity() {
             return editMode
         }
 
+        fun setViewVisibility(view : View, flag: Boolean) {
+            if(flag){
+                view.setVisibility(View.VISIBLE)
+                view.isEnabled = true
+            }
+            else{
+                view.setVisibility(View.INVISIBLE)
+                view.isEnabled = false
+            }
+        }
+
         fun setEditMode(flag : Boolean){
             editMode = flag
             for(item in views) item.checkBox.isVisible = flag
+            setViewVisibility(textView, flag)
+            setViewVisibility(textView2, flag)
+            setViewVisibility(textView3, flag)
+
+            if(flag == false)
+                for(item in views) item.checkBox.isChecked = false
+
         }
     }
 }
