@@ -40,7 +40,7 @@ class MainActivity4 : AppCompatActivity() {
             finish()//Cerramos la ventana y volvemos al MainActivity
             views.clear()
             selectedPhotos.clear()
-            editMode = false
+            setEditMode(false)
         }
 
         findViewById<TextView>(R.id.discard).setOnClickListener(){
@@ -49,6 +49,7 @@ class MainActivity4 : AppCompatActivity() {
         }
 
         findViewById<TextView>(R.id.remove).setOnClickListener(){
+            //SE DEBE REFORMULAR EL SISTEMA DE BORRADO - Errores OutOfBounds
             val directorio = File("${getExternalFilesDir(null)}/PacImagenes/").listFiles()
             if(!selectedPhotos.isEmpty())
                 for(item in selectedPhotos){
@@ -59,7 +60,7 @@ class MainActivity4 : AppCompatActivity() {
                 }
             selectedPhotos.clear()
             recyclerView.adapter?.notifyDataSetChanged()
-            textView.setText("Nada seleccionado")
+            countSelectedPhotos()
         }
     }
 
@@ -84,6 +85,8 @@ class MainActivity4 : AppCompatActivity() {
                     recyclerView.adapter = ImagesAdapter(withContext(Dispatchers.IO){tarea(directorio, land)})
                 }
             else recyclerView.adapter = ImagesAdapter(getBitmaps(land))
+
+        setEditMode(editMode)
     }
 
     private fun checkPermissions() : Boolean //Devuelve true si los permisos están concedidos, de lo contrario false
@@ -135,13 +138,17 @@ class MainActivity4 : AppCompatActivity() {
             views.add(holder)
         }
 
+        fun countSelectedPhotos(){
+            if(selectedPhotos.size == 0) textView.setText("Nada seleccionado")
+            else if(selectedPhotos.size > 1) textView.setText("${selectedPhotos.size} elementos seleccionados")
+            else textView.setText("${selectedPhotos.size} elemento seleccionado")
+        }
+
         fun setSelectedPhotos(photo: Int){
             if(selectedPhotos.contains(photo)) selectedPhotos.remove(photo)
             else selectedPhotos.add(photo)
 
-            if(selectedPhotos.size == 0) textView.setText("Nada seleccionado")
-            else if(selectedPhotos.size > 1) textView.setText("${selectedPhotos.size} elementos seleccionados")
-            else textView.setText("${selectedPhotos.size} elemento seleccionado")
+            countSelectedPhotos()
         }
 
         fun isSelectedPhoto(photo : Int) : Boolean{
@@ -174,6 +181,7 @@ class MainActivity4 : AppCompatActivity() {
             if(flag == false)
                 for(item in views) item.checkBox.isChecked = false
 
+            countSelectedPhotos()
         }
     }
 }
