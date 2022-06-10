@@ -128,6 +128,8 @@ class MainActivity4 : AppCompatActivity() {
             }
             return getBitmaps(land)
         }
+        
+        //NEED REFACTOR
 
         fun getBitmaps(land: Boolean) : List<Bitmap>{
             if(!land) return bitmaps
