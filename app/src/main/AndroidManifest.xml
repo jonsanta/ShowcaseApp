@@ -27,16 +27,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DesarrolloMP8JonSantamariaZamora">
         <activity
-            android:name="com.example.ShowcaseApp.MainActivity4"
+            android:name="com.example.showcaseApp.MainActivity4"
             android:exported="false" />
         <activity
-            android:name="com.example.ShowcaseApp.MainActivity3"
+            android:name="com.example.showcaseApp.MainActivity3"
             android:exported="false" />
         <activity
-            android:name="com.example.ShowcaseApp.MainActivity2"
+            android:name="com.example.showcaseApp.MainActivity2"
             android:exported="false" />
         <activity
-            android:name="com.example.ShowcaseApp.MainActivity"
+            android:name="com.example.showcaseApp.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

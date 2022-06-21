@@ -1,4 +1,4 @@
-package com.example.ShowcaseApp
+package com.example.showcaseApp
 
 import android.graphics.Bitmap
 import android.view.LayoutInflater

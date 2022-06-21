@@ -1,4 +1,4 @@
-package com.example.ShowcaseApp
+package com.example.showcaseApp
 
 import android.app.AlertDialog
 import android.app.Dialog

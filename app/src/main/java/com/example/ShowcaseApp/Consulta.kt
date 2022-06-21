@@ -1,4 +1,4 @@
-package com.example.ShowcaseApp
+package com.example.showcaseApp
 
 import android.content.ContentValues
 import android.database.Cursor

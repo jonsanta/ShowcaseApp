@@ -1,4 +1,4 @@
-package com.example.ShowcaseApp
+package com.example.showcaseApp
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase

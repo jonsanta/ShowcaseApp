@@ -1,4 +1,4 @@
-package com.example.ShowcaseApp
+package com.example.showcaseApp
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -51,12 +51,12 @@ class MainActivity4 : AppCompatActivity() {
         findViewById<TextView>(R.id.remove).setOnClickListener(){
             //SE DEBE REFORMULAR EL SISTEMA DE BORRADO - Errores OutOfBounds
             val directorio = File("${getExternalFilesDir(null)}/PacImagenes/").listFiles()
-            if(!selectedPhotos.isEmpty())
+            if(selectedPhotos.isNotEmpty())
                 for(item in selectedPhotos){
                     bitmaps.removeAt(item)
                     landBitmaps.removeAt(item)
                     views.removeAt(item)
-                    directorio.get(item).delete()
+                    directorio?.get(item)?.delete()
                 }
             selectedPhotos.clear()
             recyclerView.adapter?.notifyDataSetChanged()
@@ -67,10 +67,10 @@ class MainActivity4 : AppCompatActivity() {
     private fun cargarGaleria() //Cargar en un Thread secundario
     {
         //Lista que contiene todas las imágenes capturadas con la aplicación
-        recyclerView = findViewById<RecyclerView>(R.id.galeria)
-        textView = findViewById<TextView>(R.id.selectText)
-        textView2 = findViewById<TextView>(R.id.discard)
-        textView3 = findViewById<TextView>(R.id.remove)
+        recyclerView = findViewById(R.id.galeria)
+        textView = findViewById(R.id.selectText)
+        textView2 = findViewById(R.id.discard)
+        textView3 = findViewById(R.id.remove)
         var land = false
         if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT)
             recyclerView.layoutManager = LinearLayoutManager(this)
@@ -108,6 +108,8 @@ class MainActivity4 : AppCompatActivity() {
         private val views = mutableListOf<ImagesAdapter.ViewHolder>()
         private val selectedPhotos = mutableSetOf<Int>()
         private var editMode = false
+
+
         private lateinit var textView: TextView
         private lateinit var textView2: TextView
         private lateinit var textView3: TextView
@@ -120,7 +122,7 @@ class MainActivity4 : AppCompatActivity() {
                 options.inPreferredConfig = Bitmap.Config.RGB_565 //Reducimos un poco la calidad de dicha imagen
                 val bitmap = BitmapFactory.decodeStream(fileInputStream, null, options)//Generamos el bitmap
                 if (bitmap != null) {
-                    val resizedBitmap = Bitmap.createScaledBitmap(bitmap, Resources.getSystem().getDisplayMetrics().widthPixels, 1500, true)
+                    val resizedBitmap = Bitmap.createScaledBitmap(bitmap, Resources.getSystem().displayMetrics.widthPixels, 1500, true)
                     val landBitmap = Bitmap.createScaledBitmap(bitmap, 730, 800, true)
                     bitmaps.add(resizedBitmap) //List for RecyclerView
                     landBitmaps.add(landBitmap)
@@ -141,9 +143,9 @@ class MainActivity4 : AppCompatActivity() {
         }
 
         fun countSelectedPhotos(){
-            if(selectedPhotos.size == 0) textView.setText("Nada seleccionado")
-            else if(selectedPhotos.size > 1) textView.setText("${selectedPhotos.size} elementos seleccionados")
-            else textView.setText("${selectedPhotos.size} elemento seleccionado")
+            if(selectedPhotos.size == 0) textView.text = "Nada seleccionado"
+            else if(selectedPhotos.size > 1) textView.text = "${selectedPhotos.size} elementos seleccionados"
+            else textView.text = "${selectedPhotos.size} elemento seleccionado"
         }
 
         fun setSelectedPhotos(photo: Int){
@@ -154,8 +156,7 @@ class MainActivity4 : AppCompatActivity() {
         }
 
         fun isSelectedPhoto(photo : Int) : Boolean{
-            if(selectedPhotos.contains(photo)) return true
-            else return false
+            return selectedPhotos.contains(photo)
         }
 
         fun isEditMode() : Boolean{
@@ -164,11 +165,11 @@ class MainActivity4 : AppCompatActivity() {
 
         fun setViewVisibility(view : View, flag: Boolean) {
             if(flag){
-                view.setVisibility(View.VISIBLE)
+                view.visibility = View.VISIBLE
                 view.isEnabled = true
             }
             else{
-                view.setVisibility(View.INVISIBLE)
+                view.visibility = View.INVISIBLE
                 view.isEnabled = false
             }
         }
@@ -176,11 +177,12 @@ class MainActivity4 : AppCompatActivity() {
         fun setEditMode(flag : Boolean){
             editMode = flag
             for(item in views) item.checkBox.isVisible = flag
+
             setViewVisibility(textView, flag)
             setViewVisibility(textView2, flag)
             setViewVisibility(textView3, flag)
 
-            if(flag == false)
+            if(!flag)
                 for(item in views) item.checkBox.isChecked = false
 
             countSelectedPhotos()

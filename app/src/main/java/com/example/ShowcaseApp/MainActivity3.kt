@@ -1,4 +1,4 @@
-package com.example.ShowcaseApp
+package com.example.showcaseApp
 
 import android.Manifest
 import android.content.Intent
@@ -13,7 +13,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import androidx.core.net.toUri
-import com.example.ShowcaseApp.databinding.ActivityMain3Binding
+import com.example.showcaseApp.databinding.ActivityMain3Binding
 import java.io.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -27,7 +27,7 @@ class MainActivity3 : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main3)
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) //Fuerza modo Vertical para está actividad
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT //Fuerza modo Vertical para está actividad
 
         findViewById<Button>(R.id.abrir).setOnClickListener{
             if(checkPermissions()) abrirCamara()//Si los permisos están concedidos
