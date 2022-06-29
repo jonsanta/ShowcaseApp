@@ -9,7 +9,7 @@ import android.widget.ImageButton
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 
-class ImagesAdapter(private val mList: List<Bitmap>) : RecyclerView.Adapter<ImagesAdapter.ViewHolder>() {
+class ImagesAdapter(private val mList: List<Bitmap>, private val activity : MainActivity4) : RecyclerView.Adapter<ImagesAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         // inflates the card_view_design view
         // that is used to hold list item
@@ -30,7 +30,7 @@ class ImagesAdapter(private val mList: List<Bitmap>) : RecyclerView.Adapter<Imag
         //Enables checkbox depending on isEditMode flag && Set true the checkbox if was checked before (Used for portrait -> land redraw)
         holder.checkBox.isClickable = MainActivity4.isEditMode()
         holder.checkBox.isVisible = MainActivity4.isEditMode()
-        holder.checkBox.isChecked = MainActivity4.isSelectedPhoto(position)
+        holder.checkBox.isChecked = MainActivity4.getSelectedPhotos().contains(position)
 
         editMode(holder, position)
     }
@@ -48,8 +48,8 @@ class ImagesAdapter(private val mList: List<Bitmap>) : RecyclerView.Adapter<Imag
     fun editMode(holder : ViewHolder, position: Int){
         holder.photo.setOnLongClickListener() {
             if(!MainActivity4.isEditMode()) { //If edit mode is false and long click event
-                MainActivity4.setSelectedPhotos(position) //Select photo
-                MainActivity4.setEditMode(true)// enable editMode
+                MainActivity4.setSelectedPhotos(position, activity) //Select photo
+                MainActivity4.setEditMode(true, activity)// enable editMode
                 holder.checkBox.isChecked = true //checkbox true
             }
             else buttonAction(holder, position)
@@ -62,7 +62,7 @@ class ImagesAdapter(private val mList: List<Bitmap>) : RecyclerView.Adapter<Imag
     }
 
     fun buttonAction(holder : ViewHolder, position: Int){
-        MainActivity4.setSelectedPhotos(position) //Select-Remove Photo
+        MainActivity4.setSelectedPhotos(position, activity) //Select-Remove Photo
         holder.checkBox.isChecked = !holder.checkBox.isChecked
     }
 

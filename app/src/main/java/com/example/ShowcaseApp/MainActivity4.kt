@@ -40,12 +40,12 @@ class MainActivity4 : AppCompatActivity() {
             finish()//Cerramos la ventana y volvemos al MainActivity
             views.clear()
             selectedPhotos.clear()
-            setEditMode(false)
+            setEditMode(false, this)
         }
 
         findViewById<TextView>(R.id.discard).setOnClickListener(){
             selectedPhotos.clear()
-            setEditMode(false)
+            setEditMode(false, this)
         }
 
         findViewById<TextView>(R.id.remove).setOnClickListener(){
@@ -60,7 +60,7 @@ class MainActivity4 : AppCompatActivity() {
                 }
             selectedPhotos.clear()
             recyclerView.adapter?.notifyDataSetChanged()
-            countSelectedPhotos()
+            countSelectedPhotos(this)
         }
     }
 
@@ -68,9 +68,6 @@ class MainActivity4 : AppCompatActivity() {
     {
         //Lista que contiene todas las imágenes capturadas con la aplicación
         recyclerView = findViewById(R.id.galeria)
-        textView = findViewById(R.id.selectText)
-        textView2 = findViewById(R.id.discard)
-        textView3 = findViewById(R.id.remove)
         var land = false
         if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT)
             recyclerView.layoutManager = LinearLayoutManager(this)
@@ -80,13 +77,15 @@ class MainActivity4 : AppCompatActivity() {
         }
         val directorio = File("${getExternalFilesDir(null)}/PacImagenes/").listFiles()
         if(directorio != null)
-            if(directorio.size > bitmaps.size)
+            if(directorio.size > bitmaps.size){
+                val activity : MainActivity4 = this
                 lifecycleScope.launch{
-                    recyclerView.adapter = ImagesAdapter(withContext(Dispatchers.IO){tarea(directorio, land)})
+                    recyclerView.adapter = ImagesAdapter(withContext(Dispatchers.IO){tarea(directorio, land)}, activity)
                 }
-            else recyclerView.adapter = ImagesAdapter(getBitmaps(land))
+            }
+            else recyclerView.adapter = ImagesAdapter(getBitmaps(land), this)
 
-        setEditMode(editMode)
+        setEditMode(editMode, this)
     }
 
     private fun checkPermissions() : Boolean //Devuelve true si los permisos están concedidos, de lo contrario false
@@ -109,17 +108,12 @@ class MainActivity4 : AppCompatActivity() {
         private val selectedPhotos = mutableSetOf<Int>()
         private var editMode = false
 
-
-        private lateinit var textView: TextView
-        private lateinit var textView2: TextView
-        private lateinit var textView3: TextView
-
         fun tarea(directorio : Array<File>, land: Boolean) : List<Bitmap>{
             for(x in bitmaps.size until directorio.size)
             {
                 val fileInputStream = FileInputStream(directorio.get(x)) //FileInputStream al que pasamos la imagen
                 val options = BitmapFactory.Options()
-                options.inPreferredConfig = Bitmap.Config.RGB_565 //Reducimos un poco la calidad de dicha imagen
+                options.inPreferredConfig = Bitmap.Config.RGB_565 //Reducimos el peso de la imagen
                 val bitmap = BitmapFactory.decodeStream(fileInputStream, null, options)//Generamos el bitmap
                 if (bitmap != null) {
                     val resizedBitmap = Bitmap.createScaledBitmap(bitmap, Resources.getSystem().displayMetrics.widthPixels, 1500, true)
@@ -142,21 +136,23 @@ class MainActivity4 : AppCompatActivity() {
             views.add(holder)
         }
 
-        fun countSelectedPhotos(){
-            if(selectedPhotos.size == 0) textView.text = "Nada seleccionado"
-            else if(selectedPhotos.size > 1) textView.text = "${selectedPhotos.size} elementos seleccionados"
-            else textView.text = "${selectedPhotos.size} elemento seleccionado"
+        fun countSelectedPhotos(activity: MainActivity4){
+            val textview = activity.findViewById<TextView>(R.id.selectText)
+
+            if(selectedPhotos.size == 0) textview.text = "Nada seleccionado"
+            else if(selectedPhotos.size > 1) textview.text = "${selectedPhotos.size} elementos seleccionados"
+            else textview.text = "${selectedPhotos.size} elemento seleccionado"
         }
 
-        fun setSelectedPhotos(photo: Int){
+        fun setSelectedPhotos(photo: Int, activity: MainActivity4){
             if(selectedPhotos.contains(photo)) selectedPhotos.remove(photo)
             else selectedPhotos.add(photo)
 
-            countSelectedPhotos()
+            countSelectedPhotos(activity)
         }
 
-        fun isSelectedPhoto(photo : Int) : Boolean{
-            return selectedPhotos.contains(photo)
+        fun getSelectedPhotos() : MutableSet<Int>{
+            return selectedPhotos
         }
 
         fun isEditMode() : Boolean{
@@ -174,18 +170,18 @@ class MainActivity4 : AppCompatActivity() {
             }
         }
 
-        fun setEditMode(flag : Boolean){
+        fun setEditMode(flag : Boolean, activity : MainActivity4){
             editMode = flag
             for(item in views) item.checkBox.isVisible = flag
 
-            setViewVisibility(textView, flag)
-            setViewVisibility(textView2, flag)
-            setViewVisibility(textView3, flag)
+            setViewVisibility(activity.findViewById<TextView>(R.id.selectText), flag)
+            setViewVisibility(activity.findViewById<TextView>(R.id.discard), flag)
+            setViewVisibility(activity.findViewById<TextView>(R.id.remove), flag)
 
             if(!flag)
                 for(item in views) item.checkBox.isChecked = false
 
-            countSelectedPhotos()
+            countSelectedPhotos(activity)
         }
     }
 }
