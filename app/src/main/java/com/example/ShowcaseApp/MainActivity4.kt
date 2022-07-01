@@ -49,14 +49,17 @@ class MainActivity4 : AppCompatActivity() {
         }
 
         findViewById<TextView>(R.id.remove).setOnClickListener(){
-            //SE DEBE REFORMULAR EL SISTEMA DE BORRADO - Errores OutOfBounds
             val directorio = File("${getExternalFilesDir(null)}/PacImagenes/").listFiles()
+
             if(selectedPhotos.isNotEmpty())
                 for(item in selectedPhotos){
-                    bitmaps.removeAt(item)
-                    landBitmaps.removeAt(item)
-                    views.removeAt(item)
-                    directorio?.get(item)?.delete()
+                    bitmaps.remove(item)
+                    landBitmaps.remove(item)
+                    views.remove(item)
+                    for(x in directorio)
+                    {
+                        if(x.name == item) x.delete()
+                    }
                 }
             selectedPhotos.clear()
             recyclerView.adapter?.notifyDataSetChanged()
@@ -102,24 +105,25 @@ class MainActivity4 : AppCompatActivity() {
     }
 
     companion object{
-        private val bitmaps = mutableListOf<Bitmap>()
-        private val landBitmaps = mutableListOf<Bitmap>()
-        private val views = mutableListOf<ImagesAdapter.ViewHolder>()
-        private val selectedPhotos = mutableSetOf<Int>()
+        private val bitmaps = mutableMapOf<String, Bitmap>()
+        private val landBitmaps = mutableMapOf<String, Bitmap>()
+        private val views = mutableMapOf<String, ImagesAdapter.ViewHolder>()
+        private val selectedPhotos = mutableSetOf<String>()
         private var editMode = false
 
-        fun tarea(directorio : Array<File>, land: Boolean) : List<Bitmap>{
+        fun tarea(directorio : Array<File>, land: Boolean) : Map<String, Bitmap>{
             for(x in bitmaps.size until directorio.size)
             {
-                val fileInputStream = FileInputStream(directorio.get(x)) //FileInputStream al que pasamos la imagen
+                val file = directorio.get(x)
+                val fileInputStream = FileInputStream(file) //FileInputStream al que pasamos la imagen
                 val options = BitmapFactory.Options()
                 options.inPreferredConfig = Bitmap.Config.RGB_565 //Reducimos el peso de la imagen
                 val bitmap = BitmapFactory.decodeStream(fileInputStream, null, options)//Generamos el bitmap
                 if (bitmap != null) {
                     val resizedBitmap = Bitmap.createScaledBitmap(bitmap, Resources.getSystem().displayMetrics.widthPixels, 1500, true)
                     val landBitmap = Bitmap.createScaledBitmap(bitmap, 730, 800, true)
-                    bitmaps.add(resizedBitmap) //List for RecyclerView
-                    landBitmaps.add(landBitmap)
+                    bitmaps.put(file.name, resizedBitmap) //List for RecyclerView
+                    landBitmaps.put(file.name, landBitmap)
                 }
             }
             return getBitmaps(land)
@@ -127,13 +131,13 @@ class MainActivity4 : AppCompatActivity() {
         
         //NEED REFACTOR
 
-        fun getBitmaps(land: Boolean) : List<Bitmap>{
+        fun getBitmaps(land: Boolean) : Map<String, Bitmap>{
             if(!land) return bitmaps
             else return landBitmaps
         }
 
-        fun setViews(holder: ImagesAdapter.ViewHolder){
-            views.add(holder)
+        fun setViews(name: String, holder: ImagesAdapter.ViewHolder){
+            views.put(name, holder)
         }
 
         fun countSelectedPhotos(activity: MainActivity4){
@@ -144,14 +148,16 @@ class MainActivity4 : AppCompatActivity() {
             else textview.text = "${selectedPhotos.size} elemento seleccionado"
         }
 
-        fun setSelectedPhotos(photo: Int, activity: MainActivity4){
+        fun setSelectedPhotos(photo: String, activity: MainActivity4){
             if(selectedPhotos.contains(photo)) selectedPhotos.remove(photo)
             else selectedPhotos.add(photo)
+
+            for(item in selectedPhotos) System.out.println(item)
 
             countSelectedPhotos(activity)
         }
 
-        fun getSelectedPhotos() : MutableSet<Int>{
+        fun getSelectedPhotos() : MutableSet<String>{
             return selectedPhotos
         }
 
@@ -172,14 +178,14 @@ class MainActivity4 : AppCompatActivity() {
 
         fun setEditMode(flag : Boolean, activity : MainActivity4){
             editMode = flag
-            for(item in views) item.checkBox.isVisible = flag
+            for(item in views) item.value.checkBox.isVisible = flag
 
             setViewVisibility(activity.findViewById<TextView>(R.id.selectText), flag)
             setViewVisibility(activity.findViewById<TextView>(R.id.discard), flag)
             setViewVisibility(activity.findViewById<TextView>(R.id.remove), flag)
 
             if(!flag)
-                for(item in views) item.checkBox.isChecked = false
+                for(item in views) item.value.checkBox.isChecked = false
 
             countSelectedPhotos(activity)
         }
