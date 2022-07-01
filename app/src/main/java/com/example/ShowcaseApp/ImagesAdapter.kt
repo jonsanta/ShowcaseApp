@@ -9,7 +9,7 @@ import android.widget.ImageButton
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 
-class ImagesAdapter(private val mList: Map<String, Bitmap>, private val activity : MainActivity4) : RecyclerView.Adapter<ImagesAdapter.ViewHolder>() {
+class ImagesAdapter(private val map: Map<String, Bitmap>, private val activity : MainActivity4) : RecyclerView.Adapter<ImagesAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         // inflates the card_view_design view
         // that is used to hold list item
@@ -21,8 +21,8 @@ class ImagesAdapter(private val mList: Map<String, Bitmap>, private val activity
 
     // binds the list items to a view
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val name = mList.keys.toTypedArray().get(position)
-        val bitmap = mList.get(name)
+        val name = map.keys.toTypedArray().get(position)
+        val bitmap = map.get(name)
         MainActivity4.setViews(name, holder)
 
         // sets the image to the imageview from our itemHolder class
@@ -38,7 +38,7 @@ class ImagesAdapter(private val mList: Map<String, Bitmap>, private val activity
 
     // return the number of the items in the list
     override fun getItemCount(): Int {
-        return mList.size
+        return map.size
     }
 
     // Holds the views for adding it to image and text
