@@ -26,7 +26,6 @@ import java.io.FileInputStream
 
 class MainActivity4 : AppCompatActivity() {
     private val READ_REQUEST_CODE = 123
-    private lateinit var recyclerView: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,36 +55,38 @@ class MainActivity4 : AppCompatActivity() {
                     bitmaps.remove(item)
                     landBitmaps.remove(item)
                     views.remove(item)
-                    for(x in directorio)
+                    for(x in directorio!!)
                     {
                         if(x.name == item) x.delete()
                     }
                 }
             selectedImages.clear()
-            recyclerView.adapter?.notifyDataSetChanged()
+            findViewById<RecyclerView>(R.id.galeria).adapter?.notifyDataSetChanged()
             countSelectedPhotos(this)
         }
     }
 
     private fun loadGallery()
     {
-        recyclerView = findViewById(R.id.galeria)
+        val recyclerView = findViewById<RecyclerView>(R.id.galeria)
         var land = false
+        // LayoutManager depends on device orientation
         if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT)
             recyclerView.layoutManager = LinearLayoutManager(this)
         else{
             recyclerView.layoutManager = GridLayoutManager(this, 3)
             land = true
         }
+
         val directorio = File("${getExternalFilesDir(null)}/PacImagenes/").listFiles()
-        if(directorio != null)
-            if(directorio.size > bitmaps.size){
-                val activity : MainActivity4 = this
-                lifecycleScope.launch{
-                    recyclerView.adapter = ImagesAdapter(withContext(Dispatchers.IO){setBitmaps(directorio, land)}, activity)
-                }
+        if(directorio!!.size > bitmaps.size){
+            val activity : MainActivity4 = this
+            lifecycleScope.launch{ // Generate Bitmaps && populate RecyclerView
+                recyclerView.adapter = ImagesAdapter(withContext(Dispatchers.IO){setBitmaps(directorio, land)}, activity)
             }
-            else recyclerView.adapter = ImagesAdapter(getBitmaps(land), this)
+        }
+        else // populate RecyclerView with existing bitmaps
+            recyclerView.adapter = ImagesAdapter(getBitmaps(land), this)
 
         setEditMode(editMode, this)
     }
@@ -104,10 +105,11 @@ class MainActivity4 : AppCompatActivity() {
     }
 
     companion object{
-        private val bitmaps = mutableMapOf<String, Bitmap>()
-        private val landBitmaps = mutableMapOf<String, Bitmap>()
-        private val views = mutableMapOf<String, ImagesAdapter.ViewHolder>()
-        private val selectedImages = mutableSetOf<String>()
+        private val bitmaps = mutableMapOf<String, Bitmap>() // Key: image name - value: portrait bitmap
+        private val landBitmaps = mutableMapOf<String, Bitmap>()// Key: image name - value: landscape bitmap
+        private val views = mutableMapOf<String, ImagesAdapter.ViewHolder>() // Contains: RecyclerView items
+        private val selectedImages = mutableSetOf<String>() // Contains: map Keys = Image names
+
         private var editMode = false
 
         //Generates Bitmaps
@@ -122,8 +124,8 @@ class MainActivity4 : AppCompatActivity() {
                 if (bitmap != null) {
                     val resizedBitmap = Bitmap.createScaledBitmap(bitmap, Resources.getSystem().displayMetrics.widthPixels, 1500, true)
                     val landBitmap = Bitmap.createScaledBitmap(bitmap, 730, 800, true)
-                    bitmaps.put(file.name, resizedBitmap) // Populates portrait bitmaps map --> For RecyclerView
-                    landBitmaps.put(file.name, landBitmap) // Populates Landscape bitmaps map --> For RecyclerView
+                    bitmaps.put(file.name, resizedBitmap) // Populate portrait bitmaps map --> For RecyclerView
+                    landBitmaps.put(file.name, landBitmap) // Populate landscape bitmaps map --> For RecyclerView
                 }
             }
             return getBitmaps(land)
@@ -158,6 +160,7 @@ class MainActivity4 : AppCompatActivity() {
             views.put(name, holder)
         }
 
+        // Add-Remove from selection list
         fun setSelectedImages(photo: String, activity: MainActivity4){
             if(selectedImages.contains(photo)) selectedImages.remove(photo)
             else selectedImages.add(photo)
@@ -171,6 +174,7 @@ class MainActivity4 : AppCompatActivity() {
             return selectedImages
         }
 
+        // Selection Text on EditMode
         fun countSelectedPhotos(activity: MainActivity4){
             val textview = activity.findViewById<TextView>(R.id.selectText)
 
@@ -179,6 +183,7 @@ class MainActivity4 : AppCompatActivity() {
             else textview.text = "${selectedImages.size} elemento seleccionado"
         }
 
+        // Enable-Disable EditMode views (Top box & buttons)
         fun setViewVisibility(view : View, flag: Boolean) {
             view.isEnabled = flag
             if(flag)
