@@ -5,6 +5,8 @@ import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
 class MainActivity2 : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -12,6 +14,20 @@ class MainActivity2 : AppCompatActivity() {
         setContentView(R.layout.activity_main2)
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) //Fuerza modo Vertical para está actividad
 
+        val array = arrayOf("Jon", "Jon2", "Jon3", "Jon4", "Jon5", "Jon6", "Jon7", "Jon8", "Jon9", "Jon10", "Jon11", "Jon12")
+
+        val recyclerView = findViewById<RecyclerView>(R.id.contacts)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.adapter = ContactsAdapter(array.asList())
+
+        findViewById<Button>(R.id.btn_volver2).setOnClickListener {
+            // bd.close() Cerramos la base de datos
+            // admin.close() Cerramos el admin
+            finish()//Cerramos la ventana y volvemos al MainActivity
+        }
+    }
+}
+/*
         //Creamos el objeto de la clase que gestionara la base de datos
         val admin = AdminSQLiteOpenHelper(this, "PacientesApp", null, 1)
         val bd : SQLiteDatabase = admin.writableDatabase //Variable que permitirá modificar la base de datos
@@ -56,13 +72,6 @@ class MainActivity2 : AppCompatActivity() {
             //Parámetros: contexto, objeto SQLiteDatabase, título(para el AlertDialog), array de datos(Será null en el caso de Consultar y Eliminar), modo(r: consulta, w: modificar, d: eliminar)
             MiDialog.getFormularioDialog(this, bd, "Introduce los datos del animal que quieres eliminar", null,"d")
         }
-
-        findViewById<Button>(R.id.btn_volver2).setOnClickListener {
-            bd.close() //Cerramos la base de datos
-            admin.close() //Cerramos el admin
-            finish()//Cerramos la ventana y volvemos al MainActivity
-        }
-
     }
 
     //Funcion que devolvera un Array<String> con los datos de los editText de la actividad
@@ -82,3 +91,4 @@ class MainActivity2 : AppCompatActivity() {
         return datos //devuelve el array
     }
 }
+*/

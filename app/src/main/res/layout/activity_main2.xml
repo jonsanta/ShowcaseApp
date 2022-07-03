@@ -8,60 +8,12 @@
     tools:context=".MainActivity2">
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/contacts"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-    <Button
-        android:id="@+id/btn_insertar"
-        android:layout_width="124dp"
-        android:layout_height="wrap_content"
-        android:text="@string/btn_insertar"
+        android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.23"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout3"
-        app:layout_constraintVertical_bias="0.101"
-        app:backgroundTint="@null"/>
-
-    <Button
-        android:id="@+id/btn_eliminar"
-        android:layout_width="124dp"
-        android:layout_height="wrap_content"
-        android:text="@string/btn_eliminar"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.77"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_consultar"
-        app:layout_constraintVertical_bias="0.07999998"
-        app:backgroundTint="@null"/>
-
-    <Button
-        android:id="@+id/btn_consultar"
-        android:layout_width="124dp"
-        android:layout_height="wrap_content"
-        android:text="@string/btn_consultar"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.77"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout3"
-        app:layout_constraintVertical_bias="0.101"
-        app:backgroundTint="@null"/>
-
-    <Button
-        android:id="@+id/btn_modificar"
-        android:layout_width="124dp"
-        android:layout_height="wrap_content"
-        android:text="@string/btn_modificar"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.236"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_insertar"
-        app:layout_constraintVertical_bias="0.076"
-        app:backgroundTint="@null"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/btn_volver2"
@@ -75,99 +27,5 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.938"
         app:backgroundTint="@null"/>
-
-    <TextView
-        android:id="@+id/titulo_consulta"
-        android:layout_width="391dp"
-        android:layout_height="44dp"
-        android:gravity="center|top"
-        android:text="@string/titulo_consulta"
-        android:textSize="34sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.066" />
-
-    <LinearLayout
-        android:id="@+id/linearLayout3"
-        android:layout_width="255dp"
-        android:layout_height="303dp"
-        android:background="@drawable/border"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titulo_consulta"
-        app:layout_constraintVertical_bias="0.060000002">
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="21dp"
-            tools:layout_editor_absoluteX="44dp"
-            tools:layout_editor_absoluteY="416dp" />
-
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/info_consulta" />
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="21dp"
-            tools:layout_editor_absoluteX="44dp"
-            tools:layout_editor_absoluteY="416dp" />
-
-        <EditText
-            android:id="@+id/edit_nombre"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:autofillHints=""
-            android:ems="10"
-            android:hint="@string/edit_nombre"
-            android:inputType="textPersonName"
-            android:minHeight="48dp"
-            android:textColorHint="#546E7A" />
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="21dp" />
-
-        <EditText
-            android:id="@+id/edit_especie"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:autofillHints=""
-            android:ems="10"
-            android:hint="@string/edit_especie"
-            android:inputType="textPersonName"
-            android:minHeight="48dp"
-            android:textColorHint="#546E7A" />
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="21dp" />
-
-        <EditText
-            android:id="@+id/edit_descripcion"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:autofillHints=""
-            android:ems="10"
-            android:hint="@string/edit_descripcion"
-            android:inputType="textPersonName"
-            android:minHeight="48dp"
-            android:textColorHint="#546E7A" />
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="21dp" />
-
-    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
