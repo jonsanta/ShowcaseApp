@@ -82,11 +82,11 @@ class MainActivity4 : AppCompatActivity() {
         if(directorio!!.size > bitmaps.size){
             val activity : MainActivity4 = this
             lifecycleScope.launch{ // Generate Bitmaps && populate RecyclerView
-                recyclerView.adapter = ImagesAdapter(withContext(Dispatchers.IO){setBitmaps(directorio, land)}, activity)
+                recyclerView.adapter = GalleryAdapter(withContext(Dispatchers.IO){setBitmaps(directorio, land)}, activity)
             }
         }
         else // populate RecyclerView with existing bitmaps
-            recyclerView.adapter = ImagesAdapter(getBitmaps(land), this)
+            recyclerView.adapter = GalleryAdapter(getBitmaps(land), this)
 
         setEditMode(editMode, this)
     }
@@ -107,7 +107,7 @@ class MainActivity4 : AppCompatActivity() {
     companion object{
         private val bitmaps = mutableMapOf<String, Bitmap>() // Key: image name - value: portrait bitmap
         private val landBitmaps = mutableMapOf<String, Bitmap>()// Key: image name - value: landscape bitmap
-        private val views = mutableMapOf<String, ImagesAdapter.ViewHolder>() // Contains: RecyclerView items
+        private val views = mutableMapOf<String, GalleryAdapter.ViewHolder>() // Contains: RecyclerView items
         private val selectedImages = mutableSetOf<String>() // Contains: map Keys = Image names
 
         private var editMode = false
@@ -156,7 +156,7 @@ class MainActivity4 : AppCompatActivity() {
             return editMode
         }
 
-        fun setViews(name: String, holder: ImagesAdapter.ViewHolder){
+        fun setViews(name: String, holder: GalleryAdapter.ViewHolder){
             views.put(name, holder)
         }
 

@@ -9,7 +9,7 @@ import android.widget.ImageButton
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 
-class ImagesAdapter(private val map: Map<String, Bitmap>, private val activity : MainActivity4) : RecyclerView.Adapter<ImagesAdapter.ViewHolder>() {
+class GalleryAdapter(private val map: Map<String, Bitmap>, private val activity : MainActivity4) : RecyclerView.Adapter<GalleryAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.photo, parent, false)
         return ViewHolder(view)
