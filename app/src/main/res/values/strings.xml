@@ -1,23 +1,14 @@
 <resources>
-    <string name="app_name"></string>
+    <string name="app_name">ShowcaseApp</string>
     <string name="empty"></string>
 
     <!--Strings Actividad 1 -->
     <string name="logo_veterinario">Logo veterinario</string>
-    <string name="btn_bd">Base de datos</string>
+    <string name="btn_bd">Contactos</string>
     <string name="btn_camara">Cámara</string>
     <string name="btn_galeria">Galería</string>
 
     <!--Strings Actividad 2 -->
-    <string name="titulo_consulta">Base de datos</string>
-    <string name="info_consulta">El formulario permite tanto insertar nuevos datos como modificar los ya existentes</string>
-    <string name="edit_nombre">Nombre</string>
-    <string name="edit_especie">Especie</string>
-    <string name="edit_descripcion">Descripción</string>
-    <string name="btn_insertar">Insertar</string>
-    <string name="btn_consultar">Consultar</string>
-    <string name="btn_modificar">Modificar</string>
-    <string name="btn_eliminar">Eliminar</string>
     <string name="btn_volver">Volver</string>
 
     <!--Strings Actividad 3 -->
