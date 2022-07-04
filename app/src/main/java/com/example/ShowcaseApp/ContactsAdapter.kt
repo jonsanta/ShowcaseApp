@@ -7,9 +7,18 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class ContactsAdapter(private val list : List<String>) : RecyclerView.Adapter<ContactsAdapter.ViewHolder>() {
+class ContactsAdapter(private val list : List<String>, private val activity : MainActivity2) : RecyclerView.Adapter<ContactsAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.contact, parent, false)
+
+        view.setOnClickListener{
+            val transaction = activity.supportFragmentManager.beginTransaction()
+
+            transaction.replace(R.id.fragment, ContactInfoFragment())
+            transaction.addToBackStack(null)
+            transaction.commit()
+        }
+
         return ViewHolder(view)
     }
 

@@ -5,10 +5,13 @@ import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 class MainActivity2 : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main2)
@@ -16,9 +19,7 @@ class MainActivity2 : AppCompatActivity() {
 
         val array = arrayOf("Jon", "Jon2", "Jon3", "Jon4", "Jon5", "Jon6", "Jon7", "Jon8", "Jon9", "Jon10", "Jon11", "Jon12")
 
-        val recyclerView = findViewById<RecyclerView>(R.id.contacts)
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = ContactsAdapter(array.asList())
+        supportFragmentManager.beginTransaction().add(R.id.fragment, ContactListFragment(array.asList(), this)).commit()
 
         findViewById<Button>(R.id.btn_volver2).setOnClickListener {
             // bd.close() Cerramos la base de datos
