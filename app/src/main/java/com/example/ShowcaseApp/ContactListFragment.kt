@@ -50,7 +50,7 @@ class ContactListFragment(private val db : SQLiteDatabase, private val activity 
 
         view.findViewById<ImageButton>(R.id.addContact).setOnClickListener{
             val transaction = activity.supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.fragment, ContactAddFragment(db, transaction, activity))
+            transaction.replace(R.id.fragment, ContactAddFragment(db, activity))
             transaction.addToBackStack(null)
             transaction.commit()
         }
