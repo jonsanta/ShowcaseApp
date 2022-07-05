@@ -18,22 +18,46 @@
             android:id="@+id/icon"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
             android:layout_gravity="center"
             android:paddingLeft="14dp"
             android:paddingRight="14dp"
             app:srcCompat="@drawable/logovet"
-            android:layout_alignParentLeft="true"/>
+            android:layout_alignParentStart="true"/>
 
-        <TextView
-            android:id="@+id/name"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:layout_alignParentStart="true"
-            android:paddingLeft="10dp"
-            android:text="Hola esto es un texto de prueba" />
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:paddingStart="10dp"
+                android:text=""
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:paddingStart="10dp"
+                android:text=""
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:paddingStart="10dp"
+                android:text=""
+                android:textStyle="bold" />
+
+        </LinearLayout>
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>

@@ -3,11 +3,12 @@ package com.example.showcaseApp
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class ContactsAdapter(private val list : List<String>, private val activity : MainActivity2) : RecyclerView.Adapter<ContactsAdapter.ViewHolder>() {
+
+class ContactsAdapter(private val names : List<String>, private val tels : List<String>, private val infos : List<String>, private val activity : MainActivity2) : RecyclerView.Adapter<ContactsAdapter.ViewHolder>() {
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.contact, parent, false)
 
@@ -23,17 +24,20 @@ class ContactsAdapter(private val list : List<String>, private val activity : Ma
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.name.text = list.get(position)
+        holder.name.text = names.get(position)
+        holder.tel.text = tels.get(position)
+        holder.info.text = infos.get(position)
     }
 
     // return the number of the items in the list
     override fun getItemCount(): Int {
-        return list.size
+        return names.size
     }
 
     // Holds the views for adding it to image and text
     class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
-        val imageView : ImageView = itemView.findViewById(R.id.icon)
         val name : TextView = itemView.findViewById(R.id.name)
+        val tel : TextView = itemView.findViewById(R.id.tel)
+        val info : TextView = itemView.findViewById(R.id.info)
     }
 }

@@ -32,7 +32,7 @@
             android:layout_height="match_parent"
             android:background="@null"
             android:hint="search"
-            android:inputType="text"
+            android:inputType="textNoSuggestions"
             tools:ignore="TouchTargetSizeCheck" />
 
     </LinearLayout>

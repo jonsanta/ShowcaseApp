@@ -5,10 +5,6 @@ import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 
 class MainActivity2 : AppCompatActivity() {
 
@@ -17,9 +13,10 @@ class MainActivity2 : AppCompatActivity() {
         setContentView(R.layout.activity_main2)
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) //Fuerza modo Vertical para está actividad
 
-        val array = arrayOf("Jon", "Jon2", "Jon3", "Jon4", "Jon5", "Jon6", "Jon7", "Jon8", "Jon9", "Jon10", "Jon11", "Jon12")
+        val admin = AdminSQLiteOpenHelper(this, "Contacts", null, 1)
+        val db : SQLiteDatabase = admin.writableDatabase
 
-        supportFragmentManager.beginTransaction().add(R.id.fragment, ContactListFragment(array.asList(), this)).commit()
+        supportFragmentManager.beginTransaction().add(R.id.fragment, ContactListFragment(db, this)).commit()
 
         findViewById<Button>(R.id.btn_volver2).setOnClickListener {
             // bd.close() Cerramos la base de datos
