@@ -1,13 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#701cb0">
+    android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="match_parent"
+    <Button
+        android:id="@+id/btn_volver_add"
+        android:layout_width="48dp"
+        android:layout_height="49dp"
+        android:background="?attr/homeAsUpIndicator"
+        android:contentDescription="@string/empty"
+        app:backgroundTint="@null"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.05"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.00999999"
+        tools:ignore="SpeakableTextPresentCheck"
+        tools:text="@string/empty" />
+
+    <EditText
+        android:id="@+id/cName"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:text="Muestra/Edita la información de contacto" />
+        android:background="@null"
+        android:hint="Write name.."
+        android:inputType="text"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.25"
+        tools:ignore="TouchTargetSizeCheck" />
+
+    <EditText
+        android:id="@+id/cNumber"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:hint="Write telephone number.."
+        android:inputType="number"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cName"
+        app:layout_constraintVertical_bias="0.050000012"
+        tools:ignore="TouchTargetSizeCheck" />
+
+    <EditText
+        android:id="@+id/cDesc"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:hint="Write description.."
+        android:inputType="textNoSuggestions"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cNumber"
+        app:layout_constraintVertical_bias="0.050000012"
+        tools:ignore="TouchTargetSizeCheck" />
+
+    <Button
+        android:id="@+id/add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cDesc" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

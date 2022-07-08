@@ -3,8 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#8BC34A">
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/btn_volver_add"
+        android:layout_width="48dp"
+        android:layout_height="49dp"
+        android:background="?attr/homeAsUpIndicator"
+        android:contentDescription="@string/empty"
+        app:backgroundTint="@null"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.05"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.00999999"
+        tools:ignore="SpeakableTextPresentCheck"
+        tools:text="@string/empty" />
 
     <EditText
         android:id="@+id/cName"
@@ -26,7 +41,7 @@
         android:layout_height="wrap_content"
         android:background="@null"
         android:hint="Write telephone number.."
-        android:inputType="text"
+        android:inputType="number"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -40,7 +55,7 @@
         android:layout_height="wrap_content"
         android:background="@null"
         android:hint="Write description.."
-        android:inputType="text"
+        android:inputType="textNoSuggestions"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

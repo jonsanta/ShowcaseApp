@@ -18,7 +18,7 @@ class MainActivity2 : AppCompatActivity() {
 
         supportFragmentManager.beginTransaction().add(R.id.fragment, ContactListFragment(db, this)).commit()
 
-        findViewById<Button>(R.id.btn_volver2).setOnClickListener {
+        findViewById<Button>(R.id.btn_volver_add).setOnClickListener {
             // bd.close() Cerramos la base de datos
             // admin.close() Cerramos el admin
             finish()//Cerramos la ventana y volvemos al MainActivity

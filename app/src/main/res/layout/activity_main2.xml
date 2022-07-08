@@ -8,7 +8,7 @@
     tools:context=".MainActivity2">
 
     <Button
-        android:id="@+id/btn_volver2"
+        android:id="@+id/btn_volver_add"
         android:layout_width="48dp"
         android:layout_height="49dp"
         android:background="?attr/homeAsUpIndicator"
@@ -24,7 +24,7 @@
         tools:text="@string/empty" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/a2Title"
         android:layout_width="268dp"
         android:layout_height="49dp"
         android:layout_marginTop="8dp"
@@ -48,7 +48,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView">
+        app:layout_constraintTop_toBottomOf="@+id/a2Title">
 
     </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
