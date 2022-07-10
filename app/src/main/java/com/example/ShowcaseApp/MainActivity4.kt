@@ -78,6 +78,7 @@ class MainActivity4 : AppCompatActivity() {
             land = true
         }
 
+        //If images have not been loaded yet --> Load images (Needs REWORK)
         val directorio = File("${getExternalFilesDir(null)}/PacImagenes/").listFiles()
         if(directorio!!.size > bitmaps.size){
             val activity : MainActivity4 = this
@@ -112,22 +113,25 @@ class MainActivity4 : AppCompatActivity() {
 
         private var editMode = false
 
-        //Generates Bitmaps
-        fun setBitmaps(directorio : Array<File>, land: Boolean) : Map<String, Bitmap>{
-            for(x in bitmaps.size until directorio.size)
-            {
-                val file = directorio.get(x)
-                val fileInputStream = FileInputStream(file)
-                val options = BitmapFactory.Options()
-                options.inPreferredConfig = Bitmap.Config.RGB_565
-                val bitmap = BitmapFactory.decodeStream(fileInputStream, null, options)
-                if (bitmap != null) {
-                    val resizedBitmap = Bitmap.createScaledBitmap(bitmap, Resources.getSystem().displayMetrics.widthPixels, 1500, true)
-                    val landBitmap = Bitmap.createScaledBitmap(bitmap, 730, 800, true)
-                    bitmaps.put(file.name, resizedBitmap) // Populate portrait bitmaps map --> For RecyclerView
-                    landBitmaps.put(file.name, landBitmap) // Populate landscape bitmaps map --> For RecyclerView
-                }
+        //Generates a single Bitmap
+        fun setBitmap(file : File){
+            val fileInputStream = FileInputStream(file)
+            val options = BitmapFactory.Options()
+            options.inPreferredConfig = Bitmap.Config.RGB_565
+            val bitmap = BitmapFactory.decodeStream(fileInputStream, null, options)
+            if (bitmap != null) {
+                val resizedBitmap = Bitmap.createScaledBitmap(bitmap, Resources.getSystem().displayMetrics.widthPixels, 1500, true)
+                val landBitmap = Bitmap.createScaledBitmap(bitmap, 730, 800, true)
+                bitmaps.put(file.name, resizedBitmap) // Populate portrait bitmaps map --> For RecyclerView
+                landBitmaps.put(file.name, landBitmap) // Populate landscape bitmaps map --> For RecyclerView
             }
+        }
+
+        //Generates Bitmaps
+        fun setBitmaps(directorio : Array<File>, land : Boolean) : Map<String, Bitmap>{
+            for(x in bitmaps.size until directorio.size)
+                setBitmap(directorio.get(x))
+
             return getBitmaps(land)
         }
 

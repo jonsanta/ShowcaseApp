@@ -13,7 +13,11 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import androidx.core.net.toUri
+import androidx.lifecycle.lifecycleScope
 import com.example.showcaseApp.databinding.ActivityMain3Binding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -101,6 +105,11 @@ class MainActivity3 : AppCompatActivity() {
                 {//En caso de recibir NullPointerException mostraremos la imagen que se guardo
                     val file = File("${getExternalFilesDir(null)}/PacImagenes/"+nombreUnico)
                     viewBinding.camara.setImageURI(file.toUri())
+
+                    //ADDS captured Image to the gallery bitmap lists
+                    lifecycleScope.launch{
+                        withContext(Dispatchers.IO){MainActivity4.setBitmap(file)}
+                    }
                 }
         }
     }

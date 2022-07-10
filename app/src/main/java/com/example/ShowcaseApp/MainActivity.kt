@@ -8,6 +8,11 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.io.File
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,6 +23,16 @@ class MainActivity : AppCompatActivity() {
         //Creamos un objeto de MediaPlayer y por constructor pasamos el sonido que queremos que reproduzca
         val mp : MediaPlayer = MediaPlayer.create(this, R.raw.cancion)
         var position = 0 //variable que guardara la posicion de la reproduccion en milisegundos
+
+        //Loads gallery images
+        val directorio = File("${getExternalFilesDir(null)}/PacImagenes/").listFiles()
+        if(directorio!!.size > MainActivity4.getBitmaps(true).size){
+            lifecycleScope.launch{ // Generate Bitmaps
+                withContext(Dispatchers.IO){MainActivity4.setBitmaps(directorio, false)}
+            }
+        }
+
+
         findViewById<ImageButton>(R.id.btn_start).setOnClickListener {
             if(!mp.isPlaying){ //Si se pulsa el botón start y no se está reproduciendo
                 mp.seekTo(position)//Se empezará a reproducir desde la posición pasada por parámetro
