@@ -1,6 +1,5 @@
 package com.example.showcaseApp
 
-import android.app.ActionBar
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
@@ -9,7 +8,6 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewParent
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
@@ -25,7 +23,7 @@ class ContactListFragment(private val db : SQLiteDatabase, private val activity 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         setConstraint(activity.findViewById<TextView>(R.id.a2Title).id, 0, activity)
-        val cursor = db.rawQuery("SELECT * FROM contacts" , null)
+        val cursor = db.rawQuery("SELECT * FROM contacts ORDER BY UPPER(name) ASC" , null)
         query(cursor)
 
         val view = inflater.inflate(R.layout.contact_list_fragment, container, false)
@@ -43,11 +41,20 @@ class ContactListFragment(private val db : SQLiteDatabase, private val activity 
             }
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                val cursor = db.rawQuery(
-                    "SELECT * FROM contacts WHERE name LIKE '" + view.findViewById<EditText>(R.id.search).text.toString()
-                        .uppercase() + "%'", null
-                )
-                query(cursor)
+                if(view.findViewById<EditText>(R.id.search).text.toString() == "")
+                {
+                    val cursor = db.rawQuery("SELECT * FROM contacts ORDER BY UPPER(name) ASC" , null)
+                    query(cursor)
+                }
+                else
+                {
+                    val cursor = db.rawQuery(
+                        "SELECT * FROM contacts WHERE name LIKE '" + view.findViewById<EditText>(R.id.search).text.toString()
+                            .uppercase() + "%' ORDER BY UPPER(name) ASC", null
+                    )
+                    query(cursor)
+                }
+
                 adapter.notifyDataSetChanged()
             }
         })

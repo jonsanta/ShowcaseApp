@@ -8,7 +8,7 @@
     tools:context=".MainActivity2">
 
     <Button
-        android:id="@+id/btn_volver_add"
+        android:id="@+id/btn_volver"
         android:layout_width="48dp"
         android:layout_height="49dp"
         android:background="?attr/homeAsUpIndicator"
