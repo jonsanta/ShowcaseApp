@@ -9,9 +9,8 @@ import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.*
 import java.io.File
 
 class MainActivity : AppCompatActivity() {
@@ -27,8 +26,17 @@ class MainActivity : AppCompatActivity() {
         //Loads gallery images
         val directorio = File("${getExternalFilesDir(null)}/PacImagenes/").listFiles()
         if(directorio!!.size > MainActivity4.getBitmaps(true).size){
-            lifecycleScope.launch{ // Generate Bitmaps
-                withContext(Dispatchers.IO){MainActivity4.setBitmaps(directorio, false)}
+          lifecycleScope.launch{ // Generate Bitmaps
+                withContext(Dispatchers.IO){
+                    for(i in directorio){
+                        MainActivity4.setBitmap(i)
+                        runOnUiThread{
+                            if(isRecyclerViewInitialized())
+                                recyclerView.adapter?.notifyDataSetChanged()
+                                //recyclerView.adapter?.notifyItemInserted(MainActivity4.getBitmaps(true).size -1)
+                        }
+                    }
+                }
             }
         }
 
@@ -71,6 +79,19 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this, "Accediendo a la Galería", Toast.LENGTH_SHORT).show()
             val intent = Intent(this,MainActivity4::class.java)
             startActivity(intent)
+        }
+    }
+
+    //PROVISIONAL COMPANION OBJECT
+    companion object{
+        private lateinit var recyclerView: RecyclerView
+
+        fun isRecyclerViewInitialized() : Boolean{
+            return this::recyclerView.isInitialized
+        }
+
+        fun setRecyclerView(recyclerView: RecyclerView){
+            this.recyclerView = recyclerView
         }
     }
 }

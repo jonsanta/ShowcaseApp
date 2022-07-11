@@ -13,13 +13,9 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileInputStream
 
@@ -77,17 +73,12 @@ class MainActivity4 : AppCompatActivity() {
             recyclerView.layoutManager = GridLayoutManager(this, 3)
             land = true
         }
+        //load images
+        recyclerView.adapter = GalleryAdapter(getBitmaps(land), this)
 
-        //If images have not been loaded yet --> Load images (Needs REWORK)
-        val directorio = File("${getExternalFilesDir(null)}/PacImagenes/").listFiles()
-        if(directorio!!.size > bitmaps.size){
-            val activity : MainActivity4 = this
-            lifecycleScope.launch{ // Generate Bitmaps && populate RecyclerView
-                recyclerView.adapter = GalleryAdapter(withContext(Dispatchers.IO){setBitmaps(directorio, land)}, activity)
-            }
-        }
-        else // populate RecyclerView with existing bitmaps
-            recyclerView.adapter = GalleryAdapter(getBitmaps(land), this)
+        //set MainActivity RecyclerView (REF) -- PROVISIONAL
+        MainActivity.setRecyclerView(recyclerView)
+
 
         setEditMode(editMode, this)
     }
@@ -111,6 +102,7 @@ class MainActivity4 : AppCompatActivity() {
         private val views = mutableMapOf<String, GalleryAdapter.ViewHolder>() // Contains: RecyclerView items
         private val selectedImages = mutableSetOf<String>() // Contains: map Keys = Image names
 
+
         private var editMode = false
 
         //Generates a single Bitmap
@@ -125,14 +117,6 @@ class MainActivity4 : AppCompatActivity() {
                 bitmaps.put(file.name, resizedBitmap) // Populate portrait bitmaps map --> For RecyclerView
                 landBitmaps.put(file.name, landBitmap) // Populate landscape bitmaps map --> For RecyclerView
             }
-        }
-
-        //Generates Bitmaps
-        fun setBitmaps(directorio : Array<File>, land : Boolean) : Map<String, Bitmap>{
-            for(x in bitmaps.size until directorio.size)
-                setBitmap(directorio.get(x))
-
-            return getBitmaps(land)
         }
 
         fun getBitmaps(land: Boolean) : Map<String, Bitmap>{
