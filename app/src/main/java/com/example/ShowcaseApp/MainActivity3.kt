@@ -108,7 +108,7 @@ class MainActivity3 : AppCompatActivity() {
 
                     //ADDS captured Image to the gallery bitmap lists
                     lifecycleScope.launch{
-                        withContext(Dispatchers.IO){MainActivity4.setBitmap(file)}
+                        withContext(Dispatchers.IO){Gallery.setBitmap(file)}
                     }
                 }
         }

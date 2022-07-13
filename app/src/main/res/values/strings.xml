@@ -3,7 +3,6 @@
     <string name="empty"></string>
 
     <!--Strings Actividad 1 -->
-    <string name="logo_veterinario">Logo veterinario</string>
     <string name="btn_bd">Contactos</string>
     <string name="btn_camara">Cámara</string>
     <string name="btn_galeria">Galería</string>
@@ -13,5 +12,7 @@
 
     <!--Strings Actividad 3 -->
     <string name="btn_abrir_camara">Abrir</string>
+
+    <string name="count_images">{0,choice,0#Nada seleccionado|1#1 elemento seleccionado|1&lt;{0} elementos seleccionados}</string>
 
 </resources>

@@ -17,15 +17,15 @@ class GalleryAdapter(private val map: Map<String, Bitmap>, private val activity 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val name = map.keys.toTypedArray().get(position)
-        MainActivity4.setViews(name, holder)
+        Gallery.setViews(name, holder)
 
         holder.photo.setImageBitmap(map.get(name))
         holder.photo.adjustViewBounds = true
 
         // EDITMODE CHECK FOR PORTRAIT <--> LAND SWAP REDRAW
-        holder.checkBox.isClickable = MainActivity4.isEditMode()
-        holder.checkBox.isVisible = MainActivity4.isEditMode()
-        holder.checkBox.isChecked = MainActivity4.getSelectedImages().contains(name)
+        holder.checkBox.isClickable = Gallery.isEditMode()
+        holder.checkBox.isVisible = Gallery.isEditMode()
+        holder.checkBox.isChecked = Gallery.getSelectedImages().contains(name)
 
         // Click Listener
         onClick(holder, name)
@@ -44,8 +44,8 @@ class GalleryAdapter(private val map: Map<String, Bitmap>, private val activity 
 
     fun onClick(holder : ViewHolder, name: String){
         holder.photo.setOnLongClickListener() {
-            if(!MainActivity4.isEditMode()) { // LONG CLICK EVENT - while !editMode
-                MainActivity4.setEditMode(true, activity)// Enables editMode
+            if(!Gallery.isEditMode()) { // LONG CLICK EVENT - while !editMode
+                Gallery.setEditMode(true, activity)// Enables editMode
                 buttonAction(holder, name)
             }
             else buttonAction(holder, name)
@@ -53,12 +53,12 @@ class GalleryAdapter(private val map: Map<String, Bitmap>, private val activity 
         }
 
         holder.photo.setOnClickListener(){
-            if(MainActivity4.isEditMode()) buttonAction(holder, name) // CLICK EVENT - while editMode
+            if(Gallery.isEditMode()) buttonAction(holder, name) // CLICK EVENT - while editMode
         }
     }
 
     fun buttonAction(holder : ViewHolder, name : String){
-        MainActivity4.setSelectedImages(name, activity) // ADD-REMOVE Image from Set
+        Gallery.setSelectedImages(name, activity) // ADD-REMOVE Image from Set
         holder.checkBox.isChecked = !holder.checkBox.isChecked
     }
 

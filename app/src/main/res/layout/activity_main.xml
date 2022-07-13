@@ -64,7 +64,6 @@
             android:layout_height="256dp"
             android:layout_gravity="center"
             android:background="#001B8AEC"
-            android:contentDescription="@string/logo_veterinario"
             app:srcCompat="@drawable/logovet" />
 
         <Space

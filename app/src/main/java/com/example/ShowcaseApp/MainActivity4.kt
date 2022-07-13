@@ -3,22 +3,15 @@ package com.example.showcaseApp
 import android.Manifest
 import android.content.pm.PackageManager
 import android.content.res.Configuration
-import android.content.res.Resources
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.os.Bundle
-import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import java.io.File
-import java.io.FileInputStream
-
 
 class MainActivity4 : AppCompatActivity() {
     private val READ_REQUEST_CODE = 123
@@ -32,33 +25,31 @@ class MainActivity4 : AppCompatActivity() {
             requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), READ_REQUEST_CODE)
 
         findViewById<Button>(R.id.btn_volver4).setOnClickListener{
-            views.clear()
-            selectedImages.clear()
-            setEditMode(false, this)
+            Gallery.clearViews()
+            Gallery.getSelectedImages().clear()
+            Gallery.setEditMode(false, this)
             finish()
         }
 
-        findViewById<TextView>(R.id.discard).setOnClickListener(){
-            selectedImages.clear()
-            setEditMode(false, this)
+        findViewById<TextView>(R.id.discard).setOnClickListener{
+            Gallery.getSelectedImages().clear()
+            Gallery.setEditMode(false, this)
         }
 
-        findViewById<TextView>(R.id.remove).setOnClickListener(){
+        findViewById<TextView>(R.id.remove).setOnClickListener{
             val directorio = File("${getExternalFilesDir(null)}/PacImagenes/").listFiles()
 
-            if(selectedImages.isNotEmpty())
-                for(item in selectedImages){
-                    bitmaps.remove(item)
-                    landBitmaps.remove(item)
-                    views.remove(item)
+            if(Gallery.getSelectedImages().isNotEmpty())
+                for(item in Gallery.getSelectedImages()){
+                    Gallery.removeBitmap(item)
                     for(x in directorio!!)
                     {
                         if(x.name == item) x.delete()
                     }
                 }
-            selectedImages.clear()
+            Gallery.getSelectedImages().clear()
             findViewById<RecyclerView>(R.id.galeria).adapter?.notifyDataSetChanged()
-            countSelectedPhotos(this)
+            Gallery.countSelectedPhotos(this)
         }
     }
 
@@ -74,13 +65,13 @@ class MainActivity4 : AppCompatActivity() {
             land = true
         }
         //load images
-        recyclerView.adapter = GalleryAdapter(getBitmaps(land), this)
+        recyclerView.adapter = GalleryAdapter(Gallery.getBitmaps(land), this)
 
         //set MainActivity RecyclerView (REF) -- PROVISIONAL
-        MainActivity.setRecyclerView(recyclerView)
+        Gallery.setRecyclerView(recyclerView)
 
 
-        setEditMode(editMode, this)
+        Gallery.setEditMode(Gallery.isEditMode(), this)
     }
 
     private fun checkPermissions() : Boolean //True: Permission Granted, False: Permission Denied
@@ -93,91 +84,6 @@ class MainActivity4 : AppCompatActivity() {
         if(requestCode == READ_REQUEST_CODE && grantResults[0] == PackageManager.PERMISSION_GRANTED)
             loadGallery() //Permissions granted - Load Images
         else//Permissions denied
-            Toast.makeText(this, "No se han concedido los permisos", Toast.LENGTH_SHORT).show()
-    }
-
-    companion object{
-        private val bitmaps = mutableMapOf<String, Bitmap>() // Key: image name - value: portrait bitmap
-        private val landBitmaps = mutableMapOf<String, Bitmap>()// Key: image name - value: landscape bitmap
-        private val views = mutableMapOf<String, GalleryAdapter.ViewHolder>() // Contains: RecyclerView items
-        private val selectedImages = mutableSetOf<String>() // Contains: map Keys = Image names
-
-
-        private var editMode = false
-
-        //Generates a single Bitmap
-        fun setBitmap(file : File){
-            val fileInputStream = FileInputStream(file)
-            val options = BitmapFactory.Options()
-            options.inPreferredConfig = Bitmap.Config.RGB_565
-            val bitmap = BitmapFactory.decodeStream(fileInputStream, null, options)
-            if (bitmap != null) {
-                val resizedBitmap = Bitmap.createScaledBitmap(bitmap, Resources.getSystem().displayMetrics.widthPixels, 1500, true)
-                val landBitmap = Bitmap.createScaledBitmap(bitmap, 730, 800, true)
-                bitmaps.put(file.name, resizedBitmap) // Populate portrait bitmaps map --> For RecyclerView
-                landBitmaps.put(file.name, landBitmap) // Populate landscape bitmaps map --> For RecyclerView
-            }
-        }
-
-        fun getBitmaps(land: Boolean) : Map<String, Bitmap>{
-            if(!land) return bitmaps
-            else return landBitmaps
-        }
-
-        // Enables UI for editing mode
-        fun setEditMode(flag : Boolean, activity : MainActivity4){
-            for(item in views){
-                item.value.checkBox.isVisible = flag
-                if(!flag)
-                    item.value.checkBox.isChecked = false
-            }
-
-            setViewVisibility(activity.findViewById<TextView>(R.id.selectText), flag)
-            setViewVisibility(activity.findViewById<TextView>(R.id.discard), flag)
-            setViewVisibility(activity.findViewById<TextView>(R.id.remove), flag)
-
-            countSelectedPhotos(activity)
-            editMode = flag
-        }
-
-        fun isEditMode() : Boolean{
-            return editMode
-        }
-
-        fun setViews(name: String, holder: GalleryAdapter.ViewHolder){
-            views.put(name, holder)
-        }
-
-        // Add-Remove from selection list
-        fun setSelectedImages(photo: String, activity: MainActivity4){
-            if(selectedImages.contains(photo)) selectedImages.remove(photo)
-            else selectedImages.add(photo)
-
-            for(item in selectedImages) System.out.println(item)
-
-            countSelectedPhotos(activity)
-        }
-
-        fun getSelectedImages() : MutableSet<String>{
-            return selectedImages
-        }
-
-        // Selection Text on EditMode
-        fun countSelectedPhotos(activity: MainActivity4){
-            val textview = activity.findViewById<TextView>(R.id.selectText)
-
-            if(selectedImages.size == 0) textview.text = "Nada seleccionado"
-            else if(selectedImages.size > 1) textview.text = "${selectedImages.size} elementos seleccionados"
-            else textview.text = "${selectedImages.size} elemento seleccionado"
-        }
-
-        // Enable-Disable EditMode views (Top box & buttons)
-        fun setViewVisibility(view : View, flag: Boolean) {
-            view.isEnabled = flag
-            if(flag)
-                view.visibility = View.VISIBLE
-            else
-                view.visibility = View.INVISIBLE
-        }
+            Toast.makeText(this, "Permissions Denied", Toast.LENGTH_SHORT).show()
     }
 }

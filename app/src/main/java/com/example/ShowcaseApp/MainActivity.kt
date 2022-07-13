@@ -9,7 +9,6 @@ import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.*
 import java.io.File
 
@@ -17,7 +16,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) //Fuerza modo Vertical para está actividad
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT //Fuerza modo Vertical para está actividad
+
 
         //Creamos un objeto de MediaPlayer y por constructor pasamos el sonido que queremos que reproduzca
         val mp : MediaPlayer = MediaPlayer.create(this, R.raw.cancion)
@@ -25,14 +25,14 @@ class MainActivity : AppCompatActivity() {
 
         //Loads gallery images
         val directorio = File("${getExternalFilesDir(null)}/PacImagenes/").listFiles()
-        if(directorio!!.size > MainActivity4.getBitmaps(true).size){
+        if(directorio!!.size > Gallery.getBitmaps(true).size){
           lifecycleScope.launch{ // Generate Bitmaps
                 withContext(Dispatchers.IO){
                     for(i in directorio){
-                        MainActivity4.setBitmap(i)
+                        Gallery.setBitmap(i)
                         runOnUiThread{
-                            if(isRecyclerViewInitialized())
-                                recyclerView.adapter?.notifyDataSetChanged()
+                            if(Gallery.isRecyclerViewInitialized())
+                                Gallery.getRecyclerView().adapter?.notifyDataSetChanged()
                                 //recyclerView.adapter?.notifyItemInserted(MainActivity4.getBitmaps(true).size -1)
                         }
                     }
@@ -60,38 +60,23 @@ class MainActivity : AppCompatActivity() {
             position = 0 //Si la canción ha terminado la posición será restablecida a 0
         }
 
-        //Abre el Activity 2 - Base de datos
+        //Abre el Activity 2 - Contactos
         findViewById<Button>(R.id.btn_bd).setOnClickListener {
-            Toast.makeText(this, "Accediendo a la Base de Datos", Toast.LENGTH_SHORT).show()
             val intent = Intent(this,MainActivity2::class.java)
             startActivity(intent)
         }
 
         //Abre el Activity 3 - Camara
         findViewById<Button>(R.id.btn_camara).setOnClickListener {
-            Toast.makeText(this, "Entrando en Activity 3", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Accediendo a la Camara", Toast.LENGTH_SHORT).show()
             val intent = Intent(this,MainActivity3::class.java)
             startActivity(intent)
         }
 
         //Abre el Activity 4 - Galería
         findViewById<Button>(R.id.btn_galeria).setOnClickListener {
-            Toast.makeText(this, "Accediendo a la Galería", Toast.LENGTH_SHORT).show()
             val intent = Intent(this,MainActivity4::class.java)
             startActivity(intent)
-        }
-    }
-
-    //PROVISIONAL COMPANION OBJECT
-    companion object{
-        private lateinit var recyclerView: RecyclerView
-
-        fun isRecyclerViewInitialized() : Boolean{
-            return this::recyclerView.isInitialized
-        }
-
-        fun setRecyclerView(recyclerView: RecyclerView){
-            this.recyclerView = recyclerView
         }
     }
 }
