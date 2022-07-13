@@ -108,7 +108,7 @@ class Gallery {
         }
 
         // Enable-Disable EditMode views (Top box & buttons)
-        fun setViewVisibility(view : View, flag: Boolean) {
+        private fun setViewVisibility(view : View, flag: Boolean) {
             view.isEnabled = flag
             if(flag)
                 view.visibility = View.VISIBLE

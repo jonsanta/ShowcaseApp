@@ -16,10 +16,10 @@ class GalleryAdapter(private val map: Map<String, Bitmap>, private val activity 
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val name = map.keys.toTypedArray().get(position)
+        val name = map.keys.toTypedArray()[position]
         Gallery.setViews(name, holder)
 
-        holder.photo.setImageBitmap(map.get(name))
+        holder.photo.setImageBitmap(map[name])
         holder.photo.adjustViewBounds = true
 
         // EDITMODE CHECK FOR PORTRAIT <--> LAND SWAP REDRAW
@@ -42,8 +42,8 @@ class GalleryAdapter(private val map: Map<String, Bitmap>, private val activity 
         val checkBox : CheckBox = itemView.findViewById(R.id.checkBox)
     }
 
-    fun onClick(holder : ViewHolder, name: String){
-        holder.photo.setOnLongClickListener() {
+    private fun onClick(holder : ViewHolder, name: String){
+        holder.photo.setOnLongClickListener{
             if(!Gallery.isEditMode()) { // LONG CLICK EVENT - while !editMode
                 Gallery.setEditMode(true, activity)// Enables editMode
                 buttonAction(holder, name)
@@ -52,12 +52,12 @@ class GalleryAdapter(private val map: Map<String, Bitmap>, private val activity 
             true
         }
 
-        holder.photo.setOnClickListener(){
+        holder.photo.setOnClickListener{
             if(Gallery.isEditMode()) buttonAction(holder, name) // CLICK EVENT - while editMode
         }
     }
 
-    fun buttonAction(holder : ViewHolder, name : String){
+    private fun buttonAction(holder : ViewHolder, name : String){
         Gallery.setSelectedImages(name, activity) // ADD-REMOVE Image from Set
         holder.checkBox.isChecked = !holder.checkBox.isChecked
     }

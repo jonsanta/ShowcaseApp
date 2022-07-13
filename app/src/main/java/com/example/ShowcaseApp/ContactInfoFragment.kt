@@ -19,14 +19,14 @@ class ContactInfoFragment(private val cId : Int, private val db : SQLiteDatabase
         val cNumber = view.findViewById<EditText>(R.id.cNumber)
         val cDesc = view.findViewById<EditText>(R.id.cDesc)
 
-        System.out.println(cId)
-        val cursor = db.rawQuery("SELECT * FROM contacts WHERE id = "+cId+"" , null)
+        val cursor = db.rawQuery("SELECT * FROM contacts WHERE id = $cId", null)
 
         while(cursor.moveToNext()) {
             cName.setText(cursor.getString(1))
             cNumber.setText(cursor.getString(2))
             cDesc.setText(cursor.getString(3))
         }
+        cursor.close()
 
         view.findViewById<Button>(R.id.btn_volver).setOnClickListener{
             activity.supportFragmentManager.popBackStack()
@@ -38,18 +38,20 @@ class ContactInfoFragment(private val cId : Int, private val db : SQLiteDatabase
             enableEditText(cDesc)
         }
 
+
+        //NEEDS WHITE TEXT INSERTING CHECK
         view.findViewById<Button>(R.id.add).setOnClickListener{
             val registro = ContentValues()
             registro.put("name", cName.text.toString())//la columna nombre se rellenara con datos[0]
             registro.put("number", cNumber.text.toString().toInt())//la columna especie se rellenara con datos[1]
             registro.put("info", cDesc.text.toString())//la columna descripción se rellenara con datos[2]
-            db.update("Contacts", registro, "id='" + cId + "'", null)
+            db.update("Contacts", registro, "id='$cId'", null)
             registro.clear()
             activity.supportFragmentManager.popBackStack()
         }
 
         view.findViewById<ImageButton>(R.id.btn_del_contact).setOnClickListener{
-            db.delete("Contacts", "id='" + cId + "'", null)
+            db.delete("Contacts", "id='$cId'", null)
             activity.supportFragmentManager.popBackStack()
         }
 
@@ -57,7 +59,7 @@ class ContactInfoFragment(private val cId : Int, private val db : SQLiteDatabase
 
     }
 
-    fun enableEditText(view : EditText){
+    private fun enableEditText(view : EditText){
         view.isClickable = true
         view.isCursorVisible = true
         view.isFocusable = true

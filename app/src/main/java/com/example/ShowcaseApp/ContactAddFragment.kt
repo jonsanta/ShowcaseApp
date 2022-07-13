@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 
 class ContactAddFragment(private val db : SQLiteDatabase, private val activity : MainActivity2) : Fragment() {
@@ -17,7 +18,7 @@ class ContactAddFragment(private val db : SQLiteDatabase, private val activity :
         val view = inflater.inflate(R.layout.contact_add_fragment, container, false)
 
         view.findViewById<Button>(R.id.btn_volver).setOnClickListener{
-            activity.supportFragmentManager.popBackStack();
+            activity.supportFragmentManager.popBackStack()
         }
 
         view.findViewById<Button>(R.id.add).setOnClickListener{
@@ -27,7 +28,7 @@ class ContactAddFragment(private val db : SQLiteDatabase, private val activity :
 
             if(nameView.text.toString() == "" || telView.text.toString() == "")
             {
-                System.out.println("Faltan campos por completar")
+                Toast.makeText(activity.baseContext, "Faltan campos por rellenar", Toast.LENGTH_SHORT).show()
             }else{
                 registro.put("name", nameView.text.toString())
                 registro.put("number",  telView.text.toString().toInt())
@@ -35,7 +36,7 @@ class ContactAddFragment(private val db : SQLiteDatabase, private val activity :
                 db.insert("Contacts", null, registro)
 
                 registro.clear()
-                activity.supportFragmentManager.popBackStack();
+                activity.supportFragmentManager.popBackStack()
             }
         }
 

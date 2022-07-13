@@ -72,7 +72,7 @@ class MainActivity3 : AppCompatActivity() {
 
     private fun getNombreUnico() : String
     {//Genera un String único a partir de la fecha-hora-minutos-segundos actuales
-        nombreUnico = "imagen_"+SimpleDateFormat("yyyy-MM-dd_HH:mm:ss").format(Date())+".jpg"
+        nombreUnico = "imagen_"+SimpleDateFormat("yyyy-MM-dd_HH:mm:ss", Locale.getDefault()).format(Date())+".jpg"
         return nombreUnico
     }
 

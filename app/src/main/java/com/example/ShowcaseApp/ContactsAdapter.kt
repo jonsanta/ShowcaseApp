@@ -17,15 +17,15 @@ class ContactsAdapter(private val ids : List<String>, private val names : List<S
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.name.text = names.get(position)
-        holder.tel.text = tels.get(position)
-        holder.info.text = infos.get(position)
+        holder.name.text = names[position]
+        holder.tel.text = tels[position]
+        holder.info.text = infos[position]
 
         holder.itemView.setOnClickListener{
             ContactListFragment.setConstraint(holder.itemView.parent.layoutDirection, 1, activity)
             val transaction = activity.supportFragmentManager.beginTransaction()
 
-            transaction.replace(R.id.fragment, ContactInfoFragment(ids.get(position).toInt(), db, activity))
+            transaction.replace(R.id.fragment, ContactInfoFragment(ids[position].toInt(), db, activity))
             transaction.addToBackStack(null)
             transaction.commit()
         }

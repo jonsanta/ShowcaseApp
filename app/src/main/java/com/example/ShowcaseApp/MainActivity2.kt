@@ -11,7 +11,7 @@ class MainActivity2 : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main2)
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) //Fuerza modo Vertical para está actividad
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT //Fuerza modo Vertical para está actividad
 
         val admin = AdminSQLiteOpenHelper(this, "Contacts", null, 1)
         val db : SQLiteDatabase = admin.writableDatabase
