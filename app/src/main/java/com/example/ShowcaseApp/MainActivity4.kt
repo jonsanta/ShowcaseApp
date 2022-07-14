@@ -4,7 +4,7 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.os.Bundle
-import android.widget.Button
+import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -24,19 +24,19 @@ class MainActivity4 : AppCompatActivity() {
         else//Ask for READING Permissions
             requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), READ_REQUEST_CODE)
 
-        findViewById<Button>(R.id.btn_volver4).setOnClickListener{
+        findViewById<ImageButton>(R.id.ac4_btn_volver).setOnClickListener{
             Gallery.clearViews()
             Gallery.getSelectedImages().clear()
             Gallery.setEditMode(false, this)
             finish()
         }
 
-        findViewById<TextView>(R.id.discard).setOnClickListener{
+        findViewById<ImageButton>(R.id.ac4_btn_discard).setOnClickListener{
             Gallery.getSelectedImages().clear()
             Gallery.setEditMode(false, this)
         }
 
-        findViewById<TextView>(R.id.remove).setOnClickListener{
+        findViewById<TextView>(R.id.ac4_remove).setOnClickListener{
             val directorio = File("${getExternalFilesDir(null)}/PacImagenes/").listFiles()
 
             if(Gallery.getSelectedImages().isNotEmpty())
@@ -48,14 +48,14 @@ class MainActivity4 : AppCompatActivity() {
                     }
                 }
             Gallery.getSelectedImages().clear()
-            findViewById<RecyclerView>(R.id.galeria).adapter?.notifyDataSetChanged()
+            findViewById<RecyclerView>(R.id.ac4_recyclerView).adapter?.notifyDataSetChanged()
             Gallery.countSelectedPhotos(this)
         }
     }
 
     private fun loadGallery()
     {
-        val recyclerView = findViewById<RecyclerView>(R.id.galeria)
+        val recyclerView = findViewById<RecyclerView>(R.id.ac4_recyclerView)
         var land = false
         // LayoutManager depends on device orientation
         if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT)

@@ -38,8 +38,8 @@ class GalleryAdapter(private val map: Map<String, Bitmap>, private val activity 
 
     // Holds the views for adding it to image and text
     class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
-        val photo: ImageButton = itemView.findViewById(R.id.photo)
-        val checkBox : CheckBox = itemView.findViewById(R.id.checkBox)
+        val photo: ImageButton = itemView.findViewById(R.id.icv_imageBtn_imagen)
+        val checkBox : CheckBox = itemView.findViewById(R.id.icv_checkbox)
     }
 
     private fun onClick(holder : ViewHolder, name: String){

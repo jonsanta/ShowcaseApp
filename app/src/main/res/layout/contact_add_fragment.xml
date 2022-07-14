@@ -5,12 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/btn_volver"
+    <ImageButton
+        android:id="@+id/caf_btn_volver"
         android:layout_width="48dp"
         android:layout_height="49dp"
         android:background="?attr/homeAsUpIndicator"
-        android:contentDescription="@string/empty"
+        android:contentDescription="@string/caf_btn_volver"
         app:backgroundTint="@null"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -18,59 +18,62 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.00999999"
-        tools:ignore="SpeakableTextPresentCheck"
-        tools:text="@string/empty" />
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <EditText
-        android:id="@+id/cName"
+        android:id="@+id/caf_name"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:background="@null"
-        android:hint="Write name.."
+        android:hint="@string/caf_editText_name_hint"
+        android:importantForAutofill="no"
         android:inputType="text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.25"
-        tools:ignore="TouchTargetSizeCheck" />
+        tools:ignore="TouchTargetSizeCheck,TextContrastCheck" />
 
     <EditText
-        android:id="@+id/cNumber"
+        android:id="@+id/caf_tel"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:background="@null"
-        android:hint="Write telephone number.."
+        android:hint="@string/caf_editText_tel_hint"
+        android:importantForAutofill="no"
         android:inputType="number"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cName"
+        app:layout_constraintTop_toBottomOf="@+id/caf_name"
         app:layout_constraintVertical_bias="0.050000012"
-        tools:ignore="TouchTargetSizeCheck" />
+        tools:ignore="TouchTargetSizeCheck,TextContrastCheck" />
 
     <EditText
-        android:id="@+id/cDesc"
+        android:id="@+id/caf_info"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:background="@null"
-        android:hint="Write description.."
+        android:hint="@string/caf_editText_info_hint"
+        android:importantForAutofill="no"
         android:inputType="textNoSuggestions"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cNumber"
+        app:layout_constraintTop_toBottomOf="@+id/caf_tel"
         app:layout_constraintVertical_bias="0.050000012"
-        tools:ignore="TouchTargetSizeCheck" />
+        tools:ignore="TouchTargetSizeCheck,TextContrastCheck" />
 
     <Button
-        android:id="@+id/add"
+        android:id="@+id/caf_btn_add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button"
+        android:text="@string/caf_btn_add"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cDesc" />
+        app:layout_constraintTop_toBottomOf="@+id/caf_info"
+        tools:ignore="TextContrastCheck" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

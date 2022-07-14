@@ -16,10 +16,10 @@ class MainActivity2 : AppCompatActivity() {
         val admin = AdminSQLiteOpenHelper(this, "Contacts", null, 1)
         val db : SQLiteDatabase = admin.writableDatabase
 
-        supportFragmentManager.beginTransaction().add(R.id.fragment, ContactListFragment(db, this)).commit()
+        supportFragmentManager.beginTransaction().add(R.id.ac2_fragment, ContactListFragment(db, this)).commit()
 
         //Close connections and Activity
-        findViewById<Button>(R.id.btn_volver).setOnClickListener {
+        findViewById<ImageButton>(R.id.caf_btn_volver).setOnClickListener {
             db.close()
             admin.close()
             finish()

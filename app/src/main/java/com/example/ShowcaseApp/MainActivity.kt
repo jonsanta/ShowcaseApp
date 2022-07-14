@@ -41,14 +41,14 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-        findViewById<ImageButton>(R.id.btn_start).setOnClickListener {
+        findViewById<ImageButton>(R.id.acm_imagebtn_play).setOnClickListener {
             if(!mp.isPlaying){ //Si se pulsa el botón start y no se está reproduciendo
                 mp.seekTo(position)//Se empezará a reproducir desde la posición pasada por parámetro
                 mp.start()//Inicia la reproducción
             }
         }
 
-        findViewById<ImageButton>(R.id.btn_pause).setOnClickListener {
+        findViewById<ImageButton>(R.id.acm_imagebtn_pause).setOnClickListener {
             if(mp.isPlaying) //Si se pulsa el botón pause y se está reproduciendo
             {
                 position = mp.currentPosition//Guardamos la posición actual de la canción
@@ -61,20 +61,20 @@ class MainActivity : AppCompatActivity() {
         }
 
         //Abre el Activity 2 - Contactos
-        findViewById<Button>(R.id.btn_bd).setOnClickListener {
+        findViewById<Button>(R.id.acm_btn_bd).setOnClickListener {
             val intent = Intent(this,MainActivity2::class.java)
             startActivity(intent)
         }
 
         //Abre el Activity 3 - Camara
-        findViewById<Button>(R.id.btn_camara).setOnClickListener {
+        findViewById<Button>(R.id.acm_btn_camara).setOnClickListener {
             Toast.makeText(this, "Accediendo a la Camara", Toast.LENGTH_SHORT).show()
             val intent = Intent(this,MainActivity3::class.java)
             startActivity(intent)
         }
 
         //Abre el Activity 4 - Galería
-        findViewById<Button>(R.id.btn_galeria).setOnClickListener {
+        findViewById<Button>(R.id.acm_btn_galeria).setOnClickListener {
             val intent = Intent(this,MainActivity4::class.java)
             startActivity(intent)
         }

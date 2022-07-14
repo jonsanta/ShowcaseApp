@@ -25,7 +25,7 @@ class ContactsAdapter(private val ids : List<String>, private val names : List<S
             ContactListFragment.setConstraint(holder.itemView.parent.layoutDirection, 1, activity)
             val transaction = activity.supportFragmentManager.beginTransaction()
 
-            transaction.replace(R.id.fragment, ContactInfoFragment(ids[position].toInt(), db, activity))
+            transaction.replace(R.id.ac2_fragment, ContactInfoFragment(ids[position].toInt(), db, activity))
             transaction.addToBackStack(null)
             transaction.commit()
         }
@@ -38,8 +38,8 @@ class ContactsAdapter(private val ids : List<String>, private val names : List<S
 
     // Holds the views for adding it to image and text
     class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
-        val name : TextView = itemView.findViewById(R.id.name)
-        val tel : TextView = itemView.findViewById(R.id.tel)
-        val info : TextView = itemView.findViewById(R.id.info)
+        val name : TextView = itemView.findViewById(R.id.ccv_name)
+        val tel : TextView = itemView.findViewById(R.id.ccv_tel)
+        val info : TextView = itemView.findViewById(R.id.ccv_info)
     }
 }

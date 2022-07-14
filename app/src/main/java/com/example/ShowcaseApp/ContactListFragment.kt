@@ -22,18 +22,18 @@ class ContactListFragment(private val db : SQLiteDatabase, private val activity 
     private val infos = mutableListOf<String>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        setConstraint(activity.findViewById<TextView>(R.id.a2Title).id, 0, activity)
+        setConstraint(activity.findViewById<TextView>(R.id.ac2_titulo).id, 0, activity)
         var cursor = db.rawQuery("SELECT * FROM contacts ORDER BY UPPER(name) ASC" , null)
         query(cursor)
 
         val view = inflater.inflate(R.layout.contact_list_fragment, container, false)
 
-        val recyclerView = view.findViewById<RecyclerView>(R.id.contacts)
+        val recyclerView = view.findViewById<RecyclerView>(R.id.clf_recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(view.context)
         val adapter = ContactsAdapter(ids, names, tels, infos, db, activity)
         recyclerView.adapter = adapter
 
-        view.findViewById<EditText>(R.id.search).addTextChangedListener(object : TextWatcher {
+        view.findViewById<EditText>(R.id.clf_search).addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {
             }
 
@@ -41,21 +41,21 @@ class ContactListFragment(private val db : SQLiteDatabase, private val activity 
             }
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                if(view.findViewById<EditText>(R.id.search).text.toString() == "")
+                if(view.findViewById<EditText>(R.id.clf_search).text.toString() == "")
                     cursor = db.rawQuery("SELECT * FROM contacts ORDER BY UPPER(name) ASC" , null)
                 else
-                    cursor = db.rawQuery("SELECT * FROM contacts WHERE name LIKE '" + view.findViewById<EditText>(R.id.search).text.toString().uppercase() + "%' ORDER BY UPPER(name) ASC", null)
+                    cursor = db.rawQuery("SELECT * FROM contacts WHERE name LIKE '" + view.findViewById<EditText>(R.id.clf_search).text.toString().uppercase() + "%' ORDER BY UPPER(name) ASC", null)
 
                 query(cursor)
                 adapter.notifyDataSetChanged()
             }
         })
 
-        view.findViewById<ImageButton>(R.id.addContact).setOnClickListener{
+        view.findViewById<ImageButton>(R.id.clf_btn_add).setOnClickListener{
             setConstraint(view!!.parent?.layoutDirection!!, 1, activity)
 
             val transaction = activity.supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.fragment, ContactAddFragment(db, activity))
+            transaction.replace(R.id.ac2_fragment, ContactAddFragment(db, activity))
             transaction.addToBackStack(null)
             transaction.commit()
         }
@@ -78,7 +78,7 @@ class ContactListFragment(private val db : SQLiteDatabase, private val activity 
 
     companion object {
         fun setConstraint(id : Int, mode : Int, activity : MainActivity2){
-            val fragment = activity.findViewById<FrameLayout>(R.id.fragment)
+            val fragment = activity.findViewById<FrameLayout>(R.id.ac2_fragment)
             if(mode == 0)
             {
                 (fragment.layoutParams as ConstraintLayout.LayoutParams).topToBottom = id

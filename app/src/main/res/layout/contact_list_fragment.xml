@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:id="@+id/searchLayout"
+        android:id="@+id/clf_search_layout"
         android:layout_width="350dp"
         android:layout_height="40dp"
         android:background="@android:drawable/editbox_dropdown_light_frame"
@@ -18,49 +18,54 @@
         app:layout_constraintVertical_bias="0.0">
 
         <ImageView
-            android:id="@+id/searchIcon"
+            android:id="@+id/clf_icon_search"
             android:layout_width="30dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="4dp"
             android:layout_marginRight="4dp"
-            app:srcCompat="@android:drawable/ic_menu_search" />
+            android:contentDescription="@string/clf_btn_search"
+            app:srcCompat="@android:drawable/ic_menu_search"
+            tools:ignore="ImageContrastCheck" />
 
         <EditText
-            android:id="@+id/search"
+            android:id="@+id/clf_search"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@null"
-            android:hint="Search"
+            android:hint="@string/clf_editText_search"
+            android:importantForAutofill="no"
             android:inputType="textNoSuggestions"
-            tools:ignore="TouchTargetSizeCheck" />
+            tools:ignore="TouchTargetSizeCheck,TextContrastCheck" />
 
     </LinearLayout>
 
     <ImageButton
-        android:id="@+id/addContact"
+        android:id="@+id/clf_btn_add"
         android:layout_width="89dp"
         android:layout_height="74dp"
-        android:background="#00B32D2D"
-        android:scaleType="fitCenter"
         android:adjustViewBounds="true"
+        android:background="#00B32D2D"
+        android:contentDescription="@string/clf_btn_add"
+        android:scaleType="fitCenter"
         android:translationZ="90dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.95"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchLayout"
+        app:layout_constraintTop_toBottomOf="@+id/clf_search_layout"
         app:layout_constraintVertical_bias="0.923"
-        app:srcCompat="@android:drawable/ic_menu_add" />
+        app:srcCompat="@android:drawable/ic_menu_add"
+        tools:ignore="ImageContrastCheck" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/contacts"
+        android:id="@+id/clf_recyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchLayout"
+        app:layout_constraintTop_toBottomOf="@+id/clf_search_layout"
         app:layout_constraintVertical_bias="0.594" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

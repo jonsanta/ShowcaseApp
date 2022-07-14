@@ -8,7 +8,7 @@
     tools:context=".MainActivity4">
 
     <LinearLayout
-        android:id="@+id/linearLayout4"
+        android:id="@+id/ac4_linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -21,20 +21,19 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0">
 
-        <TextView
-            android:id="@+id/discard"
+        <ImageButton
+            android:id="@+id/ac4_btn_discard"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="14dp"
-            android:paddingRight="14dp"
-            android:text="X"
-            android:textColor="#000000"
-            android:textSize="30sp"
-            android:textStyle="bold"
-            android:visibility="invisible" />
+            android:background="#00FFFFFF"
+            android:paddingStart="14dp"
+            android:paddingEnd="14dp"
+            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            android:visibility="invisible"
+            android:contentDescription="@string/ac4_btn_discard"/>
 
         <TextView
-            android:id="@+id/selectText"
+            android:id="@+id/ac4_selectText"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -44,13 +43,14 @@
             android:visibility="invisible" />
 
         <TextView
-            android:id="@+id/remove"
+            android:id="@+id/ac4_remove"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center|end"
-            android:paddingRight="14dp"
-            android:text="Borrar"
+            android:paddingStart="0dp"
+            android:paddingEnd="14dp"
+            android:text="@string/ac4_btn_borrar"
             android:textSize="23sp"
             android:textStyle="normal"
             android:visibility="invisible" />
@@ -58,22 +58,22 @@
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/galeria"
+        android:id="@+id/ac4_recyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout4"
+        app:layout_constraintTop_toBottomOf="@+id/ac4_linearLayout"
         app:layout_constraintVertical_bias="0.0" />
 
-    <Button
-        android:id="@+id/btn_volver4"
+    <ImageButton
+        android:id="@+id/ac4_btn_volver"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:background="?attr/homeAsUpIndicator"
-        android:text="@string/empty"
+        android:contentDescription="@string/ac4_btn_volver"
         app:backgroundTint="@null"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

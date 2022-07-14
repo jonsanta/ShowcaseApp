@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 
@@ -17,22 +18,22 @@ class ContactAddFragment(private val db : SQLiteDatabase, private val activity :
 
         val view = inflater.inflate(R.layout.contact_add_fragment, container, false)
 
-        view.findViewById<Button>(R.id.btn_volver).setOnClickListener{
+        view.findViewById<ImageButton>(R.id.caf_btn_volver).setOnClickListener{
             activity.supportFragmentManager.popBackStack()
         }
 
-        view.findViewById<Button>(R.id.add).setOnClickListener{
+        view.findViewById<Button>(R.id.caf_btn_add).setOnClickListener{
             val registro = ContentValues()
-            val cName = view.findViewById<EditText>(R.id.cName)
-            val cNumber = view.findViewById<EditText>(R.id.cNumber)
+            val name = view.findViewById<EditText>(R.id.caf_name)
+            val tel = view.findViewById<EditText>(R.id.caf_tel)
 
-            if(cName.text.toString() == "" || cNumber.text.toString() == "")
+            if(name.text.toString() == "" || tel.text.toString() == "")
             {
                 Toast.makeText(activity.baseContext, "Faltan campos por rellenar", Toast.LENGTH_SHORT).show()
             }else{
-                registro.put("name", cName.text.toString())
-                registro.put("number",  cNumber.text.toString().toInt())
-                registro.put("info", view.findViewById<EditText>(R.id.cDesc).text.toString())
+                registro.put("name", name.text.toString())
+                registro.put("number",  tel.text.toString().toInt())
+                registro.put("info", view.findViewById<EditText>(R.id.caf_info).text.toString())
                 db.insert("Contacts", null, registro)
 
                 registro.clear()

@@ -1,26 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/icv"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="4dp"
     android:layout_marginStart="4dp"
+    android:layout_marginTop="4dp"
     android:layout_marginEnd="4dp"
     app:cardElevation="3dp">
 
     <ImageButton
-        android:id="@+id/photo"
+        android:id="@+id/icv_imageBtn_imagen"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@null"/>
+        android:background="@null"
+        android:contentDescription="@string/icv_imageButton_image" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <CheckBox
-            android:id="@+id/checkBox"
+            android:id="@+id/icv_checkbox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"

@@ -30,9 +30,9 @@ class Gallery {
                     item.value.checkBox.isChecked = false
             }
 
-            setViewVisibility(activity.findViewById<TextView>(R.id.selectText), flag)
-            setViewVisibility(activity.findViewById<TextView>(R.id.discard), flag)
-            setViewVisibility(activity.findViewById<TextView>(R.id.remove), flag)
+            setViewVisibility(activity.findViewById<TextView>(R.id.ac4_selectText), flag)
+            setViewVisibility(activity.findViewById<TextView>(R.id.ac4_btn_discard), flag)
+            setViewVisibility(activity.findViewById<TextView>(R.id.ac4_remove), flag)
 
             countSelectedPhotos(activity)
             editMode = flag
@@ -101,7 +101,7 @@ class Gallery {
 
         // Selection Text on EditMode
         fun countSelectedPhotos(activity: MainActivity4){
-            val textview = activity.findViewById<TextView>(R.id.selectText)
+            val textview = activity.findViewById<TextView>(R.id.ac4_selectText)
             val format = activity.resources.getText(R.string.count_images).toString()
 
             textview.text = MessageFormat.format(format, selectedImages.size)

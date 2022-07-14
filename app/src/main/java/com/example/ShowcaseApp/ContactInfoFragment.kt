@@ -16,46 +16,46 @@ class ContactInfoFragment(private val cId : Int, private val db : SQLiteDatabase
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.contact_info_fragment, container, false)
-        val cName = view.findViewById<EditText>(R.id.cName)
-        val cNumber = view.findViewById<EditText>(R.id.cNumber)
-        val cDesc = view.findViewById<EditText>(R.id.cDesc)
+        val name = view.findViewById<EditText>(R.id.caf_name)
+        val tel = view.findViewById<EditText>(R.id.caf_tel)
+        val info = view.findViewById<EditText>(R.id.caf_info)
 
         val cursor = db.rawQuery("SELECT * FROM contacts WHERE id = $cId", null)
 
         while(cursor.moveToNext()) {
-            cName.setText(cursor.getString(1))
-            cNumber.setText(cursor.getString(2))
-            cDesc.setText(cursor.getString(3))
+            name.setText(cursor.getString(1))
+            tel.setText(cursor.getString(2))
+            info.setText(cursor.getString(3))
         }
         cursor.close()
 
-        view.findViewById<Button>(R.id.btn_volver).setOnClickListener{
+        view.findViewById<ImageButton>(R.id.caf_btn_volver).setOnClickListener{
             activity.supportFragmentManager.popBackStack()
         }
 
-        view.findViewById<ImageButton>(R.id.btn_edit_contact).setOnClickListener{
-            enableEditText(cName)
-            enableEditText(cNumber)
-            enableEditText(cDesc)
+        view.findViewById<ImageButton>(R.id.caf_btn_edit).setOnClickListener{
+            enableEditText(name)
+            enableEditText(tel)
+            enableEditText(info)
         }
 
 
-        view.findViewById<Button>(R.id.add).setOnClickListener{
-            if(cName.text.toString() == "" || cNumber.text.toString() == "")
+        view.findViewById<Button>(R.id.caf_btn_add).setOnClickListener{
+            if(name.text.toString() == "" || tel.text.toString() == "")
             {
                 Toast.makeText(activity.baseContext, "Faltan campos por rellenar", Toast.LENGTH_SHORT).show()
             }else {
                 val registro = ContentValues()
-                registro.put("name", cName.text.toString())//la columna nombre se rellenara con datos[0]
-                registro.put("number", cNumber.text.toString().toInt())//la columna especie se rellenara con datos[1]
-                registro.put("info", cDesc.text.toString())//la columna descripción se rellenara con datos[2]
+                registro.put("name", name.text.toString())//la columna nombre se rellenara con datos[0]
+                registro.put("number", tel.text.toString().toInt())//la columna especie se rellenara con datos[1]
+                registro.put("info", info.text.toString())//la columna descripción se rellenara con datos[2]
                 db.update("Contacts", registro, "id='$cId'", null)
                 registro.clear()
                 activity.supportFragmentManager.popBackStack()
             }
         }
 
-        view.findViewById<ImageButton>(R.id.btn_del_contact).setOnClickListener{
+        view.findViewById<ImageButton>(R.id.caf_btn_del).setOnClickListener{
             db.delete("Contacts", "id='$cId'", null)
             activity.supportFragmentManager.popBackStack()
         }

@@ -1,18 +1,51 @@
 <resources>
     <string name="app_name">ShowcaseApp</string>
-    <string name="empty"></string>
 
     <!--Strings Actividad 1 -->
-    <string name="btn_bd">Contactos</string>
-    <string name="btn_camara">Cámara</string>
-    <string name="btn_galeria">Galería</string>
+    <string name="acm_btn_bd">Contactos</string>
+    <string name="acm_btn_camara">Cámara</string>
+    <string name="acm_btn_galeria">Galería</string>
+    <string name="acm_image_logo">Logo</string>
+    <string name="acm_imagebtn_play">Boton play</string>
+    <string name="acm_imagebtn_pause">Boton pause</string>
 
     <!--Strings Actividad 2 -->
-    <string name="btn_volver">Volver</string>
+    <string name="ac2_btn_volver">Volver</string>
 
     <!--Strings Actividad 3 -->
     <string name="btn_abrir_camara">Abrir</string>
 
+    <!--Strings Actividad 4 -->
+    <string name="ac4_btn_discard">Boton discard</string>
+    <string name="ac4_btn_borrar">Borrar</string>
+    <string name="ac4_btn_volver">Volver</string>
     <string name="count_images">{0,choice,0#Nada seleccionado|1#1 elemento seleccionado|1&lt;{0} elementos seleccionados}</string>
+
+    <!--Strings Contact CardView -->
+    <string name="ccv_icon">Icono de contacto</string>
+
+    <!--Strings Contact add Fragment -->
+    <string name="caf_editText_name_hint">Escribe nombre..</string>
+    <string name="caf_editText_tel_hint">Escribe telefono..</string>
+    <string name="caf_editText_info_hint">Escribe descripción..</string>
+    <string name="caf_btn_add">Boton Añadir</string>
+    <string name="caf_btn_volver">Boton volver</string>
+
+    <!--Strings Contact info Fragment -->
+    <string name="cif_editText_name_hint">Escribe nombre..</string>
+    <string name="cif_editText_tel_hint">Escribe telefono..</string>
+    <string name="cif_editText_info_hint">Escribe descripción..</string>
+    <string name="cif_btn_add">Editar</string>
+    <string name="cif_imagebtn_edit">Boton editar</string>
+    <string name="cif_imagebtn_borrar">Boton borrar</string>
+    <string name="cif_btn_volver">Boton volver</string>
+
+    <!-- Contact list Fragment -->
+    <string name="clf_btn_search">Boton buscar</string>
+    <string name="clf_editText_search">Buscar</string>
+    <string name="clf_btn_add">Boton Añadir</string>
+
+    <!-- Imagen CardView -->
+    <string name="icv_imageButton_image">Image</string>
 
 </resources>
