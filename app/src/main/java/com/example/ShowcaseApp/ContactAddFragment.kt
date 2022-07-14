@@ -23,15 +23,15 @@ class ContactAddFragment(private val db : SQLiteDatabase, private val activity :
 
         view.findViewById<Button>(R.id.add).setOnClickListener{
             val registro = ContentValues()
-            val nameView = view.findViewById<EditText>(R.id.cName)
-            val telView = view.findViewById<EditText>(R.id.cNumber)
+            val cName = view.findViewById<EditText>(R.id.cName)
+            val cNumber = view.findViewById<EditText>(R.id.cNumber)
 
-            if(nameView.text.toString() == "" || telView.text.toString() == "")
+            if(cName.text.toString() == "" || cNumber.text.toString() == "")
             {
                 Toast.makeText(activity.baseContext, "Faltan campos por rellenar", Toast.LENGTH_SHORT).show()
             }else{
-                registro.put("name", nameView.text.toString())
-                registro.put("number",  telView.text.toString().toInt())
+                registro.put("name", cName.text.toString())
+                registro.put("number",  cNumber.text.toString().toInt())
                 registro.put("info", view.findViewById<EditText>(R.id.cDesc).text.toString())
                 db.insert("Contacts", null, registro)
 

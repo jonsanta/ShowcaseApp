@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 
 class ContactInfoFragment(private val cId : Int, private val db : SQLiteDatabase, private val activity : MainActivity2) : Fragment() {
@@ -39,15 +40,19 @@ class ContactInfoFragment(private val cId : Int, private val db : SQLiteDatabase
         }
 
 
-        //NEEDS WHITE TEXT INSERTING CHECK
         view.findViewById<Button>(R.id.add).setOnClickListener{
-            val registro = ContentValues()
-            registro.put("name", cName.text.toString())//la columna nombre se rellenara con datos[0]
-            registro.put("number", cNumber.text.toString().toInt())//la columna especie se rellenara con datos[1]
-            registro.put("info", cDesc.text.toString())//la columna descripción se rellenara con datos[2]
-            db.update("Contacts", registro, "id='$cId'", null)
-            registro.clear()
-            activity.supportFragmentManager.popBackStack()
+            if(cName.text.toString() == "" || cNumber.text.toString() == "")
+            {
+                Toast.makeText(activity.baseContext, "Faltan campos por rellenar", Toast.LENGTH_SHORT).show()
+            }else {
+                val registro = ContentValues()
+                registro.put("name", cName.text.toString())//la columna nombre se rellenara con datos[0]
+                registro.put("number", cNumber.text.toString().toInt())//la columna especie se rellenara con datos[1]
+                registro.put("info", cDesc.text.toString())//la columna descripción se rellenara con datos[2]
+                db.update("Contacts", registro, "id='$cId'", null)
+                registro.clear()
+                activity.supportFragmentManager.popBackStack()
+            }
         }
 
         view.findViewById<ImageButton>(R.id.btn_del_contact).setOnClickListener{
