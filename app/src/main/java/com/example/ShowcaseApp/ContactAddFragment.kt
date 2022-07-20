@@ -22,7 +22,7 @@ class ContactAddFragment(private val db : SQLiteDatabase, private val activity :
             activity.supportFragmentManager.popBackStack()
         }
 
-        view.findViewById<Button>(R.id.caf_btn_add).setOnClickListener{
+        view.findViewById<ImageButton>(R.id.caf_btn_add).setOnClickListener{
             val registro = ContentValues()
             val name = view.findViewById<EditText>(R.id.caf_name)
             val tel = view.findViewById<EditText>(R.id.caf_tel)

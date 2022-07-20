@@ -25,11 +25,15 @@
     <string name="ccv_icon">Icono de contacto</string>
 
     <!--Strings Contact add Fragment -->
-    <string name="caf_editText_name_hint">Escribe nombre..</string>
-    <string name="caf_editText_tel_hint">Escribe telefono..</string>
-    <string name="caf_editText_info_hint">Escribe descripción..</string>
+    <string name="caf_editText_name_hint">Nombre</string>
+    <string name="caf_editText_tel_hint">Telefono</string>
+    <string name="caf_editText_info_hint">Descripción</string>
     <string name="caf_btn_add">Boton Añadir</string>
     <string name="caf_btn_volver">Boton volver</string>
+    <string name="caf_btn_image">Boton añadir imagen</string>
+    <string name="caf_name_ico_description">Icono de nombre</string>
+    <string name="caf_tel_ico_description">Icono de telefono</string>
+    <string name="caf_info_ico_description">Icono de descripción</string>
 
     <!--Strings Contact info Fragment -->
     <string name="cif_editText_name_hint">Escribe nombre..</string>
