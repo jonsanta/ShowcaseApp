@@ -2,6 +2,8 @@ package com.example.showcaseApp
 
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -20,6 +22,7 @@ class ContactListFragment(private val db : SQLiteDatabase, private val activity 
     private val names = mutableListOf<String>()
     private val tels = mutableListOf<String>()
     private val infos = mutableListOf<String>()
+    private val icons = mutableListOf<Bitmap>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         setConstraint(activity.findViewById<TextView>(R.id.ac2_titulo).id, 0, activity)
@@ -30,7 +33,7 @@ class ContactListFragment(private val db : SQLiteDatabase, private val activity 
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.clf_recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(view.context)
-        val adapter = ContactsAdapter(ids, names, tels, infos, db, activity)
+        val adapter = ContactsAdapter(ids, names, tels, infos, icons, db, activity)
         recyclerView.adapter = adapter
 
         view.findViewById<EditText>(R.id.clf_search).addTextChangedListener(object : TextWatcher {
@@ -67,11 +70,16 @@ class ContactListFragment(private val db : SQLiteDatabase, private val activity 
         names.clear()
         tels.clear()
         infos.clear()
+        icons.clear()
         while (cursor.moveToNext()) {
             ids.add(cursor.getString(0))
             names.add(cursor.getString(1))
             tels.add(cursor.getString(2))
             infos.add(cursor.getString(3))
+
+            val bitmap = BitmapFactory.decodeByteArray(cursor.getBlob(4), 0, cursor.getBlob(4).size)
+
+            icons.add(bitmap)
         }
         cursor.close()
     }

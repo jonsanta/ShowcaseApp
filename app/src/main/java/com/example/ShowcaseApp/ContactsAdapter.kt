@@ -1,14 +1,16 @@
 package com.example.showcaseApp
 
 import android.database.sqlite.SQLiteDatabase
+import android.graphics.Bitmap
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 
-class ContactsAdapter(private val ids : List<String>, private val names : List<String>, private val tels : List<String>, private val infos : List<String>, private val db : SQLiteDatabase, private val activity : MainActivity2) : RecyclerView.Adapter<ContactsAdapter.ViewHolder>() {
+class ContactsAdapter(private val ids : List<String>, private val names : List<String>, private val tels : List<String>, private val infos : List<String>, private val icons : List<Bitmap>, private val db : SQLiteDatabase, private val activity : MainActivity2) : RecyclerView.Adapter<ContactsAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.contact, parent, false)
@@ -20,6 +22,8 @@ class ContactsAdapter(private val ids : List<String>, private val names : List<S
         holder.name.text = names[position]
         holder.tel.text = tels[position]
         holder.info.text = infos[position]
+        holder.icon.setImageBitmap(icons[position])
+
 
         holder.itemView.setOnClickListener{
             ContactListFragment.setConstraint(holder.itemView.parent.layoutDirection, 1, activity)
@@ -41,5 +45,6 @@ class ContactsAdapter(private val ids : List<String>, private val names : List<S
         val name : TextView = itemView.findViewById(R.id.ccv_name)
         val tel : TextView = itemView.findViewById(R.id.ccv_tel)
         val info : TextView = itemView.findViewById(R.id.ccv_info)
+        val icon : ImageView = itemView.findViewById(R.id.ccv_icon)
     }
 }
