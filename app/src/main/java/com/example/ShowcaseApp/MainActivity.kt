@@ -25,15 +25,17 @@ class MainActivity : AppCompatActivity() {
 
         //Loads gallery images
         val directorio = File("${getExternalFilesDir(null)}/PacImagenes/").listFiles()
-        if(directorio!!.size > Gallery.getBitmaps(true).size){
-          lifecycleScope.launch{ // Generate Bitmaps
-                withContext(Dispatchers.IO){
-                    for(i in directorio){
-                        Gallery.setBitmap(i)
-                        runOnUiThread{
-                            if(Gallery.isRecyclerViewInitialized())
-                                Gallery.getRecyclerView().adapter?.notifyDataSetChanged()
+        if (directorio != null) {
+            if(directorio.size > Gallery.getBitmaps(true).size){
+                lifecycleScope.launch{ // Generate Bitmaps
+                    withContext(Dispatchers.IO){
+                        for(i in directorio){
+                            Gallery.setBitmap(i)
+                            runOnUiThread{
+                                if(Gallery.isRecyclerViewInitialized())
+                                    Gallery.getRecyclerView().adapter?.notifyDataSetChanged()
                                 //recyclerView.adapter?.notifyItemInserted(MainActivity4.getBitmaps(true).size -1)
+                            }
                         }
                     }
                 }
