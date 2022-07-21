@@ -63,16 +63,18 @@ class ContactInfoFragment(private val cId : Int, private val db : SQLiteDatabase
                 alertDialog.dismiss()
             }
 
+            val iconList = inflater.inflate(R.layout.icon_list, container, false)
+
             val bitmaps = mutableListOf<Bitmap>()
 
             for(bitmap in Gallery.getBitmaps(false).values)
-                bitmaps.add(Bitmap.createScaledBitmap(bitmap, 300, 300, true))
+                bitmaps.add(Bitmap.createScaledBitmap(bitmap, 500, 500, true))
 
-            val recyclerView = RecyclerView(alertDialog.context)
+            val recyclerView = iconList.findViewById<RecyclerView>(R.id.icons_rv)
             recyclerView.layoutManager = LinearLayoutManager(alertDialog.context)
             recyclerView.adapter = IconListAdapter(bitmaps, alertDialog, this)
 
-            alertDialog.setView(recyclerView)
+            alertDialog.setView(iconList)
 
             alertDialog.show()
         }

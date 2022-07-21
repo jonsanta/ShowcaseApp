@@ -31,7 +31,7 @@ class ContactListFragment(private val db : SQLiteDatabase, private val activity 
 
         val view = inflater.inflate(R.layout.contact_list_fragment, container, false)
 
-        val recyclerView = view.findViewById<RecyclerView>(R.id.clf_recyclerView)
+        val recyclerView = view.findViewById<RecyclerView>(R.id.icons_rv)
         recyclerView.layoutManager = LinearLayoutManager(view.context)
         val adapter = ContactsAdapter(ids, names, tels, infos, icons, db, activity)
         recyclerView.adapter = adapter
