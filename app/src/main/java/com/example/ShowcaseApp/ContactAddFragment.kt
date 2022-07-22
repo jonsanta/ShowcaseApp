@@ -4,7 +4,7 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.content.ContentValues
 import android.database.sqlite.SQLiteDatabase
-import android.graphics.Bitmap
+import android.graphics.*
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View

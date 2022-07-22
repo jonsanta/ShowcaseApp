@@ -36,15 +36,7 @@ class ContactInfoFragment(private val cId : Int, private val db : SQLiteDatabase
         val icon = view.findViewById<ImageButton>(R.id.caf_btn_add_image)
         icon.isEnabled = false
 
-        val cursor = db.rawQuery("SELECT * FROM contacts WHERE id = $cId", null)
-
-        while(cursor.moveToNext()) {
-            name.setText(cursor.getString(1))
-            tel.setText(cursor.getString(2))
-            info.setText(cursor.getString(3))
-            icon.setImageBitmap(BitmapFactory.decodeByteArray(cursor.getBlob(4), 0, cursor.getBlob(4).size))
-        }
-        cursor.close()
+        loadData(name, tel, info, icon)
 
         view.findViewById<ImageButton>(R.id.caf_btn_volver).setOnClickListener{
             if(!editMode)
@@ -115,6 +107,18 @@ class ContactInfoFragment(private val cId : Int, private val db : SQLiteDatabase
 
     }
 
+    private fun loadData(name : EditText, tel : EditText, info : EditText, icon : ImageButton){
+        val cursor = db.rawQuery("SELECT * FROM contacts WHERE id = $cId", null)
+
+        while(cursor.moveToNext()) {
+            name.setText(cursor.getString(1))
+            tel.setText(cursor.getString(2))
+            info.setText(cursor.getString(3))
+            icon.setImageBitmap(BitmapFactory.decodeByteArray(cursor.getBlob(4), 0, cursor.getBlob(4).size))
+        }
+        cursor.close()
+    }
+
     //BUG - Una vez editados los campos estos puedes ser targeteados (RESULTARA KEYBOARD VISIBLE)
     private fun enableEditText(view : EditText){
         view.isClickable = !view.isClickable
@@ -142,6 +146,7 @@ class ContactInfoFragment(private val cId : Int, private val db : SQLiteDatabase
             val imm = (context?.getSystemService(Activity.INPUT_METHOD_SERVICE)) as InputMethodManager
             imm.hideSoftInputFromWindow(view?.windowToken, 0)
             icon.isEnabled = false
+            loadData(name, tel, info, icon)
         }else{
             view?.findViewById<ImageButton>(R.id.caf_btn_edit)?.background = AppCompatResources.getDrawable(this.requireContext(), R.drawable.check)
             view?.findViewById<ImageButton>(R.id.caf_btn_volver)?.background = AppCompatResources.getDrawable(this.requireContext(), android.R.drawable.ic_menu_close_clear_cancel)

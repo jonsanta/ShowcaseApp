@@ -45,7 +45,7 @@
         android:layout_height="60dp"
         android:adjustViewBounds="true"
         android:background="@drawable/circular_shape"
-        android:backgroundTint="#D1D1D1"
+        android:backgroundTint="#00D1D1D1"
         android:contentDescription="@string/caf_btn_image"
         android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="parent"
