@@ -5,6 +5,7 @@ import android.app.Dialog
 import android.content.ContentValues
 import android.database.sqlite.SQLiteDatabase
 import android.graphics.*
+import android.graphics.Bitmap.Config.*
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -81,6 +82,17 @@ class ContactAddFragment(private val db : SQLiteDatabase, private val activity :
     }
 
     override fun onImageClick(data: Bitmap) {
-        this.activity.findViewById<ImageButton>(R.id.caf_btn_add_image).setImageBitmap(data)
+        //ROUNDED CORNER BITMAP
+        val output = Bitmap.createBitmap(data.width, data.height, ARGB_8888)
+        val canvas = Canvas(output)
+        val paint = Paint()
+        val rect = Rect(0, 0, data.width, data.height)
+        val roundPx = 360f
+        paint.setAntiAlias(true)
+        canvas.drawRoundRect(RectF(rect), roundPx, roundPx, paint)
+        paint.setXfermode(PorterDuffXfermode(PorterDuff.Mode.SRC_IN))
+        canvas.drawBitmap(data, rect, rect, paint)
+
+        this.activity.findViewById<ImageButton>(R.id.caf_btn_add_image).setImageBitmap(output)
     }
 }
