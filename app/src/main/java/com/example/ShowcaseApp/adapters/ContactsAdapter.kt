@@ -1,16 +1,19 @@
-package com.example.showcaseApp
+package com.example.showcaseApp.adapters
 
+import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
-import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.showcaseApp.R
+import com.example.showcaseApp.activities.ContactListingActivity
+import com.example.showcaseApp.fragments.ContactInfoFragment
 
-
-class ContactsAdapter(private val ids : List<String>, private val names : List<String>, private val tels : List<String>, private val infos : List<String>, private val icons : List<Bitmap>, private val db : SQLiteDatabase, private val activity : MainActivity2) : RecyclerView.Adapter<ContactsAdapter.ViewHolder>() {
+class ContactsAdapter(private val cursor : Cursor, private val db : SQLiteDatabase, private val activity : ContactListingActivity) : RecyclerView.Adapter<ContactsAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.contact, parent, false)
@@ -19,17 +22,22 @@ class ContactsAdapter(private val ids : List<String>, private val names : List<S
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.name.text = names[position]
-        holder.tel.text = tels[position]
-        holder.info.text = infos[position]
-        holder.icon.setImageBitmap(icons[position])
+        cursor.moveToPosition(position)
+        val id = cursor.getString(0)
+        val name = cursor.getString(1)
+        val tel = cursor.getString(2)
+        val info = cursor.getString(3)
+        val icon = BitmapFactory.decodeByteArray(cursor.getBlob(4), 0, cursor.getBlob(4).size)
 
+        holder.name.text = name
+        holder.tel.text = tel
+        holder.info.text = info
+        holder.icon.setImageBitmap(icon)
 
         holder.itemView.setOnClickListener{
-            ContactListFragment.setConstraint(holder.itemView.parent.layoutDirection, 1, activity)
             val transaction = activity.supportFragmentManager.beginTransaction()
-
-            transaction.replace(R.id.ac2_fragment, ContactInfoFragment(ids[position].toInt(), db, activity))
+            cursor.close()
+            transaction.replace(R.id.ac2_fragment, ContactInfoFragment(id.toInt(), db, activity))
             transaction.addToBackStack(null)
             transaction.commit()
         }
@@ -37,7 +45,7 @@ class ContactsAdapter(private val ids : List<String>, private val names : List<S
 
     // return the number of the items in the list
     override fun getItemCount(): Int {
-        return names.size
+        return cursor.count
     }
 
     // Holds the views for adding it to image and text

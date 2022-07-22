@@ -1,4 +1,4 @@
-package com.example.showcaseApp
+package com.example.showcaseApp.interfaces
 
 import android.graphics.Bitmap
 

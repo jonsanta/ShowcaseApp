@@ -1,4 +1,4 @@
-package com.example.showcaseApp
+package com.example.showcaseApp.activities
 
 import android.Manifest
 import android.content.Intent
@@ -14,6 +14,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import androidx.core.net.toUri
 import androidx.lifecycle.lifecycleScope
+import com.example.showcaseApp.classes.Gallery
+import com.example.showcaseApp.R
 import com.example.showcaseApp.databinding.ActivityMain3Binding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -23,7 +25,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class MainActivity3 : AppCompatActivity() {
+class CameraActivity : AppCompatActivity() {
     private lateinit var viewBinding: ActivityMain3Binding
     private val CAMERA_REQUEST_CODE = 123
     private lateinit var nombreUnico : String
@@ -108,7 +110,7 @@ class MainActivity3 : AppCompatActivity() {
 
                     //ADDS captured Image to the gallery bitmap lists
                     lifecycleScope.launch{
-                        withContext(Dispatchers.IO){Gallery.setBitmap(file)}
+                        withContext(Dispatchers.IO){ Gallery.setBitmap(file) }
                     }
                 }
         }

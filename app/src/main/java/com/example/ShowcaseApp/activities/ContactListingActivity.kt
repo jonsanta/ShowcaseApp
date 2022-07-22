@@ -1,12 +1,15 @@
-package com.example.showcaseApp
+package com.example.showcaseApp.activities
 
 import android.content.pm.ActivityInfo
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import com.example.showcaseApp.classes.AdminSQLiteOpenHelper
+import com.example.showcaseApp.fragments.ContactListFragment
+import com.example.showcaseApp.R
 
-class MainActivity2 : AppCompatActivity() {
+class ContactListingActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -16,13 +19,6 @@ class MainActivity2 : AppCompatActivity() {
         val admin = AdminSQLiteOpenHelper(this, "Contacts", null, 1)
         val db : SQLiteDatabase = admin.writableDatabase
 
-        supportFragmentManager.beginTransaction().add(R.id.ac2_fragment, ContactListFragment(db, this)).commit()
-
-        //Close connections and Activity
-        findViewById<ImageButton>(R.id.caf_btn_volver).setOnClickListener {
-            db.close()
-            admin.close()
-            finish()
-        }
+        supportFragmentManager.beginTransaction().add(R.id.ac2_fragment, ContactListFragment(db, admin,this)).commit()
     }
 }

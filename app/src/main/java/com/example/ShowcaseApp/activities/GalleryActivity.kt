@@ -1,4 +1,4 @@
-package com.example.showcaseApp
+package com.example.showcaseApp.activities
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -11,9 +11,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.showcaseApp.classes.Gallery
+import com.example.showcaseApp.adapters.GalleryAdapter
+import com.example.showcaseApp.R
 import java.io.File
 
-class MainActivity4 : AppCompatActivity() {
+class GalleryActivity : AppCompatActivity() {
     private val READ_REQUEST_CODE = 123
 
     override fun onCreate(savedInstanceState: Bundle?) {

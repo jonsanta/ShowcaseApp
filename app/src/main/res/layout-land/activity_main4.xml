@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/appBG"
-    tools:context=".MainActivity4">
+    tools:context=".activities.GalleryActivity">
 
     <LinearLayout
         android:id="@+id/ac4_linearLayout"

@@ -1,4 +1,4 @@
-package com.example.showcaseApp
+package com.example.showcaseApp.classes
 
 import android.content.res.Resources
 import android.graphics.Bitmap
@@ -7,6 +7,9 @@ import android.view.View
 import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import com.example.showcaseApp.R
+import com.example.showcaseApp.activities.GalleryActivity
+import com.example.showcaseApp.adapters.GalleryAdapter
 import java.io.File
 import java.io.FileInputStream
 import java.text.MessageFormat
@@ -23,7 +26,7 @@ class Gallery {
         private val selectedImages = mutableSetOf<String>() // Contains: map Keys = Image names
 
         // Enables UI for editing mode
-        fun setEditMode(flag : Boolean, activity : MainActivity4){
+        fun setEditMode(flag : Boolean, activity : GalleryActivity){
             for(item in views){
                 item.value.checkBox.isVisible = flag
                 if(!flag)
@@ -47,7 +50,7 @@ class Gallery {
         }
 
         fun setRecyclerView(recyclerView: RecyclerView){
-            this.recyclerView = recyclerView
+            Companion.recyclerView = recyclerView
         }
 
         fun getRecyclerView() : RecyclerView{
@@ -88,7 +91,7 @@ class Gallery {
         }
 
         // Add-Remove from selection list
-        fun setSelectedImages(photo: String, activity: MainActivity4){
+        fun setSelectedImages(photo: String, activity: GalleryActivity){
             if(selectedImages.contains(photo)) selectedImages.remove(photo)
             else selectedImages.add(photo)
 
@@ -100,7 +103,7 @@ class Gallery {
         }
 
         // Selection Text on EditMode
-        fun countSelectedPhotos(activity: MainActivity4){
+        fun countSelectedPhotos(activity: GalleryActivity){
             val textview = activity.findViewById<TextView>(R.id.ac4_selectText)
             val format = activity.resources.getText(R.string.count_images).toString()
 

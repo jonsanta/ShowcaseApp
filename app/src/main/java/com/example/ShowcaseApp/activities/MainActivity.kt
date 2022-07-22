@@ -1,4 +1,4 @@
-package com.example.showcaseApp
+package com.example.showcaseApp.activities
 
 import android.content.Intent
 import android.content.pm.ActivityInfo
@@ -9,6 +9,8 @@ import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.example.showcaseApp.*
+import com.example.showcaseApp.classes.Gallery
 import kotlinx.coroutines.*
 import java.io.File
 
@@ -64,20 +66,20 @@ class MainActivity : AppCompatActivity() {
 
         //Abre el Activity 2 - Contactos
         findViewById<Button>(R.id.acm_btn_bd).setOnClickListener {
-            val intent = Intent(this,MainActivity2::class.java)
+            val intent = Intent(this, ContactListingActivity::class.java)
             startActivity(intent)
         }
 
         //Abre el Activity 3 - Camara
         findViewById<Button>(R.id.acm_btn_camara).setOnClickListener {
             Toast.makeText(this, "Accediendo a la Camara", Toast.LENGTH_SHORT).show()
-            val intent = Intent(this,MainActivity3::class.java)
+            val intent = Intent(this, CameraActivity::class.java)
             startActivity(intent)
         }
 
         //Abre el Activity 4 - Galería
         findViewById<Button>(R.id.acm_btn_galeria).setOnClickListener {
-            val intent = Intent(this,MainActivity4::class.java)
+            val intent = Intent(this, GalleryActivity::class.java)
             startActivity(intent)
         }
     }

@@ -5,12 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/appBG"
-    tools:context=".MainActivity2">
+    tools:context=".activities.ContactListingActivity">
 
     <ImageButton
         android:id="@+id/caf_btn_volver"
-        android:layout_width="48dp"
-        android:layout_height="49dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:background="?attr/homeAsUpIndicator"
         android:contentDescription="@string/ac2_btn_volver"
         app:backgroundTint="@null"
@@ -38,6 +38,24 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
+
+    <ImageButton
+        android:id="@+id/caf_btn_add"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:adjustViewBounds="true"
+        android:background="@drawable/check"
+        android:backgroundTint="#000000"
+        android:contentDescription="@string/caf_btn_add"
+        android:scaleType="fitCenter"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.91"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.022"
+        tools:ignore="TextContrastCheck,TouchTargetSizeCheck" />
 
     <FrameLayout
         android:id="@+id/ac2_fragment"

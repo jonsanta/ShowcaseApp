@@ -27,17 +27,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DesarrolloMP8JonSantamariaZamora">
         <activity
-            android:name="com.example.showcaseApp.MainActivity4"
+            android:name="com.example.showcaseApp.activities.GalleryActivity"
             android:exported="false" />
         <activity
-            android:name="com.example.showcaseApp.MainActivity3"
+            android:name="com.example.showcaseApp.activities.CameraActivity"
             android:exported="false" />
         <activity
-            android:name="com.example.showcaseApp.MainActivity2"
+            android:name="com.example.showcaseApp.activities.ContactListingActivity"
             android:windowSoftInputMode="adjustNothing"
             android:exported="false" />
         <activity
-            android:name="com.example.showcaseApp.MainActivity"
+            android:name="com.example.showcaseApp.activities.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

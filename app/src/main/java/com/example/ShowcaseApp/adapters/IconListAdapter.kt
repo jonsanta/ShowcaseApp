@@ -1,4 +1,4 @@
-package com.example.showcaseApp
+package com.example.showcaseApp.adapters
 
 import android.app.AlertDialog
 import android.graphics.Bitmap
@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import androidx.core.graphics.drawable.toBitmap
 import androidx.recyclerview.widget.RecyclerView
+import com.example.showcaseApp.interfaces.OnImageClickListener
+import com.example.showcaseApp.R
 
 class IconListAdapter(private val images : List<Bitmap>, private val alertDialog: AlertDialog, private val onImageClickListener: OnImageClickListener) : RecyclerView.Adapter<IconListAdapter.ViewHolder>() {
 

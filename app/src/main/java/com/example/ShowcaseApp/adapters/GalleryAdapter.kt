@@ -1,4 +1,4 @@
-package com.example.showcaseApp
+package com.example.showcaseApp.adapters
 
 import android.graphics.Bitmap
 import android.view.LayoutInflater
@@ -8,8 +8,11 @@ import android.widget.CheckBox
 import android.widget.ImageButton
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import com.example.showcaseApp.classes.Gallery
+import com.example.showcaseApp.R
+import com.example.showcaseApp.activities.GalleryActivity
 
-class GalleryAdapter(private val map: Map<String, Bitmap>, private val activity : MainActivity4) : RecyclerView.Adapter<GalleryAdapter.ViewHolder>() {
+class GalleryAdapter(private val map: Map<String, Bitmap>, private val activity : GalleryActivity) : RecyclerView.Adapter<GalleryAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.photo, parent, false)
         return ViewHolder(view)
