@@ -1,5 +1,6 @@
 package com.example.showcaseApp.fragments
 
+import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.text.Editable
@@ -18,7 +19,6 @@ import com.example.showcaseApp.classes.AdminSQLiteOpenHelper
 
 
 class ContactListFragment(private val db : SQLiteDatabase, private val admin : AdminSQLiteOpenHelper, private val activity : ContactListingActivity) : Fragment() {
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         var cursor = db.rawQuery("SELECT * FROM contacts ORDER BY UPPER(name) ASC" , null)
 
@@ -44,7 +44,8 @@ class ContactListFragment(private val db : SQLiteDatabase, private val admin : A
                         R.id.clf_search
                     ).text.toString().uppercase() + "%' ORDER BY UPPER(name) ASC", null)
 
-                adapter.notifyDataSetChanged()
+                recyclerView.swapAdapter(ContactsAdapter(cursor, db, activity), true)
+                //adapter.notifyDataSetChanged()
             }
         })
 
