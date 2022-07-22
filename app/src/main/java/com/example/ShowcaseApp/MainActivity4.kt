@@ -37,7 +37,7 @@ class MainActivity4 : AppCompatActivity() {
         }
 
         findViewById<TextView>(R.id.ac4_remove).setOnClickListener{
-            val directorio = File("${getExternalFilesDir(null)}/PacImagenes/").listFiles()
+            val directorio = File("${getExternalFilesDir(null)}/images/").listFiles()
 
             if(Gallery.getSelectedImages().isNotEmpty())
                 for(item in Gallery.getSelectedImages()){
@@ -85,5 +85,14 @@ class MainActivity4 : AppCompatActivity() {
             loadGallery() //Permissions granted - Load Images
         else//Permissions denied
             Toast.makeText(this, "Permissions Denied", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onBackPressed(){
+        if(Gallery.isEditMode())
+        {
+            Gallery.getSelectedImages().clear()
+            Gallery.setEditMode(false, this)
+        }else
+            finish()
     }
 }

@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
         var position = 0 //variable que guardara la posicion de la reproduccion en milisegundos
 
         //Loads gallery images
-        val directorio = File("${getExternalFilesDir(null)}/PacImagenes/").listFiles()
+        val directorio = File("${getExternalFilesDir(null)}/images/").listFiles()
         if (directorio != null) {
             if(directorio.size > Gallery.getBitmaps(true).size){
                 lifecycleScope.launch{ // Generate Bitmaps

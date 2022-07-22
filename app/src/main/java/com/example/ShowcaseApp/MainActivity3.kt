@@ -56,13 +56,13 @@ class MainActivity3 : AppCompatActivity() {
         viewBinding = ActivityMain3Binding.inflate(layoutInflater) //Se utilizará para mostrar la cámara
 
         //Creamos el directorio PacImagenes dentro de la estructura de la aplicación
-        File("${getExternalFilesDir(null)}/PacImagenes/").mkdirs()
-
+        File("${getExternalFilesDir(null)}/images/").mkdirs()
         //Creamos la ruta concreta, con un nombre único y la extensión jpg
-        val file = File("${getExternalFilesDir(null)}/PacImagenes/"+getNombreUnico())
+        val file = File("${getExternalFilesDir(null)}/images/"+getNombreUnico())
 
         //Utilizando fileProvider generamos un URI correspondiente a la estructura de datos de nuestra aplicación
         val photoURI = FileProvider.getUriForFile(this, "${packageName}.fileprovider", file)
+
 
         //Creamos el Uri donde se guardaran las imágenes
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE) //Intent que lanzara la aplicación de cámara predeterminada del dispositivo
@@ -103,7 +103,7 @@ class MainActivity3 : AppCompatActivity() {
                     viewBinding.camara.setImageBitmap(bitmap) //Se muestra el bitmap por medio del viewBinding
                 }catch (e: NullPointerException)
                 {//En caso de recibir NullPointerException mostraremos la imagen que se guardo
-                    val file = File("${getExternalFilesDir(null)}/PacImagenes/"+nombreUnico)
+                    val file = File("${getExternalFilesDir(null)}/images/"+nombreUnico)
                     viewBinding.camara.setImageURI(file.toUri())
 
                     //ADDS captured Image to the gallery bitmap lists
