@@ -13,15 +13,31 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
 
 class ContactAddFragment(private val db : SQLiteDatabase, private val activity : MainActivity2) : Fragment(), OnImageClickListener {
 
+    var edited = false
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         val view = inflater.inflate(R.layout.contact_add_fragment, container, false)
+
+        val bitmaps = mutableListOf<Bitmap>()
+        lifecycleScope.launch { // Generate Bitmaps
+            withContext(Dispatchers.IO) {
+                var bitmap = BitmapFactory.decodeResource(requireContext().resources, R.drawable.male_avatar)
+                bitmaps.add(Bitmap.createScaledBitmap(bitmap, 500, 500, true))
+                bitmap = BitmapFactory.decodeResource(requireContext().resources, R.drawable.female_avatar)
+                bitmaps.add(Bitmap.createScaledBitmap(bitmap, 500, 500, true))
+            }
+        }
 
         view.findViewById<ImageButton>(R.id.caf_btn_volver).setOnClickListener{
             activity.supportFragmentManager.popBackStack()
@@ -38,8 +54,6 @@ class ContactAddFragment(private val db : SQLiteDatabase, private val activity :
             }
 
             val iconList = inflater.inflate(R.layout.icon_list, container, false)
-
-            val bitmaps = mutableListOf<Bitmap>()
 
             for(bitmap in Gallery.getBitmaps(false).values)
                 bitmaps.add(Bitmap.createScaledBitmap(bitmap, 500, 500, true))
@@ -67,8 +81,12 @@ class ContactAddFragment(private val db : SQLiteDatabase, private val activity :
                 registro.put("info", view.findViewById<EditText>(R.id.caf_info).text.toString())
 
                 val stream = ByteArrayOutputStream()
-                val bitmap = view.findViewById<ImageButton>(R.id.caf_btn_add_image).drawable.toBitmap()
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
+                if(edited){
+                    val bitmap = view.findViewById<ImageButton>(R.id.caf_btn_add_image).drawable.toBitmap()
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
+                } else
+                    roundBitmap(bitmaps[0]).compress(Bitmap.CompressFormat.PNG, 100, stream)
+
                 registro.put("icon", stream.toByteArray())
 
                 db.insert("Contacts", null, registro)
@@ -81,7 +99,7 @@ class ContactAddFragment(private val db : SQLiteDatabase, private val activity :
         return view
     }
 
-    override fun onImageClick(data: Bitmap) {
+    fun roundBitmap(data : Bitmap) : Bitmap{
         //ROUNDED CORNER BITMAP
         val output = Bitmap.createBitmap(data.width, data.height, ARGB_8888)
         val canvas = Canvas(output)
@@ -93,6 +111,11 @@ class ContactAddFragment(private val db : SQLiteDatabase, private val activity :
         paint.setXfermode(PorterDuffXfermode(PorterDuff.Mode.SRC_IN))
         canvas.drawBitmap(data, rect, rect, paint)
 
-        this.activity.findViewById<ImageButton>(R.id.caf_btn_add_image).setImageBitmap(output)
+        return output
+    }
+
+    override fun onImageClick(data: Bitmap) {
+        this.activity.findViewById<ImageButton>(R.id.caf_btn_add_image).setImageBitmap(roundBitmap(data))
+        edited = true
     }
 }

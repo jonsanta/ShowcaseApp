@@ -19,8 +19,12 @@ import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
 
 class ContactInfoFragment(private val cId : Int, private val db : SQLiteDatabase, private val activity : MainActivity2) : Fragment(), OnImageClickListener {
@@ -29,6 +33,17 @@ class ContactInfoFragment(private val cId : Int, private val db : SQLiteDatabase
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.contact_info_fragment, container, false)
+
+        val bitmaps = mutableListOf<Bitmap>()
+        lifecycleScope.launch { // Generate Bitmaps
+            withContext(Dispatchers.IO) {
+                var bitmap = BitmapFactory.decodeResource(requireContext().resources, R.drawable.male_avatar)
+                bitmaps.add(Bitmap.createScaledBitmap(bitmap, 500, 500, true))
+                bitmap = BitmapFactory.decodeResource(requireContext().resources, R.drawable.female_avatar)
+                bitmaps.add(Bitmap.createScaledBitmap(bitmap, 500, 500, true))
+            }
+        }
+
         val name = view.findViewById<EditText>(R.id.caf_name)
         val tel = view.findViewById<EditText>(R.id.caf_tel)
         val info = view.findViewById<EditText>(R.id.caf_info)
@@ -55,8 +70,6 @@ class ContactInfoFragment(private val cId : Int, private val db : SQLiteDatabase
             }
 
             val iconList = inflater.inflate(R.layout.icon_list, container, false)
-
-            val bitmaps = mutableListOf<Bitmap>()
 
             for(bitmap in Gallery.getBitmaps(false).values)
                 bitmaps.add(Bitmap.createScaledBitmap(bitmap, 500, 500, true))
