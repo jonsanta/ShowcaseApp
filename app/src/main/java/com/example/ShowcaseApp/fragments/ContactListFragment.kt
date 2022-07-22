@@ -44,8 +44,7 @@ class ContactListFragment(private val db : SQLiteDatabase, private val admin : A
                         R.id.clf_search
                     ).text.toString().uppercase() + "%' ORDER BY UPPER(name) ASC", null)
 
-                recyclerView.swapAdapter(ContactsAdapter(cursor, db, activity), true)
-                //adapter.notifyDataSetChanged()
+                adapter.setCursor(cursor)
             }
         })
 
