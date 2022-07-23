@@ -7,9 +7,9 @@ import android.database.sqlite.SQLiteDatabase
 import android.graphics.*
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.Toast
-import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,6 +25,7 @@ import java.io.ByteArrayOutputStream
 
 class Contacts {
     companion object{
+
         fun getIconList (activity: ContactListingActivity) : MutableList<Bitmap>{
             val bitmaps = mutableListOf<Bitmap>()
             activity.lifecycleScope.launch { // Generate Bitmaps
@@ -46,24 +47,54 @@ class Contacts {
             return bitmaps
         }
 
-        fun update(cId : Int, name : String, tel : String, info : String, image : ImageButton, db : SQLiteDatabase, activity : ContactListingActivity){
-            if(name == "" || tel == "")
-            {
-                Toast.makeText(activity.baseContext, "Faltan campos por rellenar", Toast.LENGTH_SHORT).show()
-            }else {
-                val registro = ContentValues()
-                registro.put("name", name)//la columna nombre se rellenara con datos[0]
-                registro.put("number", tel.toInt())//la columna especie se rellenara con datos[1]
-                registro.put("info", info)//la columna descripción se rellenara con datos[2]
+        fun select(id: Int, name : EditText, tel : EditText, info : EditText, icon : ImageButton, db : SQLiteDatabase){
+            val cursor = db.rawQuery("SELECT * FROM contacts WHERE id = $id", null)
 
-                val stream = ByteArrayOutputStream()
-                val bitmap = image.drawable.toBitmap()
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
-                registro.put("icon", stream.toByteArray())
-
-                db.update("Contacts", registro, "id='$cId'", null)
-                registro.clear()
+            while(cursor.moveToNext()) {
+                name.setText(cursor.getString(1))
+                tel.setText(cursor.getString(2))
+                info.setText(cursor.getString(3))
+                icon.setImageBitmap(BitmapFactory.decodeByteArray(cursor.getBlob(4), 0, cursor.getBlob(4).size))
             }
+            cursor.close()
+        }
+
+        fun insert(name : String, tel : String, info: String, image : Bitmap, db : SQLiteDatabase, activity: ContactListingActivity){
+            if(!checkEmpty(name, tel, activity)){
+                val registry = getContentValues(name, tel, info, image)
+                db.insert("Contacts", null, registry)
+                registry.clear()
+                activity.supportFragmentManager.popBackStack()
+            }
+        }
+
+        fun update(id : Int, name : String, tel : String, info : String, image : Bitmap, db : SQLiteDatabase, activity : ContactListingActivity){
+            if(!checkEmpty(name, tel, activity)){
+                val registry = getContentValues(name, tel, info, image)
+                db.update("Contacts", registry, "id='$id'", null)
+                registry.clear()
+            }
+        }
+
+        private fun checkEmpty(name : String, tel : String, activity: ContactListingActivity) : Boolean{
+            if(name == "" || tel == ""){
+                Toast.makeText(activity.baseContext, "Faltan campos por rellenar", Toast.LENGTH_SHORT).show()
+                return true
+            }else return false
+        }
+
+        private fun getContentValues(name : String, tel: String, info : String, image : Bitmap) : ContentValues{
+            val contentValues = ContentValues()
+            contentValues.put("name", name)
+            contentValues.put("number", tel.toInt())
+            contentValues.put("info", info)
+
+            val stream = ByteArrayOutputStream()
+            val bitmap = image
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
+            contentValues.put("icon", stream.toByteArray())
+
+            return contentValues
         }
 
         fun roundBitmap(data : Bitmap) : Bitmap{
@@ -99,5 +130,6 @@ class Contacts {
             alertDialog.setView(iconList)
             return alertDialog
         }
+
     }
 }

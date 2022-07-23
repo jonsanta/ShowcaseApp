@@ -12,6 +12,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageButton
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.graphics.drawable.toBitmap
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.example.showcaseApp.interfaces.OnImageClickListener
@@ -19,13 +20,15 @@ import com.example.showcaseApp.R
 import com.example.showcaseApp.activities.ContactListingActivity
 import com.example.showcaseApp.classes.Contacts
 
-class ContactInfoFragment(private val cId : Int, private val db : SQLiteDatabase, private val activity : ContactListingActivity) : Fragment(), OnImageClickListener {
+class ContactInfoFragment(private val contactID : Int, private val db : SQLiteDatabase, private val activity : ContactListingActivity) : Fragment(), OnImageClickListener {
 
     private var editMode = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.contact_info_fragment, container, false)
+
         activity.findViewById<ImageButton>(R.id.caf_btn_add).isVisible = true
+        activity.findViewById<ImageButton>(R.id.caf_btn_add).background = AppCompatResources.getDrawable(this.requireContext(), android.R.drawable.ic_menu_edit)
 
         val bitmaps = Contacts.getIconList(activity)
 
@@ -35,23 +38,23 @@ class ContactInfoFragment(private val cId : Int, private val db : SQLiteDatabase
         val icon = view.findViewById<ImageButton>(R.id.caf_btn_add_image)
         icon.isEnabled = false
 
-        loadData(name, tel, info, icon)
+        Contacts.select(contactID, name, tel, info, icon, db)
 
         view.findViewById<ImageButton>(R.id.caf_btn_add_image).setOnClickListener{
             Contacts.getAlertDialog(bitmaps, inflater, container, this, this).show()
         }
 
         view.findViewById<ImageButton>(R.id.caf_btn_borrar).setOnClickListener{
-            db.delete("Contacts", "id='$cId'", null)
+            db.delete("Contacts", "id='$contactID'", null)
             activity.supportFragmentManager.popBackStack()
         }
 
         activity.findViewById<ImageButton>(R.id.caf_btn_add).setOnClickListener{
             if(editMode){
-                Contacts.update(cId, name.text.toString(), tel.text.toString(), info.text.toString(), icon, db, activity)
-                check(name, tel, info, icon)
+                Contacts.update(contactID, name.text.toString(), tel.text.toString(), info.text.toString(), icon.drawable.toBitmap(), db, activity)
+                swapMode(name, tel, info, icon)
             }else{
-                check(name, tel, info, icon)
+                swapMode(name, tel, info, icon)
             }
         }
 
@@ -61,39 +64,15 @@ class ContactInfoFragment(private val cId : Int, private val db : SQLiteDatabase
                 activity.findViewById<ImageButton>(R.id.caf_btn_add).isVisible = false
             }
             else
-                check(name, tel, info, icon)
+                swapMode(name, tel, info, icon)
         }
 
         return view
-
     }
 
-    private fun loadData(name : EditText, tel : EditText, info : EditText, icon : ImageButton){
-        val cursor = db.rawQuery("SELECT * FROM contacts WHERE id = $cId", null)
-
-        while(cursor.moveToNext()) {
-            name.setText(cursor.getString(1))
-            tel.setText(cursor.getString(2))
-            info.setText(cursor.getString(3))
-            icon.setImageBitmap(BitmapFactory.decodeByteArray(cursor.getBlob(4), 0, cursor.getBlob(4).size))
-        }
-        cursor.close()
-    }
-
-    //BUG - Una vez editados los campos estos puedes ser targeteados (RESULTARA KEYBOARD VISIBLE)
-    private fun enableEditText(view : EditText){
-        view.isClickable = !view.isClickable
-        view.isCursorVisible = !view.isCursorVisible
-        view.isFocusable = !view.isFocusable
-        view.isFocusableInTouchMode = !view.isFocusableInTouchMode
-    }
-
-    private fun check(name : EditText, tel : EditText, info : EditText, icon : ImageButton)
+    private fun swapMode(name : EditText, tel : EditText, info : EditText, icon : ImageButton)
     {
-        editMode = !editMode
-        enableEditText(name)
-        enableEditText(tel)
-        enableEditText(info)
+        setEditMode(listOf(name, tel, info), icon)
 
         if(!editMode){
             activity.findViewById<ImageButton>(R.id.caf_btn_add).background = AppCompatResources.getDrawable(this.requireContext(), android.R.drawable.ic_menu_edit)
@@ -106,14 +85,26 @@ class ContactInfoFragment(private val cId : Int, private val db : SQLiteDatabase
 
             val imm = (context?.getSystemService(Activity.INPUT_METHOD_SERVICE)) as InputMethodManager
             imm.hideSoftInputFromWindow(view?.windowToken, 0)
-            icon.isEnabled = false
-            loadData(name, tel, info, icon)
+            Contacts.select(contactID, name, tel, info, icon, db)
         }else{
             activity.findViewById<ImageButton>(R.id.caf_btn_add).background = AppCompatResources.getDrawable(this.requireContext(),
                 R.drawable.check
             )
             activity.findViewById<ImageButton>(R.id.caf_btn_volver).background = AppCompatResources.getDrawable(this.requireContext(), android.R.drawable.ic_menu_close_clear_cancel)
-            icon.isEnabled = true
+        }
+    }
+
+    //BUG - Una vez editados los campos estos puedes ser targeteados (RESULTARA KEYBOARD VISIBLE)
+    private fun setEditMode(list : List<EditText>, icon : ImageButton){
+        editMode = !editMode
+        icon.isEnabled = !icon.isEnabled
+
+        for(item in list)
+        {
+            item.isClickable = !item.isClickable
+            item.isCursorVisible = !item.isCursorVisible
+            item.isFocusable = !item.isFocusable
+            item.isFocusableInTouchMode = !item.isFocusableInTouchMode
         }
     }
 
