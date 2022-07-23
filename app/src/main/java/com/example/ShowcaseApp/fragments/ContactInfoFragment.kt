@@ -1,9 +1,12 @@
 package com.example.showcaseApp.fragments
 
 import android.app.Activity
+import android.content.Intent
 import android.database.sqlite.SQLiteDatabase
 import android.graphics.*
+import android.net.Uri
 import android.os.Bundle
+import android.text.InputType
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +14,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.LinearLayout
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.view.isVisible
@@ -19,6 +23,7 @@ import com.example.showcaseApp.interfaces.OnImageClickListener
 import com.example.showcaseApp.R
 import com.example.showcaseApp.activities.ContactListingActivity
 import com.example.showcaseApp.classes.Contacts
+import java.lang.reflect.Type
 
 class ContactInfoFragment(private val contactID : Int, private val db : SQLiteDatabase, private val activity : ContactListingActivity) : Fragment(), OnImageClickListener {
 
@@ -36,9 +41,17 @@ class ContactInfoFragment(private val contactID : Int, private val db : SQLiteDa
         val tel = view.findViewById<EditText>(R.id.caf_tel)
         val info = view.findViewById<EditText>(R.id.caf_info)
         val icon = view.findViewById<ImageButton>(R.id.caf_btn_add_image)
-        icon.isEnabled = false
+        setEditMode(editMode, listOf(name, tel, info), icon)
 
         Contacts.select(contactID, name, tel, info, icon, db)
+
+        view.findViewById<LinearLayout>(R.id.caf_tel_linear).setOnClickListener{
+            if(!editMode){
+                val intent = Intent(Intent.ACTION_DIAL)
+                intent.setData(Uri.parse("tel:"+tel.text.toString()))
+                startActivity(intent)
+            }
+        }
 
         view.findViewById<ImageButton>(R.id.caf_btn_add_image).setOnClickListener{
             Contacts.getAlertDialog(bitmaps, inflater, container, this, this).show()
@@ -72,7 +85,7 @@ class ContactInfoFragment(private val contactID : Int, private val db : SQLiteDa
 
     private fun swapMode(name : EditText, tel : EditText, info : EditText, icon : ImageButton)
     {
-        setEditMode(listOf(name, tel, info), icon)
+        setEditMode(!editMode, listOf(name, tel, info), icon)
 
         if(!editMode){
             activity.findViewById<ImageButton>(R.id.caf_btn_add).background = AppCompatResources.getDrawable(this.requireContext(), android.R.drawable.ic_menu_edit)
@@ -94,17 +107,23 @@ class ContactInfoFragment(private val contactID : Int, private val db : SQLiteDa
         }
     }
 
-    //BUG - Una vez editados los campos estos puedes ser targeteados (RESULTARA KEYBOARD VISIBLE)
-    private fun setEditMode(list : List<EditText>, icon : ImageButton){
-        editMode = !editMode
-        icon.isEnabled = !icon.isEnabled
+    private fun setEditMode(flag : Boolean, list : List<EditText>, icon : ImageButton){
+        editMode = flag
+        icon.isEnabled = flag
 
-        for(item in list)
+        if(!editMode)
         {
-            item.isClickable = !item.isClickable
-            item.isCursorVisible = !item.isCursorVisible
-            item.isFocusable = !item.isFocusable
-            item.isFocusableInTouchMode = !item.isFocusableInTouchMode
+            list[0].inputType = InputType.TYPE_NULL
+            list[1].inputType = InputType.TYPE_NULL
+            list[1].setOnClickListener{
+                view?.findViewById<LinearLayout>(R.id.caf_tel_linear)?.performClick()
+            }
+            list[2].inputType = InputType.TYPE_NULL
+        }
+        else{
+            list[0].inputType = InputType.TYPE_CLASS_TEXT
+            list[1].inputType = InputType.TYPE_CLASS_PHONE
+            list[2].inputType = InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS
         }
     }
 

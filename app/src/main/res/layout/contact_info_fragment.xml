@@ -73,10 +73,6 @@
             android:layout_height="match_parent"
             android:background="@null"
             android:hint="@string/caf_editText_name_hint"
-            android:clickable="false"
-            android:cursorVisible="false"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
             android:importantForAutofill="no"
             android:inputType="text"
             tools:ignore="TouchTargetSizeCheck,TextContrastCheck" />
@@ -111,12 +107,8 @@
             android:layout_height="match_parent"
             android:background="@null"
             android:hint="@string/caf_editText_tel_hint"
-            android:clickable="false"
-            android:cursorVisible="false"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
             android:importantForAutofill="no"
-            android:inputType="number"
+            android:inputType="phone"
             tools:ignore="TouchTargetSizeCheck,TextContrastCheck" />
     </LinearLayout>
 
@@ -148,10 +140,6 @@
             android:layout_height="match_parent"
             android:background="@null"
             android:hint="@string/caf_editText_info_hint"
-            android:clickable="false"
-            android:cursorVisible="false"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
             android:importantForAutofill="no"
             android:inputType="textNoSuggestions"
             tools:ignore="TouchTargetSizeCheck,TextContrastCheck" />
