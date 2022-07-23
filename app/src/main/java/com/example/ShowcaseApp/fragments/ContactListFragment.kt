@@ -1,6 +1,7 @@
 package com.example.showcaseApp.fragments
 
 import android.database.sqlite.SQLiteDatabase
+import android.media.Image
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -8,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,12 +17,13 @@ import com.example.showcaseApp.adapters.ContactsAdapter
 import com.example.showcaseApp.R
 import com.example.showcaseApp.activities.ContactListingActivity
 import com.example.showcaseApp.classes.AdminSQLiteOpenHelper
+import com.example.showcaseApp.classes.XMLReader
 
 
 class ContactListFragment(private val db : SQLiteDatabase, private val admin : AdminSQLiteOpenHelper, private val activity : ContactListingActivity) : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         var cursor = db.rawQuery("SELECT * FROM contacts ORDER BY UPPER(name) ASC" , null)
-
+        activity.findViewById<ImageButton>(R.id.caf_btn_add).background = AppCompatResources.getDrawable(this.requireContext(), R.drawable.menu)
         val view = inflater.inflate(R.layout.contact_list_fragment, container, false)
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.icons_rv)
@@ -53,6 +56,10 @@ class ContactListFragment(private val db : SQLiteDatabase, private val admin : A
             transaction.replace(R.id.ac2_fragment, ContactAddFragment(db, activity))
             transaction.addToBackStack(null)
             transaction.commit()
+        }
+
+        activity.findViewById<ImageButton>(R.id.caf_btn_add).setOnClickListener{
+            XMLReader.export(db, activity)
         }
 
         activity.findViewById<ImageButton>(R.id.caf_btn_volver).setOnClickListener{

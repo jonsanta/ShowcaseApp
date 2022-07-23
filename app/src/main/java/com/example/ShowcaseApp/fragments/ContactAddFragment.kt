@@ -48,7 +48,6 @@ class ContactAddFragment(private val db : SQLiteDatabase, private val activity :
         }
 
         activity.findViewById<ImageButton>(R.id.caf_btn_volver).setOnClickListener{
-            activity.findViewById<ImageButton>(R.id.caf_btn_add).isVisible = false
             activity.supportFragmentManager.popBackStack()
         }
 

@@ -72,10 +72,8 @@ class ContactInfoFragment(private val contactID : Int, private val db : SQLiteDa
         }
 
         activity.findViewById<ImageButton>(R.id.caf_btn_volver).setOnClickListener{
-            if(!editMode) {
+            if(!editMode)
                 activity.supportFragmentManager.popBackStack()
-                activity.findViewById<ImageButton>(R.id.caf_btn_add).isVisible = false
-            }
             else
                 swapMode(name, tel, info, icon)
         }
