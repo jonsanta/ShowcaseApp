@@ -23,7 +23,6 @@ import com.example.showcaseApp.interfaces.OnImageClickListener
 import com.example.showcaseApp.R
 import com.example.showcaseApp.activities.ContactListingActivity
 import com.example.showcaseApp.classes.Contacts
-import java.lang.reflect.Type
 
 class ContactInfoFragment(private val contactID : Int, private val db : SQLiteDatabase, private val activity : ContactListingActivity) : Fragment(), OnImageClickListener {
 

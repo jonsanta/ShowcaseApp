@@ -14,6 +14,7 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -59,6 +60,7 @@ class ContactListFragment(private val db : SQLiteDatabase, private val admin : A
         })
 
         view.findViewById<ImageButton>(R.id.clf_btn_add).setOnClickListener{
+            activity.findViewById<LinearLayout>(R.id.ac2_dropdown).isVisible = false
             cursor.close()
             val transaction = activity.supportFragmentManager.beginTransaction()
             transaction.replace(R.id.ac2_fragment, ContactAddFragment(db, activity))
@@ -66,24 +68,29 @@ class ContactListFragment(private val db : SQLiteDatabase, private val admin : A
             transaction.commit()
         }
 
-        activity.findViewById<ImageButton>(R.id.caf_btn_add).setOnClickListener{
-
+        activity.findViewById<Button>(R.id.ac2_export).setOnClickListener{
+            activity.findViewById<LinearLayout>(R.id.ac2_dropdown).isVisible = false
             XMLReader.export(db, activity)
-/*
+        }
+
+        activity.findViewById<Button>(R.id.ac2_import).setOnClickListener{
+            activity.findViewById<LinearLayout>(R.id.ac2_dropdown).isVisible = false
             val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
             intent.addCategory(Intent.CATEGORY_OPENABLE)
             intent.setType("text/xml")
 
             resultLauncher.launch(Intent.createChooser(intent, "Select file."))
-            adapter.setCursor(cursor)
+        }
 
- */
+        activity.findViewById<ImageButton>(R.id.caf_btn_add).setOnClickListener{
+            activity.findViewById<LinearLayout>(R.id.ac2_dropdown).isVisible = !activity.findViewById<LinearLayout>(R.id.ac2_dropdown).isVisible
         }
 
         activity.findViewById<ImageButton>(R.id.caf_btn_volver).setOnClickListener{
             db.close()
             admin.close()
             cursor.close()
+            activity.findViewById<LinearLayout>(R.id.ac2_dropdown).isVisible = false
             activity.finish()
         }
 
@@ -110,6 +117,10 @@ class ContactListFragment(private val db : SQLiteDatabase, private val admin : A
                 inputStream?.close()
             }
             XMLReader.import(file, db, activity)
+
+
+            activity.finish();
+            startActivity(activity.intent);
         }
     }
 }

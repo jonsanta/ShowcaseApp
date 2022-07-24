@@ -24,7 +24,7 @@ class XMLReader {
             val list = root.childNodes
 
             switchRootElement(list, db, activity)
-
+            file.delete()
         }
 
         fun switchRootElement(list : NodeList, db: SQLiteDatabase, activity: ContactListingActivity){

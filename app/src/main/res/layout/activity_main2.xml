@@ -67,4 +67,31 @@
         app:layout_constraintTop_toBottomOf="@+id/ac2_titulo">
 
     </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/ac2_dropdown"
+        android:layout_width="130dp"
+        android:layout_height="138dp"
+        android:orientation="vertical"
+        android:visibility="invisible"
+        android:translationZ="90dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.89"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/caf_btn_add"
+        app:layout_constraintVertical_bias="0.0">
+
+        <Button
+            android:id="@+id/ac2_import"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Import" />
+
+        <Button
+            android:id="@+id/ac2_export"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Export" />
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
