@@ -10,6 +10,8 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.Toast
+import androidx.core.graphics.drawable.toBitmap
+import androidx.core.graphics.drawable.toDrawable
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -69,6 +71,12 @@ class Contacts {
             }
         }
 
+        fun import(list : List<String>, db: SQLiteDatabase, activity: ContactListingActivity){
+            val registry = getContentValues(list[0], list[1], list[2], null)
+            db.insert("Contacts", null, registry)
+            registry.clear()
+        }
+
         fun update(id : Int, name : String, tel : String, info : String, image : Bitmap, db : SQLiteDatabase, activity : ContactListingActivity){
             if(!checkEmpty(name, tel, activity)){
                 val registry = getContentValues(name, tel, info, image)
@@ -84,7 +92,7 @@ class Contacts {
             }else return false
         }
 
-        private fun getContentValues(name : String, tel: String, info : String, image : Bitmap) : ContentValues{
+        private fun getContentValues(name : String, tel: String, info : String, image : Bitmap?) : ContentValues{
             val contentValues = ContentValues()
             contentValues.put("name", name)
             contentValues.put("number", tel.toInt())
@@ -92,7 +100,7 @@ class Contacts {
 
             val stream = ByteArrayOutputStream()
             val bitmap = image
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
+            bitmap?.compress(Bitmap.CompressFormat.PNG, 100, stream)
             contentValues.put("icon", stream.toByteArray())
 
             return contentValues

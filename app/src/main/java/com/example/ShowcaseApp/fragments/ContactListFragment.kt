@@ -1,7 +1,10 @@
 package com.example.showcaseApp.fragments
 
+import android.app.Activity
+import android.content.Intent
 import android.database.sqlite.SQLiteDatabase
-import android.media.Image
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -9,18 +12,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.showcaseApp.adapters.ContactsAdapter
 import com.example.showcaseApp.R
 import com.example.showcaseApp.activities.ContactListingActivity
+import com.example.showcaseApp.adapters.ContactsAdapter
 import com.example.showcaseApp.classes.AdminSQLiteOpenHelper
 import com.example.showcaseApp.classes.XMLReader
+import java.io.File
+import java.io.InputStream
+import java.nio.file.StandardCopyOption
 
 
 class ContactListFragment(private val db : SQLiteDatabase, private val admin : AdminSQLiteOpenHelper, private val activity : ContactListingActivity) : Fragment() {
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         var cursor = db.rawQuery("SELECT * FROM contacts ORDER BY UPPER(name) ASC" , null)
         activity.findViewById<ImageButton>(R.id.caf_btn_add).background = AppCompatResources.getDrawable(this.requireContext(), R.drawable.menu)
@@ -59,7 +67,17 @@ class ContactListFragment(private val db : SQLiteDatabase, private val admin : A
         }
 
         activity.findViewById<ImageButton>(R.id.caf_btn_add).setOnClickListener{
+
             XMLReader.export(db, activity)
+/*
+            val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
+            intent.addCategory(Intent.CATEGORY_OPENABLE)
+            intent.setType("text/xml")
+
+            resultLauncher.launch(Intent.createChooser(intent, "Select file."))
+            adapter.setCursor(cursor)
+
+ */
         }
 
         activity.findViewById<ImageButton>(R.id.caf_btn_volver).setOnClickListener{
@@ -70,5 +88,28 @@ class ContactListFragment(private val db : SQLiteDatabase, private val admin : A
         }
 
         return view
+    }
+
+    val resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val data: Intent? = result.data
+            val uri: Uri? = data?.data
+            val file = File("${activity.getExternalFilesDir(null)}/xml/import.xml")
+
+            if(uri != null)
+            {
+                val inputStream : InputStream? = activity.contentResolver.openInputStream(uri)
+
+                file.createNewFile()
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    java.nio.file.Files.copy(
+                        inputStream,
+                        file.toPath(),
+                        StandardCopyOption.REPLACE_EXISTING)
+                }
+                inputStream?.close()
+            }
+            XMLReader.import(file, db, activity)
+        }
     }
 }

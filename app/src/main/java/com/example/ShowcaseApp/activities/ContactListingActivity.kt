@@ -3,7 +3,6 @@ package com.example.showcaseApp.activities
 import android.content.pm.ActivityInfo
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
-import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.showcaseApp.classes.AdminSQLiteOpenHelper
 import com.example.showcaseApp.fragments.ContactListFragment

@@ -2,6 +2,9 @@ package com.example.showcaseApp.classes
 
 import android.database.sqlite.SQLiteDatabase
 import com.example.showcaseApp.activities.ContactListingActivity
+import org.w3c.dom.Element
+import org.w3c.dom.Node
+import org.w3c.dom.NodeList
 import java.io.File
 import javax.xml.parsers.DocumentBuilderFactory
 import javax.xml.transform.TransformerFactory
@@ -12,8 +15,44 @@ import javax.xml.transform.stream.StreamResult
 class XMLReader {
     companion object{
 
-        fun import(){
+        fun import(file : File, db: SQLiteDatabase, activity: ContactListingActivity){
+            val factory = DocumentBuilderFactory.newInstance()
+            val builder = factory.newDocumentBuilder()
+            val document = builder.parse(file)
 
+            val root = document.getElementsByTagName("contacts").item(0)
+            val list = root.childNodes
+
+            switchRootElement(list, db, activity)
+
+        }
+
+        fun switchRootElement(list : NodeList, db: SQLiteDatabase, activity: ContactListingActivity){
+            list.forEach {
+                if(it.nodeType == Node.ELEMENT_NODE){
+                    val element = it as Element
+                    if(element.nodeName == "contact"){
+                        val listaa = switchElement(element.childNodes)
+                        System.out.println("---------"+listaa[0]+" "+listaa[1]+" "+listaa[2])
+                        Contacts.import(listaa, db, activity)
+                    }
+                }
+            }
+        }
+
+        fun switchElement(list : NodeList) : List<String>{
+            val data = mutableListOf<String>()
+            list.forEach {
+                data.add((it as Element).textContent)
+            }
+            return data
+        }
+
+        fun NodeList.forEach(action: (Node) -> Unit) {
+            (0 until this.length)
+                .asSequence()
+                .map { this.item(it) }
+                .forEach { action(it) }
         }
 
         fun export(db : SQLiteDatabase, activity : ContactListingActivity){
@@ -27,11 +66,11 @@ class XMLReader {
             document.xmlVersion = "1.0"
             document.xmlStandalone = true
 
-            val contactos = document.createElement("contactos")
+            val contactos = document.createElement("contacts")
             document.appendChild(contactos)
 
             while(cursor.moveToNext()) {
-                val contacto = document.createElement("contacto")
+                val contacto = document.createElement("contact")
                 contactos.appendChild(contacto)
 
                 val name = document.createElement("name")
