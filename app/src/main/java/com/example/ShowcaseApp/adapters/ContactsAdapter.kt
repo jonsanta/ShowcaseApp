@@ -29,7 +29,7 @@ class ContactsAdapter(private var cursor : Cursor, private val db : SQLiteDataba
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         cursor.moveToPosition(position)
         val id = cursor.getString(0)
-        val name = cursor.getString(1)
+        val name = cursor.getString(1).substring(0, 1).uppercase() + cursor.getString(1).substring(1)
         val tel = cursor.getString(2)
         val info = cursor.getString(3)
         val icon = BitmapFactory.decodeByteArray(cursor.getBlob(4), 0, cursor.getBlob(4).size)

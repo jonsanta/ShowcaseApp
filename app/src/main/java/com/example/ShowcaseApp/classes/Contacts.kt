@@ -51,7 +51,8 @@ class Contacts {
             val cursor = db.rawQuery("SELECT * FROM contacts WHERE id = $id", null)
 
             while(cursor.moveToNext()) {
-                name.setText(cursor.getString(1))
+                val capitalizedName = cursor.getString(1).substring(0, 1).uppercase() + cursor.getString(1).substring(1)
+                name.setText(capitalizedName)
                 tel.setText(cursor.getString(2))
                 info.setText(cursor.getString(3))
                 icon.setImageBitmap(BitmapFactory.decodeByteArray(cursor.getBlob(4), 0, cursor.getBlob(4).size))
