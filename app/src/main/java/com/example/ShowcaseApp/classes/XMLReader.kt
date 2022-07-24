@@ -1,7 +1,14 @@
 package com.example.showcaseApp.classes
 
 import android.database.sqlite.SQLiteDatabase
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import androidx.lifecycle.lifecycleScope
+import com.example.showcaseApp.R
 import com.example.showcaseApp.activities.ContactListingActivity
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.w3c.dom.Element
 import org.w3c.dom.Node
 import org.w3c.dom.NodeList
@@ -23,18 +30,22 @@ class XMLReader {
             val root = document.getElementsByTagName("contacts").item(0)
             val list = root.childNodes
 
-            switchRootElement(list, db, activity)
+            val bitmap = BitmapFactory.decodeResource(
+                activity.baseContext.resources,
+                R.drawable.male_avatar
+            )
+            val bp = Bitmap.createScaledBitmap(bitmap, 500, 500, true)
+
+            switchRootElement(list, bp, db)
             file.delete()
         }
 
-        fun switchRootElement(list : NodeList, db: SQLiteDatabase, activity: ContactListingActivity){
+        fun switchRootElement(list : NodeList, bp : Bitmap, db: SQLiteDatabase){
             list.forEach {
                 if(it.nodeType == Node.ELEMENT_NODE){
                     val element = it as Element
                     if(element.nodeName == "contact"){
-                        val listaa = switchElement(element.childNodes)
-                        System.out.println("---------"+listaa[0]+" "+listaa[1]+" "+listaa[2])
-                        Contacts.import(listaa, db, activity)
+                        Contacts.import(switchElement(element.childNodes), bp, db)
                     }
                 }
             }

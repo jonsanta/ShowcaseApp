@@ -71,8 +71,8 @@ class Contacts {
             }
         }
 
-        fun import(list : List<String>, db: SQLiteDatabase, activity: ContactListingActivity){
-            val registry = getContentValues(list[0], list[1], list[2], null)
+        fun import(list : List<String>, bitmap : Bitmap, db: SQLiteDatabase){
+            val registry = getContentValues(list[0], list[1], list[2], roundBitmap(bitmap))
             db.insert("Contacts", null, registry)
             registry.clear()
         }
