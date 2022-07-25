@@ -21,20 +21,22 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0">
 
+        <Space
+            android:layout_width="15dp"
+            android:layout_height="wrap_content" />
+
         <ImageButton
             android:id="@+id/ac4_btn_discard"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="#00FFFFFF"
-            android:paddingStart="14dp"
-            android:paddingEnd="14dp"
-            android:src="@android:drawable/ic_menu_close_clear_cancel"
-            android:visibility="invisible"
-            android:contentDescription="@string/ac4_btn_discard"/>
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:background="@drawable/arrow"
+            android:contentDescription="@string/ac4_btn_discard"
+            android:scaleType="fitCenter"
+            tools:ignore="TouchTargetSizeCheck" />
 
         <TextView
             android:id="@+id/ac4_selectText"
-            android:layout_width="wrap_content"
+            android:layout_width="600dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center|start"
@@ -42,17 +44,16 @@
             android:textSize="23sp"
             android:visibility="invisible" />
 
-        <TextView
+        <ImageButton
             android:id="@+id/ac4_remove"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:layout_weight="1"
+            android:background="@android:drawable/ic_menu_delete"
+            android:contentDescription="@string/ac4_btn_borrar"
             android:gravity="center|end"
-            android:paddingStart="0dp"
-            android:paddingEnd="14dp"
-            android:text="@string/ac4_btn_borrar"
-            android:textSize="23sp"
-            android:textStyle="normal"
+            android:scaleType="fitCenter"
+            android:layout_marginEnd="15dp"
             android:visibility="invisible" />
 
     </LinearLayout>
@@ -67,20 +68,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ac4_linearLayout"
         app:layout_constraintVertical_bias="0.0" />
-
-    <ImageButton
-        android:id="@+id/ac4_btn_volver"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:background="?attr/homeAsUpIndicator"
-        android:contentDescription="@string/ac4_btn_volver"
-        app:backgroundTint="@null"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.02"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.110000014"
-        tools:ignore="SpeakableTextPresentCheck" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

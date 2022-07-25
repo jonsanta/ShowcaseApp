@@ -8,8 +8,8 @@
 
     <ImageButton
         android:id="@+id/caf_btn_borrar"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
         android:background="@android:drawable/ic_menu_delete"
         android:backgroundTint="#000000"
         android:contentDescription="@string/cif_imagebtn_borrar"

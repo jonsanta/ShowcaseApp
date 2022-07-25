@@ -4,7 +4,9 @@ import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.view.View
+import android.widget.ImageButton
 import android.widget.TextView
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.example.showcaseApp.R
@@ -34,8 +36,9 @@ class Gallery {
             }
 
             setViewVisibility(activity.findViewById<TextView>(R.id.ac4_selectText), flag)
-            setViewVisibility(activity.findViewById<TextView>(R.id.ac4_btn_discard), flag)
-            setViewVisibility(activity.findViewById<TextView>(R.id.ac4_remove), flag)
+            setViewVisibility(activity.findViewById<ImageButton>(R.id.ac4_remove), flag)
+            if(flag) activity.findViewById<ImageButton>(R.id.ac4_btn_discard).background =  AppCompatResources.getDrawable(activity.applicationContext, android.R.drawable.ic_menu_close_clear_cancel)
+            else activity.findViewById<ImageButton>(R.id.ac4_btn_discard).background = AppCompatResources.getDrawable(activity.applicationContext, R.drawable.arrow)
 
             countSelectedPhotos(activity)
             editMode = flag

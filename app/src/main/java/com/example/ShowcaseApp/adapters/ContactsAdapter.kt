@@ -7,7 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.example.showcaseApp.R
 import com.example.showcaseApp.activities.ContactListingActivity
@@ -45,6 +47,7 @@ class ContactsAdapter(private var cursor : Cursor, private val db : SQLiteDataba
             transaction.replace(R.id.ac2_fragment, ContactInfoFragment(id.toInt(), db, activity))
             transaction.addToBackStack(null)
             transaction.commit()
+            activity.findViewById<LinearLayout>(R.id.ac2_dropdown).isVisible = false
         }
     }
 

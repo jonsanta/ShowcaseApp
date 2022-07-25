@@ -5,7 +5,6 @@ import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.os.Bundle
 import android.widget.ImageButton
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
@@ -27,19 +26,19 @@ class GalleryActivity : AppCompatActivity() {
         else//Ask for READING Permissions
             requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), READ_REQUEST_CODE)
 
-        findViewById<ImageButton>(R.id.ac4_btn_volver).setOnClickListener{
-            Gallery.clearViews()
-            Gallery.getSelectedImages().clear()
-            Gallery.setEditMode(false, this)
-            finish()
-        }
-
         findViewById<ImageButton>(R.id.ac4_btn_discard).setOnClickListener{
-            Gallery.getSelectedImages().clear()
-            Gallery.setEditMode(false, this)
+            if(Gallery.isEditMode()) {
+                Gallery.getSelectedImages().clear()
+                Gallery.setEditMode(false, this)
+            }else{
+                Gallery.clearViews()
+                Gallery.getSelectedImages().clear()
+                Gallery.setEditMode(false, this)
+                finish()
+            }
         }
 
-        findViewById<TextView>(R.id.ac4_remove).setOnClickListener{
+        findViewById<ImageButton>(R.id.ac4_remove).setOnClickListener{
             val directorio = File("${getExternalFilesDir(null)}/images/").listFiles()
 
             if(Gallery.getSelectedImages().isNotEmpty())
