@@ -45,6 +45,7 @@ class ContactInfoFragment(private val contactID : Int, private val db : SQLiteDa
 
         Contacts.select(contactID, name, tel, info, icon, db)
 
+        //BUG - Button needs 2 taps for action
         view.findViewById<LinearLayout>(R.id.caf_tel_linear).setOnClickListener{
             if(!editMode){
                 val intent = Intent(Intent.ACTION_DIAL)
@@ -87,12 +88,7 @@ class ContactInfoFragment(private val contactID : Int, private val db : SQLiteDa
 
         if(!editMode){
             cafBtnAdd.background = AppCompatResources.getDrawable(this.requireContext(), android.R.drawable.ic_menu_edit)
-
-            val themedValue = TypedValue()
-            activity.theme.resolveAttribute(com.google.android.material.R.attr.actionModeCloseDrawable, themedValue, true)
-            val drawable = AppCompatResources.getDrawable(this.requireContext(), themedValue.resourceId)
-
-            cafBtnVolver.background = drawable
+            cafBtnVolver.background = AppCompatResources.getDrawable(this.requireContext(), R.drawable.arrow)
 
             val imm = (context?.getSystemService(Activity.INPUT_METHOD_SERVICE)) as InputMethodManager
             imm.hideSoftInputFromWindow(view?.windowToken, 0)

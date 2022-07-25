@@ -11,7 +11,7 @@
         android:id="@+id/caf_btn_volver"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:background="?attr/homeAsUpIndicator"
+        android:background="@drawable/arrow"
         android:contentDescription="@string/ac2_btn_volver"
         app:backgroundTint="@null"
         app:layout_constraintBottom_toBottomOf="parent"

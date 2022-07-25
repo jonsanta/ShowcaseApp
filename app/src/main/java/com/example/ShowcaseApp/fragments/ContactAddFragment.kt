@@ -30,6 +30,8 @@ class ContactAddFragment(private val db : SQLiteDatabase, private val activity :
         cafBtnAdd.background = AppCompatResources.getDrawable(this.requireContext(),
             R.drawable.check)
 
+        cafBtnVolver.background = AppCompatResources.getDrawable(this.requireContext(), android.R.drawable.ic_menu_close_clear_cancel)
+
 
         val bitmaps = Contacts.getIconList(activity)
 
