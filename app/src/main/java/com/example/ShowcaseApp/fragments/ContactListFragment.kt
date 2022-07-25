@@ -8,7 +8,6 @@ import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -104,7 +103,7 @@ class ContactListFragment(private val db : SQLiteDatabase, private val admin : A
         if (result.resultCode == Activity.RESULT_OK) {
             val data: Intent? = result.data
             val uri: Uri? = data?.data
-            val file = File("${activity.getExternalFilesDir(null)}/xml/import.xml")
+            val file = File("${activity.getExternalFilesDir(null)}/xml/temp.xml")
 
             if(uri != null)
             {

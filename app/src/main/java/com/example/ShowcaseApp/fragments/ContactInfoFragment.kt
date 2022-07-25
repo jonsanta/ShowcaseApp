@@ -7,7 +7,6 @@ import android.graphics.*
 import android.net.Uri
 import android.os.Bundle
 import android.text.InputType
-import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -113,11 +112,22 @@ class ContactInfoFragment(private val contactID : Int, private val db : SQLiteDa
                 view?.findViewById<LinearLayout>(R.id.caf_tel_linear)?.performClick()
             }
             list[2].inputType = InputType.TYPE_NULL
+            setEditText(list, false)
         }
         else{
             list[0].inputType = InputType.TYPE_CLASS_TEXT
             list[1].inputType = InputType.TYPE_CLASS_PHONE
             list[2].inputType = InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS
+            setEditText(list, true)
+        }
+    }
+
+    private fun setEditText(list : List<EditText>, flag : Boolean)
+    {
+        for(item in list){
+            item.isFocusable = flag
+            item.isFocusableInTouchMode = flag
+            item.isClickable = flag
         }
     }
 
