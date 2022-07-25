@@ -32,7 +32,7 @@ class ContactInfoFragment(private val contactID : Int, private val db : SQLiteDa
         val cafBtnAdd: ImageButton = activity.findViewById(R.id.caf_btn_add)
         val cafBtnVolver : ImageButton = activity.findViewById(R.id.caf_btn_volver)
 
-        cafBtnAdd.background = AppCompatResources.getDrawable(this.requireContext(), android.R.drawable.ic_menu_edit)
+        cafBtnAdd.background = AppCompatResources.getDrawable(this.requireContext(), R.drawable.edit)
 
         val bitmaps = Contacts.getIconList(activity)
 
@@ -85,7 +85,7 @@ class ContactInfoFragment(private val contactID : Int, private val db : SQLiteDa
         setEditMode(!editMode, listOf(name, tel, info), icon)
 
         if(!editMode){
-            cafBtnAdd.background = AppCompatResources.getDrawable(this.requireContext(), android.R.drawable.ic_menu_edit)
+            cafBtnAdd.background = AppCompatResources.getDrawable(this.requireContext(), R.drawable.edit)
             cafBtnVolver.background = AppCompatResources.getDrawable(this.requireContext(), R.drawable.arrow)
 
             val imm = (context?.getSystemService(Activity.INPUT_METHOD_SERVICE)) as InputMethodManager
@@ -93,7 +93,7 @@ class ContactInfoFragment(private val contactID : Int, private val db : SQLiteDa
             Contacts.select(contactID, name, tel, info, icon, db)
         }else{
             cafBtnAdd.background = AppCompatResources.getDrawable(this.requireContext(), R.drawable.check)
-            cafBtnVolver.background = AppCompatResources.getDrawable(this.requireContext(), android.R.drawable.ic_menu_close_clear_cancel)
+            cafBtnVolver.background = AppCompatResources.getDrawable(this.requireContext(), R.drawable.cancelar)
         }
     }
 

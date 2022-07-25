@@ -70,12 +70,12 @@ class ContactListFragment(private val db : SQLiteDatabase, private val admin : A
             transaction.commit()
         }
 
-        activity.findViewById<Button>(R.id.ac2_export).setOnClickListener{
+        activity.findViewById<TextView>(R.id.ac2_export).setOnClickListener{
             activity.findViewById<LinearLayout>(R.id.ac2_dropdown).isVisible = false
             XMLReader.export(db, activity)
         }
 
-        activity.findViewById<Button>(R.id.ac2_import).setOnClickListener{
+        activity.findViewById<TextView>(R.id.ac2_import).setOnClickListener{
             activity.findViewById<LinearLayout>(R.id.ac2_dropdown).isVisible = false
             val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
             intent.addCategory(Intent.CATEGORY_OPENABLE)

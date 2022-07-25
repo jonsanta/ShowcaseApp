@@ -11,6 +11,8 @@
 
     <!--Strings Actividad 2 -->
     <string name="ac2_btn_volver">Volver</string>
+    <string name="ac2_import">Importar</string>
+    <string name="ac2_export">Exportar</string>
 
     <!--Strings Actividad 3 -->
     <string name="btn_abrir_camara">Abrir</string>

@@ -7,54 +7,51 @@
     android:background="@color/appBG"
     tools:context=".activities.ContactListingActivity">
 
-    <ImageButton
-        android:id="@+id/caf_btn_volver"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:background="@drawable/arrow"
-        android:contentDescription="@string/ac2_btn_volver"
-        android:adjustViewBounds="true"
-        android:scaleType="fitCenter"
+    <LinearLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.07"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.022"
-        tools:ignore="SpeakableTextPresentCheck" />
+        app:layout_constraintVertical_bias="0.0">
 
-    <TextView
-        android:id="@+id/ac2_titulo"
-        android:layout_width="268dp"
-        android:layout_height="49dp"
-        android:gravity="center_horizontal|center_vertical"
-        android:text="@string/acm_btn_bd"
-        android:textColor="#474545"
-        android:textSize="40sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.51"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        <ImageButton
+            android:id="@+id/caf_btn_volver"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center_vertical|start"
+            android:layout_marginStart="18dp"
+            android:background="@drawable/arrow"
+            android:contentDescription="@string/ac2_btn_volver"
+            tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
-    <ImageButton
-        android:id="@+id/caf_btn_add"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:adjustViewBounds="true"
-        android:background="@drawable/menu"
-        android:backgroundTint="#000000"
-        android:contentDescription="@string/caf_btn_add"
-        android:scaleType="fitCenter"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.93"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.022"
-        tools:ignore="TextContrastCheck,TouchTargetSizeCheck" />
+        <TextView
+            android:id="@+id/ac2_titulo"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:text="@string/acm_btn_bd"
+            android:textColor="#474545"
+            android:textSize="37sp"
+            android:textStyle="bold" />
+
+        <ImageButton
+            android:id="@+id/caf_btn_add"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:background="@drawable/menu"
+            android:backgroundTint="#000000"
+            android:contentDescription="@string/caf_btn_add"
+            android:layout_gravity="center_vertical|end"
+            android:layout_marginEnd="18dp"
+            tools:ignore="TextContrastCheck,TouchTargetSizeCheck" />
+
+    </LinearLayout>
 
     <FrameLayout
         android:id="@+id/ac2_fragment"
@@ -64,34 +61,48 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ac2_titulo">
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
 
     </FrameLayout>
 
     <LinearLayout
         android:id="@+id/ac2_dropdown"
-        android:layout_width="130dp"
-        android:layout_height="138dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:visibility="invisible"
         android:translationZ="90dp"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.89"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/caf_btn_add"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintTop_toTopOf="@+id/linearLayout3"
+        app:layout_constraintVertical_bias="0.075">
 
-        <Button
+        <TextView
             android:id="@+id/ac2_import"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Import" />
+            android:background="@drawable/top_border"
+            android:gravity="center_vertical"
+            android:paddingStart="18dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="18dp"
+            android:paddingBottom="10dp"
+            android:text="@string/ac2_import"
+            android:textSize="18sp" />
 
-        <Button
+        <TextView
             android:id="@+id/ac2_export"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Export" />
+            android:background="@drawable/bottom_border"
+            android:gravity="center_vertical"
+            android:paddingStart="18dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="18dp"
+            android:paddingBottom="10dp"
+            android:text="@string/ac2_export"
+            android:textSize="18sp" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

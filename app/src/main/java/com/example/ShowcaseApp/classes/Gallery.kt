@@ -38,7 +38,7 @@ class Gallery {
             setViewVisibility(activity.findViewById<TextView>(R.id.ac4_selectText), flag)
             setViewVisibility(activity.findViewById<ImageButton>(R.id.ac4_remove), flag)
             if(flag)
-                btnDiscard.background =  AppCompatResources.getDrawable(activity.applicationContext, android.R.drawable.ic_menu_close_clear_cancel)
+                btnDiscard.background =  AppCompatResources.getDrawable(activity.applicationContext, R.drawable.cancelar)
             else
                 btnDiscard.background = AppCompatResources.getDrawable(activity.applicationContext, R.drawable.arrow)
 
