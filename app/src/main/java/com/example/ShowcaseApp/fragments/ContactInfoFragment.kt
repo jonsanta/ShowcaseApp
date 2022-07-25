@@ -44,7 +44,6 @@ class ContactInfoFragment(private val contactID : Int, private val db : SQLiteDa
 
         Contacts.select(contactID, name, tel, info, icon, db)
 
-        //BUG - Button needs 2 taps for action
         view.findViewById<LinearLayout>(R.id.caf_tel_linear).setOnClickListener{
             if(!editMode){
                 val intent = Intent(Intent.ACTION_DIAL)
@@ -93,9 +92,7 @@ class ContactInfoFragment(private val contactID : Int, private val db : SQLiteDa
             imm.hideSoftInputFromWindow(view?.windowToken, 0)
             Contacts.select(contactID, name, tel, info, icon, db)
         }else{
-            cafBtnAdd.background = AppCompatResources.getDrawable(this.requireContext(),
-                R.drawable.check
-            )
+            cafBtnAdd.background = AppCompatResources.getDrawable(this.requireContext(), R.drawable.check)
             cafBtnVolver.background = AppCompatResources.getDrawable(this.requireContext(), android.R.drawable.ic_menu_close_clear_cancel)
         }
     }
@@ -104,30 +101,20 @@ class ContactInfoFragment(private val contactID : Int, private val db : SQLiteDa
         editMode = flag
         icon.isEnabled = flag
 
-        if(!editMode)
-        {
-            list[0].inputType = InputType.TYPE_NULL
-            list[1].inputType = InputType.TYPE_NULL
-            list[1].setOnClickListener{
-                view?.findViewById<LinearLayout>(R.id.caf_tel_linear)?.performClick()
-            }
-            list[2].inputType = InputType.TYPE_NULL
-            setEditText(list, false)
-        }
-        else{
-            list[0].inputType = InputType.TYPE_CLASS_TEXT
-            list[1].inputType = InputType.TYPE_CLASS_PHONE
-            list[2].inputType = InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS
-            setEditText(list, true)
-        }
-    }
+        val types = listOf(InputType.TYPE_CLASS_TEXT, InputType.TYPE_CLASS_PHONE, InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS)
 
-    private fun setEditText(list : List<EditText>, flag : Boolean)
-    {
-        for(item in list){
-            item.isFocusable = flag
-            item.isFocusableInTouchMode = flag
-            item.isClickable = flag
+        for(i in list.indices){
+            list[i].isFocusable = flag
+            list[i].isFocusableInTouchMode = flag
+            list[i].isClickable = flag
+            if(flag)
+                list[i].inputType = types[i]
+            else {
+                list[i].inputType = InputType.TYPE_NULL
+                list[1].setOnClickListener{
+                    view?.findViewById<LinearLayout>(R.id.caf_tel_linear)?.performClick()
+                }
+            }
         }
     }
 
