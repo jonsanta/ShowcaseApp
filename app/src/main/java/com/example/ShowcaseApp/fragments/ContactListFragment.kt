@@ -77,7 +77,7 @@ class ContactListFragment(private val db : SQLiteDatabase, private val admin : A
             activity.findViewById<LinearLayout>(R.id.ac2_dropdown).isVisible = false
             val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
             intent.addCategory(Intent.CATEGORY_OPENABLE)
-            intent.setType("text/xml")
+            intent.type = "text/xml"
 
             resultLauncher.launch(Intent.createChooser(intent, "Select file."))
         }
@@ -97,7 +97,7 @@ class ContactListFragment(private val db : SQLiteDatabase, private val admin : A
         return view
     }
 
-    val resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+    private val resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             val data: Intent? = result.data
             val uri: Uri? = data?.data
@@ -119,8 +119,8 @@ class ContactListFragment(private val db : SQLiteDatabase, private val admin : A
             XMLReader.import(file, db, activity)
 
 
-            activity.finish();
-            startActivity(activity.intent);
+            activity.finish()
+            startActivity(activity.intent)
         }
     }
 }

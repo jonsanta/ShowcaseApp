@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.graphics.drawable.toBitmap
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.example.showcaseApp.interfaces.OnImageClickListener
 import com.example.showcaseApp.R
@@ -19,13 +18,16 @@ import com.example.showcaseApp.classes.Contacts
 class ContactAddFragment(private val db : SQLiteDatabase, private val activity : ContactListingActivity) : Fragment(),
     OnImageClickListener {
 
-    var edited = false
+    private var edited = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         val view = inflater.inflate(R.layout.contact_add_fragment, container, false)
-        activity.findViewById<ImageButton>(R.id.caf_btn_add).isVisible = true
-        activity.findViewById<ImageButton>(R.id.caf_btn_add).background = AppCompatResources.getDrawable(this.requireContext(),
+
+        val cafBtnAdd: ImageButton = activity.findViewById(R.id.caf_btn_add)
+        val cafBtnVolver : ImageButton = activity.findViewById(R.id.caf_btn_volver)
+
+        cafBtnAdd.background = AppCompatResources.getDrawable(this.requireContext(),
             R.drawable.check)
 
 
@@ -35,7 +37,7 @@ class ContactAddFragment(private val db : SQLiteDatabase, private val activity :
             Contacts.getAlertDialog(bitmaps, inflater, container, this, this).show()
         }
 
-        activity.findViewById<ImageButton>(R.id.caf_btn_add).setOnClickListener{
+        cafBtnAdd.setOnClickListener{
             val name = view.findViewById<EditText>(R.id.caf_name).text.toString()
             val tel = view.findViewById<EditText>(R.id.caf_tel).text.toString()
             val info = view.findViewById<EditText>(R.id.caf_info).text.toString()
@@ -47,7 +49,7 @@ class ContactAddFragment(private val db : SQLiteDatabase, private val activity :
                 Contacts.insert(name, tel, info, Contacts.roundBitmap(bitmaps[0]), db, activity)
         }
 
-        activity.findViewById<ImageButton>(R.id.caf_btn_volver).setOnClickListener{
+        cafBtnVolver.setOnClickListener{
             activity.supportFragmentManager.popBackStack()
         }
 

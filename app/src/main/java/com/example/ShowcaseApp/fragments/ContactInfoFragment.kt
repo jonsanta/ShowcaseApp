@@ -17,7 +17,6 @@ import android.widget.ImageButton
 import android.widget.LinearLayout
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.graphics.drawable.toBitmap
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.example.showcaseApp.interfaces.OnImageClickListener
 import com.example.showcaseApp.R
@@ -31,8 +30,10 @@ class ContactInfoFragment(private val contactID : Int, private val db : SQLiteDa
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.contact_info_fragment, container, false)
 
-        activity.findViewById<ImageButton>(R.id.caf_btn_add).isVisible = true
-        activity.findViewById<ImageButton>(R.id.caf_btn_add).background = AppCompatResources.getDrawable(this.requireContext(), android.R.drawable.ic_menu_edit)
+        val cafBtnAdd: ImageButton = activity.findViewById(R.id.caf_btn_add)
+        val cafBtnVolver : ImageButton = activity.findViewById(R.id.caf_btn_volver)
+
+        cafBtnAdd.background = AppCompatResources.getDrawable(this.requireContext(), android.R.drawable.ic_menu_edit)
 
         val bitmaps = Contacts.getIconList(activity)
 
@@ -47,7 +48,7 @@ class ContactInfoFragment(private val contactID : Int, private val db : SQLiteDa
         view.findViewById<LinearLayout>(R.id.caf_tel_linear).setOnClickListener{
             if(!editMode){
                 val intent = Intent(Intent.ACTION_DIAL)
-                intent.setData(Uri.parse("tel:"+tel.text.toString()))
+                intent.data = Uri.parse("tel:"+tel.text.toString())
                 startActivity(intent)
             }
         }
@@ -61,46 +62,46 @@ class ContactInfoFragment(private val contactID : Int, private val db : SQLiteDa
             activity.supportFragmentManager.popBackStack()
         }
 
-        activity.findViewById<ImageButton>(R.id.caf_btn_add).setOnClickListener{
+        cafBtnAdd.setOnClickListener{
             if(editMode){
                 Contacts.update(contactID, name.text.toString(), tel.text.toString(), info.text.toString(), icon.drawable.toBitmap(), db, activity)
-                swapMode(name, tel, info, icon)
+                swapMode(name, tel, info, icon, cafBtnAdd, cafBtnVolver)
             }else{
-                swapMode(name, tel, info, icon)
+                swapMode(name, tel, info, icon, cafBtnAdd, cafBtnVolver)
             }
         }
 
-        activity.findViewById<ImageButton>(R.id.caf_btn_volver).setOnClickListener{
+        cafBtnVolver.setOnClickListener{
             if(!editMode)
                 activity.supportFragmentManager.popBackStack()
             else
-                swapMode(name, tel, info, icon)
+                swapMode(name, tel, info, icon, cafBtnAdd, cafBtnVolver)
         }
 
         return view
     }
 
-    private fun swapMode(name : EditText, tel : EditText, info : EditText, icon : ImageButton)
+    private fun swapMode(name : EditText, tel : EditText, info : EditText, icon : ImageButton, cafBtnAdd : ImageButton, cafBtnVolver : ImageButton)
     {
         setEditMode(!editMode, listOf(name, tel, info), icon)
 
         if(!editMode){
-            activity.findViewById<ImageButton>(R.id.caf_btn_add).background = AppCompatResources.getDrawable(this.requireContext(), android.R.drawable.ic_menu_edit)
+            cafBtnAdd.background = AppCompatResources.getDrawable(this.requireContext(), android.R.drawable.ic_menu_edit)
 
             val themedValue = TypedValue()
             activity.theme.resolveAttribute(com.google.android.material.R.attr.actionModeCloseDrawable, themedValue, true)
             val drawable = AppCompatResources.getDrawable(this.requireContext(), themedValue.resourceId)
 
-            activity.findViewById<ImageButton>(R.id.caf_btn_volver).background = drawable
+            cafBtnVolver.background = drawable
 
             val imm = (context?.getSystemService(Activity.INPUT_METHOD_SERVICE)) as InputMethodManager
             imm.hideSoftInputFromWindow(view?.windowToken, 0)
             Contacts.select(contactID, name, tel, info, icon, db)
         }else{
-            activity.findViewById<ImageButton>(R.id.caf_btn_add).background = AppCompatResources.getDrawable(this.requireContext(),
+            cafBtnAdd.background = AppCompatResources.getDrawable(this.requireContext(),
                 R.drawable.check
             )
-            activity.findViewById<ImageButton>(R.id.caf_btn_volver).background = AppCompatResources.getDrawable(this.requireContext(), android.R.drawable.ic_menu_close_clear_cancel)
+            cafBtnVolver.background = AppCompatResources.getDrawable(this.requireContext(), android.R.drawable.ic_menu_close_clear_cancel)
         }
     }
 
