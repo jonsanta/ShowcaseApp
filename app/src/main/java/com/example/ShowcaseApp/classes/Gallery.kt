@@ -34,11 +34,13 @@ class Gallery {
                 if(!flag)
                     item.value.checkBox.isChecked = false
             }
-
+            val btnDiscard = activity.findViewById<ImageButton>(R.id.ac4_btn_discard)
             setViewVisibility(activity.findViewById<TextView>(R.id.ac4_selectText), flag)
             setViewVisibility(activity.findViewById<ImageButton>(R.id.ac4_remove), flag)
-            if(flag) activity.findViewById<ImageButton>(R.id.ac4_btn_discard).background =  AppCompatResources.getDrawable(activity.applicationContext, android.R.drawable.ic_menu_close_clear_cancel)
-            else activity.findViewById<ImageButton>(R.id.ac4_btn_discard).background = AppCompatResources.getDrawable(activity.applicationContext, R.drawable.arrow)
+            if(flag)
+                btnDiscard.background =  AppCompatResources.getDrawable(activity.applicationContext, android.R.drawable.ic_menu_close_clear_cancel)
+            else
+                btnDiscard.background = AppCompatResources.getDrawable(activity.applicationContext, R.drawable.arrow)
 
             countSelectedPhotos(activity)
             editMode = flag
