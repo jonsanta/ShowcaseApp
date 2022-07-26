@@ -63,7 +63,7 @@ class Gallery {
         }
 
         //Generates a single Bitmap
-        fun setBitmap(file : File){
+        fun setBitmap(file : File) : Bitmap?{
             val fileInputStream = FileInputStream(file)
             val options = BitmapFactory.Options()
             options.inPreferredConfig = Bitmap.Config.RGB_565
@@ -73,7 +73,9 @@ class Gallery {
                 val landBitmap = Bitmap.createScaledBitmap(bitmap, 730, 800, true)
                 bitmaps[file.name] = resizedBitmap // Populate portrait bitmaps map --> For RecyclerView
                 landBitmaps[file.name] = landBitmap // Populate landscape bitmaps map --> For RecyclerView
+                return bitmap
             }
+            return null
         }
 
         fun removeBitmap(item : String){

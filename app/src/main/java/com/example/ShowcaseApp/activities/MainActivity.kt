@@ -25,6 +25,7 @@ class MainActivity : AppCompatActivity() {
         val mp : MediaPlayer = MediaPlayer.create(this, R.raw.cancion)
         var position = 0 //variable que guardara la posicion de la reproduccion en milisegundos
 
+        File("${getExternalFilesDir(null)}/images/").mkdirs()
         //Loads gallery images
         val directorio = File("${getExternalFilesDir(null)}/images/").listFiles()
         if (directorio != null) {

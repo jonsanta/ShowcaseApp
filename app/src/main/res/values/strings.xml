@@ -15,7 +15,11 @@
     <string name="ac2_export">Exportar</string>
 
     <!--Strings Actividad 3 -->
-    <string name="btn_abrir_camara">Abrir</string>
+    <string name="ac3_error">Captura de imagen fallida: </string>
+    <string name="ac3_capture">Captura de imagen satisfactoria: </string>
+    <string name="ac3_btn_capture">Capturar</string>
+    <string name="ac3_btn_switch_cam">Cambiar camara</string>
+    <string name="ac3_btn_volver">Volver</string>
 
     <!--Strings Actividad 4 -->
     <string name="ac4_btn_discard">Boton discard</string>
@@ -51,7 +55,10 @@
     <string name="clf_editText_search">Buscar</string>
     <string name="clf_btn_add">Boton Añadir</string>
 
+    <!--Image Preview Fragment -->
+    <string name="ipf_btn_save">Boton guardar</string>
+    <string name="ipf_btn_borrar">Boton borrar</string>
+    <string name="ipf_image">Muestra imagen capturada</string>
     <!-- Imagen CardView -->
     <string name="icv_imageButton_image">Image</string>
-
 </resources>
