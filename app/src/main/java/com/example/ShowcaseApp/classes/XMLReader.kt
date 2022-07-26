@@ -4,7 +4,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import com.example.showcaseApp.R
-import com.example.showcaseApp.activities.ContactListingActivity
+import com.example.showcaseApp.activities.ContactsActivity
 import org.w3c.dom.Element
 import org.w3c.dom.Node
 import org.w3c.dom.NodeList
@@ -14,10 +14,9 @@ import javax.xml.transform.TransformerFactory
 import javax.xml.transform.dom.DOMSource
 import javax.xml.transform.stream.StreamResult
 
-
 class XMLReader {
     companion object{
-        fun import(file : File, db: SQLiteDatabase, activity: ContactListingActivity){
+        fun import(file : File, db: SQLiteDatabase, activity: ContactsActivity){
             val factory = DocumentBuilderFactory.newInstance()
             val builder = factory.newDocumentBuilder()
             val document = builder.parse(file)
@@ -58,7 +57,7 @@ class XMLReader {
                 .forEach { action(it) }
         }
 
-        fun export(db : SQLiteDatabase, activity : ContactListingActivity){
+        fun export(db : SQLiteDatabase, activity : ContactsActivity){
             val cursor = db.rawQuery("SELECT * FROM contacts", null)
 
             val factory = DocumentBuilderFactory.newInstance()

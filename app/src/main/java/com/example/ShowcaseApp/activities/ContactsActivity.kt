@@ -8,11 +8,11 @@ import com.example.showcaseApp.classes.AdminSQLiteOpenHelper
 import com.example.showcaseApp.fragments.ContactListFragment
 import com.example.showcaseApp.R
 
-class ContactListingActivity : AppCompatActivity() {
+class ContactsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main2)
+        setContentView(R.layout.contacts_activity)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT //Fuerza modo Vertical para está actividad
 
         val admin = AdminSQLiteOpenHelper(this, "Contacts", null, 1)

@@ -67,7 +67,7 @@ class MainActivity : AppCompatActivity() {
 
         //Abre el Activity 2 - Contactos
         findViewById<Button>(R.id.acm_btn_bd).setOnClickListener {
-            val intent = Intent(this, ContactListingActivity::class.java)
+            val intent = Intent(this, ContactsActivity::class.java)
             startActivity(intent)
         }
 

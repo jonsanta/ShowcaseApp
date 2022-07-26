@@ -20,7 +20,7 @@ class GalleryActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main4)
+        setContentView(R.layout.gallery_activity)
 
         if(checkPermissions()) loadGallery()
         else//Ask for READING Permissions

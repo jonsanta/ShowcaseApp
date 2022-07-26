@@ -12,10 +12,10 @@ import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.example.showcaseApp.R
-import com.example.showcaseApp.activities.ContactListingActivity
+import com.example.showcaseApp.activities.ContactsActivity
 import com.example.showcaseApp.fragments.ContactInfoFragment
 
-class ContactsAdapter(private var cursor : Cursor, private val db : SQLiteDatabase, private val activity : ContactListingActivity) : RecyclerView.Adapter<ContactsAdapter.ViewHolder>() {
+class ContactsAdapter(private var cursor : Cursor, private val db : SQLiteDatabase, private val activity : ContactsActivity) : RecyclerView.Adapter<ContactsAdapter.ViewHolder>() {
 
     fun setCursor(c : Cursor){
         cursor = c

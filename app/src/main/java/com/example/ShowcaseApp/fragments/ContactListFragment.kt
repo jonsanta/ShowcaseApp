@@ -19,7 +19,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.showcaseApp.R
-import com.example.showcaseApp.activities.ContactListingActivity
+import com.example.showcaseApp.activities.ContactsActivity
 import com.example.showcaseApp.adapters.ContactsAdapter
 import com.example.showcaseApp.classes.AdminSQLiteOpenHelper
 import com.example.showcaseApp.classes.XMLReader
@@ -27,8 +27,7 @@ import java.io.File
 import java.io.InputStream
 import java.nio.file.StandardCopyOption
 
-
-class ContactListFragment(private val db : SQLiteDatabase, private val admin : AdminSQLiteOpenHelper, private val activity : ContactListingActivity) : Fragment() {
+class ContactListFragment(private val db : SQLiteDatabase, private val admin : AdminSQLiteOpenHelper, private val activity : ContactsActivity) : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         var cursor = db.rawQuery("SELECT * FROM contacts ORDER BY UPPER(name) ASC" , null)

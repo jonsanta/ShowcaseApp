@@ -12,10 +12,10 @@ import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
 import com.example.showcaseApp.interfaces.OnImageClickListener
 import com.example.showcaseApp.R
-import com.example.showcaseApp.activities.ContactListingActivity
+import com.example.showcaseApp.activities.ContactsActivity
 import com.example.showcaseApp.classes.Contacts
 
-class ContactAddFragment(private val db : SQLiteDatabase, private val activity : ContactListingActivity) : Fragment(),
+class ContactAddFragment(private val db : SQLiteDatabase, private val activity : ContactsActivity) : Fragment(),
     OnImageClickListener {
 
     private var edited = false

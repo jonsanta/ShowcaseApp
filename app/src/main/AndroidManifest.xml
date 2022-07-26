@@ -1,26 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
-<!--
-    <permission
-        android:name="android.permission.CAMERA"
-        android:protectionLevel="signature" />
-
-    <uses-permission android:name="android.permission.CAMERA" />
-
-    <permission
-        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-        android:protectionLevel="signature" />
-
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-        -->
-    <permission
-        android:name="android.permission.READ_EXTERNAL_STORAGE"
-        android:protectionLevel="signature" />
-
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <uses-feature android:name="android.hardware.camera.any" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="28" />
 
@@ -38,7 +21,7 @@
             android:name="com.example.showcaseApp.activities.CameraActivity"
             android:exported="false" />
         <activity
-            android:name="com.example.showcaseApp.activities.ContactListingActivity"
+            android:name="com.example.showcaseApp.activities.ContactsActivity"
             android:windowSoftInputMode="adjustNothing"
             android:exported="false" />
         <activity

@@ -15,7 +15,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.showcaseApp.R
-import com.example.showcaseApp.activities.ContactListingActivity
+import com.example.showcaseApp.activities.ContactsActivity
 import com.example.showcaseApp.adapters.IconListAdapter
 import com.example.showcaseApp.interfaces.OnImageClickListener
 import kotlinx.coroutines.Dispatchers
@@ -25,7 +25,7 @@ import java.io.ByteArrayOutputStream
 
 class Contacts {
     companion object{
-        fun getIconList (activity: ContactListingActivity) : MutableList<Bitmap>{
+        fun getIconList (activity: ContactsActivity) : MutableList<Bitmap>{
             val bitmaps = mutableListOf<Bitmap>()
             activity.lifecycleScope.launch { // Generate Bitmaps
                 withContext(Dispatchers.IO) {
@@ -64,7 +64,7 @@ class Contacts {
             cursor.close()
         }
 
-        fun insert(name : String, tel : String, info: String, image : Bitmap, db : SQLiteDatabase, activity: ContactListingActivity){
+        fun insert(name : String, tel : String, info: String, image : Bitmap, db : SQLiteDatabase, activity: ContactsActivity){
             if(!checkEmpty(name, tel, activity)){
                 val registry = getContentValues(name, tel, info, image)
                 db.insert("Contacts", null, registry)
@@ -79,7 +79,7 @@ class Contacts {
             registry.clear()
         }
 
-        fun update(id : Int, name : String, tel : String, info : String, image : Bitmap, db : SQLiteDatabase, activity : ContactListingActivity){
+        fun update(id : Int, name : String, tel : String, info : String, image : Bitmap, db : SQLiteDatabase, activity : ContactsActivity){
             if(!checkEmpty(name, tel, activity)){
                 val registry = getContentValues(name, tel, info, image)
                 db.update("Contacts", registry, "id='$id'", null)
@@ -87,7 +87,7 @@ class Contacts {
             }
         }
 
-        private fun checkEmpty(name : String, tel : String, activity: ContactListingActivity) : Boolean{
+        private fun checkEmpty(name : String, tel : String, activity: ContactsActivity) : Boolean{
             if(name == "" || tel == ""){
                 Toast.makeText(activity.baseContext, "Faltan campos por rellenar", Toast.LENGTH_SHORT).show()
                 return true
