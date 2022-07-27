@@ -21,6 +21,7 @@ import com.example.showcaseApp.interfaces.OnImageClickListener
 import com.example.showcaseApp.R
 import com.example.showcaseApp.activities.ContactsActivity
 import com.example.showcaseApp.classes.Contacts
+import java.io.File
 
 class ContactInfoFragment(private val contactID : Int, private val db : SQLiteDatabase, private val activity : ContactsActivity) : Fragment(), OnImageClickListener {
 
@@ -33,8 +34,6 @@ class ContactInfoFragment(private val contactID : Int, private val db : SQLiteDa
         val cafBtnVolver : ImageButton = activity.findViewById(R.id.caf_btn_volver)
 
         cafBtnAdd.background = AppCompatResources.getDrawable(this.requireContext(), R.drawable.edit)
-
-        val bitmaps = Contacts.getIconList(activity)
 
         val name = view.findViewById<EditText>(R.id.caf_name)
         val tel = view.findViewById<EditText>(R.id.caf_tel)
@@ -53,7 +52,7 @@ class ContactInfoFragment(private val contactID : Int, private val db : SQLiteDa
         }
 
         view.findViewById<ImageButton>(R.id.caf_btn_add_image).setOnClickListener{
-            Contacts.getAlertDialog(bitmaps, inflater, container, this, this).show()
+            Contacts.getAlertDialog(inflater, container, this, this).show()
         }
 
         view.findViewById<ImageButton>(R.id.caf_btn_borrar).setOnClickListener{

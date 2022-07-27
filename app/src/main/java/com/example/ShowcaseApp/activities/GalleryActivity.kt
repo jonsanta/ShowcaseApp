@@ -8,12 +8,14 @@ import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.showcaseApp.classes.Gallery
-import com.example.showcaseApp.adapters.GalleryAdapter
 import com.example.showcaseApp.R
+import com.example.showcaseApp.adapters.GalleryAdapter
+import com.example.showcaseApp.classes.Gallery
+import com.example.showcaseApp.classes.GridSpacingItemDecoration
+import com.example.showcaseApp.classes.Photo
 import java.io.File
+
 
 class GalleryActivity : AppCompatActivity() {
     private val READ_REQUEST_CODE = 123
@@ -58,18 +60,27 @@ class GalleryActivity : AppCompatActivity() {
     private fun loadGallery()
     {
         val recyclerView = findViewById<RecyclerView>(R.id.ac4_recyclerView)
-        var land = false
         // LayoutManager depends on device orientation
-        if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT)
-            recyclerView.layoutManager = LinearLayoutManager(this)
-        else{
+        if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
             recyclerView.layoutManager = GridLayoutManager(this, 3)
-            land = true
+            recyclerView.addItemDecoration(GridSpacingItemDecoration(3, -10))
         }
-        //load images
-        recyclerView.adapter = GalleryAdapter(Gallery.getBitmaps(land), this)
+        else {
+            recyclerView.layoutManager = GridLayoutManager(this, 5)
+            recyclerView.addItemDecoration(GridSpacingItemDecoration(5, -10))
+        }
 
-        //set MainActivity RecyclerView (REF) -- PROVISIONAL
+        File("${getExternalFilesDir(null)}/images/").mkdirs()
+        //Loads gallery images
+        val directory = File("${getExternalFilesDir(null)}/images/").listFiles()
+
+        for(file in directory)
+            Gallery.photos.put(file.name, Photo(file))
+
+        recyclerView.adapter = GalleryAdapter(Gallery.photos,this)
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setItemViewCacheSize(20);
+
         Gallery.setRecyclerView(recyclerView)
 
 

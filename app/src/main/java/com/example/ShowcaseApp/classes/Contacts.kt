@@ -5,52 +5,28 @@ import android.app.Dialog
 import android.content.ContentValues
 import android.database.sqlite.SQLiteDatabase
 import android.graphics.*
+import android.net.Uri
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.Toast
+import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.showcaseApp.BuildConfig
 import com.example.showcaseApp.R
 import com.example.showcaseApp.activities.ContactsActivity
 import com.example.showcaseApp.adapters.IconListAdapter
 import com.example.showcaseApp.interfaces.OnImageClickListener
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
+import java.io.File
+
 
 class Contacts {
     companion object{
-        fun getIconList (activity: ContactsActivity) : MutableList<Bitmap>{
-            val bitmaps = mutableListOf<Bitmap>()
-            activity.lifecycleScope.launch { // Generate Bitmaps
-                withContext(Dispatchers.IO) {
-                    bitmaps.add(
-                        Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                            activity.baseContext.resources,
-                            R.drawable.male_avatar
-                        ), 500, 500, true)
-                    )
-
-                    bitmaps.add(
-                        Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                            activity.baseContext.resources,
-                            R.drawable.female_avatar
-                        ), 500, 500, true)
-                    )
-
-                    for(bitmap in Gallery.getBitmaps(false).values)
-                        bitmaps.add(Bitmap.createScaledBitmap(bitmap, 500, 500, true))
-                }
-            }
-
-            return bitmaps
-        }
-
         fun select(id: Int, name : EditText, tel : EditText, info : EditText, icon : ImageButton, db : SQLiteDatabase){
             val cursor = db.rawQuery("SELECT * FROM contacts WHERE id = $id", null)
 
@@ -64,9 +40,20 @@ class Contacts {
             cursor.close()
         }
 
-        fun insert(name : String, tel : String, info: String, image : Bitmap, db : SQLiteDatabase, activity: ContactsActivity){
+        fun insert(name : String, tel : String, info: String, bitmap: Bitmap, db : SQLiteDatabase, activity: ContactsActivity){
             if(!checkEmpty(name, tel, activity)){
-                val registry = getContentValues(name, tel, info, image)
+                val registry = getContentValues(name, tel, info, bitmap)
+                db.insert("Contacts", null, registry)
+                registry.clear()
+                activity.supportFragmentManager.popBackStack()
+            }
+        }
+
+        fun insert(name : String, tel : String, info: String, path : String, db : SQLiteDatabase, activity: ContactsActivity){
+            if(!checkEmpty(name, tel, activity)){
+                val stream = activity.contentResolver.openInputStream(Uri.parse(path))
+                val bitmap = BitmapFactory.decodeStream(stream)
+                val registry = getContentValues(name, tel, info, roundBitmap(Bitmap.createScaledBitmap(bitmap, 500, 500, true)))
                 db.insert("Contacts", null, registry)
                 registry.clear()
                 activity.supportFragmentManager.popBackStack()
@@ -122,7 +109,11 @@ class Contacts {
             return output
         }
 
-        fun getAlertDialog(bitmaps : List<Bitmap>, inflater : LayoutInflater, container : ViewGroup?, fragment: Fragment, onImageClickListener: OnImageClickListener) : AlertDialog{
+        fun getURLOfDrawable(resId : Int) : String{
+            return Uri.parse("android.resource://"+ BuildConfig.APPLICATION_ID+"/" +resId).toString()
+        }
+
+        fun getAlertDialog(inflater : LayoutInflater, container : ViewGroup?, fragment: Fragment, onImageClickListener: OnImageClickListener) : AlertDialog{
             val builder = AlertDialog.Builder(fragment.requireContext())
             builder.setTitle("Selecciona Imagen")
 
@@ -134,9 +125,16 @@ class Contacts {
 
             val iconList = inflater.inflate(R.layout.icon_list, container, false)
 
+            val list = mutableListOf(getURLOfDrawable(R.drawable.male_avatar), getURLOfDrawable(R.drawable.female_avatar))
+
+            File("${container?.context?.getExternalFilesDir(null)}/images/").listFiles()?.forEach {
+                list.add(it.toUri().toString())
+            }
+
+
             val recyclerView = iconList.findViewById<RecyclerView>(R.id.icons_rv)
             recyclerView.layoutManager = LinearLayoutManager(alertDialog.context)
-            recyclerView.adapter = IconListAdapter(bitmaps, alertDialog, onImageClickListener)
+            recyclerView.adapter = IconListAdapter(list, alertDialog, onImageClickListener)
 
             alertDialog.setView(iconList)
             return alertDialog

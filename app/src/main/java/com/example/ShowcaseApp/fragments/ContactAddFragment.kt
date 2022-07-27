@@ -2,6 +2,7 @@ package com.example.showcaseApp.fragments
 
 import android.database.sqlite.SQLiteDatabase
 import android.graphics.*
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +15,7 @@ import com.example.showcaseApp.interfaces.OnImageClickListener
 import com.example.showcaseApp.R
 import com.example.showcaseApp.activities.ContactsActivity
 import com.example.showcaseApp.classes.Contacts
+import java.io.File
 
 class ContactAddFragment(private val db : SQLiteDatabase, private val activity : ContactsActivity) : Fragment(),
     OnImageClickListener {
@@ -32,11 +34,8 @@ class ContactAddFragment(private val db : SQLiteDatabase, private val activity :
 
         cafBtnVolver.background = AppCompatResources.getDrawable(this.requireContext(), R.drawable.cancelar)
 
-
-        val bitmaps = Contacts.getIconList(activity)
-
         view.findViewById<ImageButton>(R.id.caf_btn_add_image).setOnClickListener{
-            Contacts.getAlertDialog(bitmaps, inflater, container, this, this).show()
+            Contacts.getAlertDialog(inflater, container, this, this).show()
         }
 
         cafBtnAdd.setOnClickListener{
@@ -47,8 +46,9 @@ class ContactAddFragment(private val db : SQLiteDatabase, private val activity :
             if(edited){
                 val bitmap = view.findViewById<ImageButton>(R.id.caf_btn_add_image).drawable.toBitmap()
                 Contacts.insert(name, tel, info, bitmap, db, activity)
-            } else
-                Contacts.insert(name, tel, info, Contacts.roundBitmap(bitmaps[0]), db, activity)
+            } else {
+                Contacts.insert(name, tel, info, Contacts.getURLOfDrawable(R.drawable.male_avatar), db, activity)
+            }
         }
 
         cafBtnVolver.setOnClickListener{

@@ -16,7 +16,7 @@ class ImagePreviewFragment(private val file : File, private val activity: Camera
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.image_preview, container, false)
 
-        view.findViewById<ImageView>(R.id.ipf_image).setImageBitmap(Gallery.setBitmap(file))
+        //view.findViewById<ImageView>(R.id.ipf_image).setImageBitmap(Gallery.setBitmap(file))
 
         view.findViewById<ImageButton>(R.id.ipf_btn_save).setOnClickListener{
             activity.supportFragmentManager.popBackStack()
