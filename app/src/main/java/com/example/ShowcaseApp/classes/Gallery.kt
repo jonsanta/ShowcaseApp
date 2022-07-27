@@ -5,7 +5,6 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.isVisible
-import androidx.recyclerview.widget.RecyclerView
 import com.example.showcaseApp.R
 import com.example.showcaseApp.activities.GalleryActivity
 import java.text.MessageFormat
@@ -14,18 +13,14 @@ class Gallery {
     companion object{
         private var editMode = false
 
-        private lateinit var recyclerView : RecyclerView
-
-        val photos = mutableMapOf<String, Photo>()
-
-        private val selectedImages = mutableSetOf<String>() // Contains: map Keys = Image names
+        val photos = mutableListOf<Photo>()
 
         // Enables UI for editing mode
         fun setEditMode(flag : Boolean, activity : GalleryActivity){
-            for(view in photos.values.toTypedArray()){
-                view.getView()?.checkBox?.isVisible = flag
+            for(photo in photos){
+                photo.getView()?.checkBox?.isVisible = flag
                 if(!flag)
-                    view.getView()?.checkBox?.isChecked = false
+                    photo.getView()?.checkBox?.isChecked = false
             }
             val btnDiscard = activity.findViewById<ImageButton>(R.id.ac4_btn_discard)
             setViewVisibility(activity.findViewById<TextView>(R.id.ac4_selectText), flag)
@@ -43,33 +38,36 @@ class Gallery {
             return editMode
         }
 
-        fun isRecyclerViewInitialized() : Boolean{
-            return this::recyclerView.isInitialized
-        }
-
-        fun setRecyclerView(recyclerView: RecyclerView){
-            Companion.recyclerView = recyclerView
-        }
-
-        fun removeBitmap(item : String){
-            photos.remove(item)
-        }
-
-        fun clearViews(){
+        fun removePhotos(){
+            val temp = mutableSetOf<Photo>()
             for(photo in photos)
-                photo.value.setView(null)
+            {
+                if(photo.isSelected()) {
+                    temp.add(photo)
+                    photo.removeFile()
+                }
+            }
+            photos.removeAll(temp)
         }
 
-        // Add-Remove from selection list
-        fun setSelectedImages(photo: String, activity: GalleryActivity){
-            if(selectedImages.contains(photo)) selectedImages.remove(photo)
-            else selectedImages.add(photo)
-
-            countSelectedPhotos(activity)
+        fun removeViews(){
+            for(photo in photos)
+                photo.setView(null)
         }
 
-        fun getSelectedImages() : MutableSet<String>{
-            return selectedImages
+        fun clearSelected(){
+            photos.forEach{
+                it.setSelected(false)
+            }
+        }
+
+        private fun countSelected() : Int{
+            var index = 0
+            photos.forEach{
+                if(it.isSelected())
+                    index++
+            }
+            return index
         }
 
         // Selection Text on EditMode
@@ -77,7 +75,7 @@ class Gallery {
             val textview = activity.findViewById<TextView>(R.id.ac4_selectText)
             val format = activity.resources.getText(R.string.count_images).toString()
 
-            textview.text = MessageFormat.format(format, selectedImages.size)
+            textview.text = MessageFormat.format(format, countSelected())
         }
 
         // Enable-Disable EditMode views (Top box & buttons)

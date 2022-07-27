@@ -9,6 +9,7 @@ import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.showcaseApp.*
+import java.io.File
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,8 +22,8 @@ class MainActivity : AppCompatActivity() {
         val mp : MediaPlayer = MediaPlayer.create(this, R.raw.cancion)
         var position = 0 //variable que guardara la posicion de la reproduccion en milisegundos
 
-        /*
         File("${getExternalFilesDir(null)}/images/").mkdirs()
+        /*
         //Loads gallery images
         val directory = File("${getExternalFilesDir(null)}/images/").listFiles()
         if (directory != null) {

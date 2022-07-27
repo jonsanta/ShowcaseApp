@@ -16,7 +16,6 @@ import com.example.showcaseApp.classes.GridSpacingItemDecoration
 import com.example.showcaseApp.classes.Photo
 import java.io.File
 
-
 class GalleryActivity : AppCompatActivity() {
     private val READ_REQUEST_CODE = 123
 
@@ -24,34 +23,18 @@ class GalleryActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.gallery_activity)
 
-        if(checkPermissions()) loadGallery()
+        if(checkPermissions())
+            loadGallery()
         else//Ask for READING Permissions
             requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), READ_REQUEST_CODE)
 
         findViewById<ImageButton>(R.id.ac4_btn_discard).setOnClickListener{
-            if(Gallery.isEditMode()) {
-                Gallery.getSelectedImages().clear()
-                Gallery.setEditMode(false, this)
-            }else{
-                Gallery.clearViews()
-                Gallery.getSelectedImages().clear()
-                Gallery.setEditMode(false, this)
-                finish()
-            }
+            onBackPressed()
         }
 
         findViewById<ImageButton>(R.id.ac4_remove).setOnClickListener{
-            val directorio = File("${getExternalFilesDir(null)}/images/").listFiles()
-
-            if(Gallery.getSelectedImages().isNotEmpty())
-                for(item in Gallery.getSelectedImages()){
-                    Gallery.removeBitmap(item)
-                    for(x in directorio!!)
-                    {
-                        if(x.name == item) x.delete()
-                    }
-                }
-            Gallery.getSelectedImages().clear()
+            Gallery.removePhotos()
+            Gallery.clearSelected()
             findViewById<RecyclerView>(R.id.ac4_recyclerView).adapter?.notifyDataSetChanged()
             Gallery.countSelectedPhotos(this)
         }
@@ -70,19 +53,17 @@ class GalleryActivity : AppCompatActivity() {
             recyclerView.addItemDecoration(GridSpacingItemDecoration(5, -10))
         }
 
-        File("${getExternalFilesDir(null)}/images/").mkdirs()
-        //Loads gallery images
         val directory = File("${getExternalFilesDir(null)}/images/").listFiles()
 
-        for(file in directory)
-            Gallery.photos.put(file.name, Photo(file))
+        //Loads gallery images
+        directory?.forEach {
+            if(Gallery.photos.size != directory.size)
+                Gallery.photos.add(Photo(it))
+        }
 
         recyclerView.adapter = GalleryAdapter(Gallery.photos,this)
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setItemViewCacheSize(20);
-
-        Gallery.setRecyclerView(recyclerView)
-
+        recyclerView.setHasFixedSize(true)
+        recyclerView.setItemViewCacheSize(20)
 
         Gallery.setEditMode(Gallery.isEditMode(), this)
     }
@@ -101,11 +82,11 @@ class GalleryActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed(){
-        if(Gallery.isEditMode())
-        {
-            Gallery.getSelectedImages().clear()
-            Gallery.setEditMode(false, this)
-        }else
+        Gallery.clearSelected()
+        Gallery.setEditMode(false, this)
+        if(!Gallery.isEditMode()) {
+            Gallery.removeViews()
             finish()
+        }
     }
 }
