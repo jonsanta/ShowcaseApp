@@ -52,7 +52,8 @@ class Gallery {
             val thumbnails = File("${context.getExternalFilesDir(null)}/images/thumbnails/").listFiles()
 
             //Loads gallery images
-            if (photos.size != directory.size && directory.isNotEmpty() && thumbnails != null) {
+            if (photos.size < directory.size && directory.isNotEmpty() && thumbnails != null) {
+                photos.clear()
                 directory.forEachIndexed{index, file ->
                     photos.add(Photo(file, thumbnails[index]))
                 }

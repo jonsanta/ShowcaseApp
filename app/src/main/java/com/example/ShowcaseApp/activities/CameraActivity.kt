@@ -2,18 +2,18 @@ package com.example.showcaseApp.activities
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.util.Size
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.camera.core.*
 import androidx.camera.core.CameraSelector.DEFAULT_BACK_CAMERA
 import androidx.camera.core.CameraSelector.DEFAULT_FRONT_CAMERA
-import androidx.camera.core.ImageAnalysis
-import androidx.camera.core.ImageCapture
-import androidx.camera.core.ImageCaptureException
-import androidx.camera.core.Preview
+import androidx.camera.core.ImageCapture.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -32,7 +32,6 @@ typealias LumaListener = (luma: Double) -> Unit
 class CameraActivity : AppCompatActivity() {
     private lateinit var viewBinding: CameraActivityBinding
 
-    private var cameraSelector = DEFAULT_BACK_CAMERA
     private var imageCapture: ImageCapture? = null
 
     private lateinit var cameraExecutor: ExecutorService
@@ -88,7 +87,7 @@ class CameraActivity : AppCompatActivity() {
         val imageCapture = imageCapture ?: return
         val activity : CameraActivity = this
 
-        val file = File("${getExternalFilesDir(null)}/images/"+SimpleDateFormat(FILENAME_FORMAT, Locale.US)
+        val file = File("${getExternalFilesDir(null)}/temp/"+SimpleDateFormat(FILENAME_FORMAT, Locale.US)
             .format(System.currentTimeMillis())+".jpg")
 
         // Create output options object which contains file + metadata
@@ -132,7 +131,9 @@ class CameraActivity : AppCompatActivity() {
                     it.setSurfaceProvider(viewBinding.viewFinder.surfaceProvider)
                 }
 
-            imageCapture = ImageCapture.Builder().build()
+            @androidx.camera.core.ExperimentalZeroShutterLag
+            imageCapture = Builder().setFlashMode(FLASH_MODE_AUTO).setCaptureMode(CAPTURE_MODE_ZERO_SHUTTER_LAG).setTargetResolution(
+                Size(2160,4096)).build()
 
             val imageAnalyzer = ImageAnalysis.Builder()
                 .build()
@@ -185,6 +186,7 @@ class CameraActivity : AppCompatActivity() {
 
     companion object {
         private var available = true
+        private var cameraSelector = DEFAULT_BACK_CAMERA
         private const val TAG = "CameraActivity"
         private const val FILENAME_FORMAT = "yyyy-MM-dd-HH-mm-ss-SSS"
         private const val REQUEST_CODE_PERMISSIONS = 10

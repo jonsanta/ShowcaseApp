@@ -9,24 +9,28 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
+import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import com.example.showcaseApp.R
 import com.example.showcaseApp.activities.CameraActivity
 import com.example.showcaseApp.classes.Gallery
 import com.example.showcaseApp.classes.Photo
 import com.squareup.picasso.Picasso
-import java.io.ByteArrayOutputStream
-import java.io.File
-import java.io.FileOutputStream
+import java.io.*
+import java.text.SimpleDateFormat
+import java.util.*
+
 
 class ImagePreviewFragment(private val file : File, private val activity: CameraActivity) : Fragment(){
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.image_preview, container, false)
 
-        Picasso.get().load(Uri.fromFile(file)).noFade().fit().centerCrop().into(view.findViewById<ImageView>(R.id.ipf_image))
+        Picasso.get().load(Uri.parse(file.toUri().toString())).noFade().fit().centerCrop().into(view.findViewById<ImageView>(R.id.ipf_image))
 
         view.findViewById<ImageButton>(R.id.ipf_btn_save).setOnClickListener{
-            Gallery.setSinglePhoto(Photo(file, makeThumbnailFile(file, 400)))
+            val copy = copyFile(file)
+            file.delete()
+            Gallery.setSinglePhoto(Photo(copy, makeThumbnailFile(copy, 400)))
             activity.supportFragmentManager.popBackStack()
             CameraActivity.isAvailable(true)
         }
@@ -36,6 +40,21 @@ class ImagePreviewFragment(private val file : File, private val activity: Camera
             CameraActivity.isAvailable(true)
         }
         return view
+    }
+
+    fun copyFile(src: File?) : File{
+        val copy = File("${activity.getExternalFilesDir(null)}/images/"+file.name)
+        FileInputStream(src).use { `in` ->
+            FileOutputStream(copy).use { out ->
+                // Transfer bytes from in to out
+                val buf = ByteArray(1024)
+                var len: Int
+                while (`in`.read(buf).also { len = it } > 0) {
+                    out.write(buf, 0, len)
+                }
+            }
+        }
+        return copy
     }
 
     fun makeThumbnailFile(source: File, thumbnailSize : Int): File { // File name like "image.png"

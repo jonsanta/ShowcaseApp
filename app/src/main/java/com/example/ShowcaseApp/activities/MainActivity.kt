@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
         val mp : MediaPlayer = MediaPlayer.create(this, R.raw.cancion)
         var position = 0 //variable que guardara la posicion de la reproduccion en milisegundos
 
-        File("${getExternalFilesDir(null)}/images/thumbnails").mkdirs()
+        loadData()
 
         findViewById<ImageButton>(R.id.acm_imagebtn_play).setOnClickListener {
             if(!mp.isPlaying){ //Si se pulsa el botón start y no se está reproduciendo
@@ -62,5 +62,14 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, GalleryActivity::class.java)
             startActivity(intent)
         }
+    }
+
+    fun loadData(){
+        File("${getExternalFilesDir(null)}/images/thumbnails").mkdirs()
+        val tempFolder  = File("${getExternalFilesDir(null)}/temp")
+        if(tempFolder.exists())
+            tempFolder.listFiles()?.forEach { it.delete()}
+        else
+            tempFolder.mkdir()
     }
 }
