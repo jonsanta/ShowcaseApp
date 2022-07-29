@@ -12,6 +12,7 @@ import com.example.showcaseApp.classes.Gallery
 import com.example.showcaseApp.R
 import com.example.showcaseApp.activities.GalleryActivity
 import com.example.showcaseApp.classes.Photo
+import com.example.showcaseApp.fragments.PhotoPreviewFragment
 import com.squareup.picasso.Picasso
 
 class GalleryAdapter(private val list: List<Photo>, private val activity : GalleryActivity) : RecyclerView.Adapter<GalleryAdapter.ViewHolder>() {
@@ -55,6 +56,11 @@ class GalleryAdapter(private val list: List<Photo>, private val activity : Galle
 
         holder.photo.setOnClickListener{
             if(Gallery.isEditMode()) buttonAction(holder, photo, position) // CLICK EVENT - while editMode
+            else{
+                val transaction = activity.supportFragmentManager.beginTransaction()
+                transaction.addToBackStack(null)
+                transaction.add(R.id.ac4_fragment, PhotoPreviewFragment(photo.getFile(), activity)).commit()
+            }
         }
     }
 

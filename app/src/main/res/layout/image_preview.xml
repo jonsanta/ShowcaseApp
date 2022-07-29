@@ -7,7 +7,7 @@
     android:background="@color/black">
 
     <ImageView
-        android:id="@+id/ipf_image"
+        android:id="@+id/ppf_image"
         android:layout_width="match_parent"
         android:layout_height="500dp"
         android:translationZ="90dp"

@@ -25,7 +25,6 @@ class IconListAdapter(private val images : List<String>, private val alertDialog
 
         holder.photo.setOnClickListener{
             onImageClickListener.onImageClick(holder.photo.drawable.toBitmap())
-
             alertDialog.cancel()
         }
     }

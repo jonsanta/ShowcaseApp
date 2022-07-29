@@ -2,7 +2,6 @@ package com.example.showcaseApp.activities
 
 import android.Manifest
 import android.content.pm.PackageManager
-import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -13,7 +12,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.*
 import androidx.camera.core.CameraSelector.DEFAULT_BACK_CAMERA
 import androidx.camera.core.CameraSelector.DEFAULT_FRONT_CAMERA
-import androidx.camera.core.ImageCapture.*
+import androidx.camera.core.ImageCapture.CAPTURE_MODE_ZERO_SHUTTER_LAG
+import androidx.camera.core.ImageCapture.FLASH_MODE_AUTO
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -48,7 +48,7 @@ class CameraActivity : AppCompatActivity() {
             //DEPRECATED BUT STILL WORKING IN OLD VERSIONS
             window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
         }
-        window.setNavigationBarColor(resources.getColor(R.color.black))
+        window.navigationBarColor = resources.getColor(R.color.black)
 
         // Request camera permissions
         if (allPermissionsGranted()) {
@@ -132,7 +132,7 @@ class CameraActivity : AppCompatActivity() {
                 }
 
             @androidx.camera.core.ExperimentalZeroShutterLag
-            imageCapture = Builder().setFlashMode(FLASH_MODE_AUTO).setCaptureMode(CAPTURE_MODE_ZERO_SHUTTER_LAG).setTargetResolution(
+            imageCapture = ImageCapture.Builder().setFlashMode(FLASH_MODE_AUTO).setCaptureMode(CAPTURE_MODE_ZERO_SHUTTER_LAG).setTargetResolution(
                 Size(2160,4096)).build()
 
             val imageAnalyzer = ImageAnalysis.Builder()

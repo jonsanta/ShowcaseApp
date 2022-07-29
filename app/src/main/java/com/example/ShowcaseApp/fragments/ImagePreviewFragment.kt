@@ -17,20 +17,17 @@ import com.example.showcaseApp.classes.Gallery
 import com.example.showcaseApp.classes.Photo
 import com.squareup.picasso.Picasso
 import java.io.*
-import java.text.SimpleDateFormat
-import java.util.*
-
 
 class ImagePreviewFragment(private val file : File, private val activity: CameraActivity) : Fragment(){
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.image_preview, container, false)
 
-        Picasso.get().load(Uri.parse(file.toUri().toString())).noFade().fit().centerCrop().into(view.findViewById<ImageView>(R.id.ipf_image))
+        Picasso.get().load(Uri.parse(file.toUri().toString())).noFade().fit().centerCrop().into(view.findViewById<ImageView>(R.id.ppf_image))
 
         view.findViewById<ImageButton>(R.id.ipf_btn_save).setOnClickListener{
             val copy = copyFile(file)
             file.delete()
-            Gallery.setSinglePhoto(Photo(copy, makeThumbnailFile(copy, 400)))
+            Gallery.setSinglePhoto(Photo(copy, makeThumbnailFile(copy, 1000)))
             activity.supportFragmentManager.popBackStack()
             CameraActivity.isAvailable(true)
         }
@@ -42,7 +39,7 @@ class ImagePreviewFragment(private val file : File, private val activity: Camera
         return view
     }
 
-    fun copyFile(src: File?) : File{
+    private fun copyFile(src: File?) : File{
         val copy = File("${activity.getExternalFilesDir(null)}/images/"+file.name)
         FileInputStream(src).use { `in` ->
             FileOutputStream(copy).use { out ->
@@ -57,7 +54,7 @@ class ImagePreviewFragment(private val file : File, private val activity: Camera
         return copy
     }
 
-    fun makeThumbnailFile(source: File, thumbnailSize : Int): File { // File name like "image.png"
+    private fun makeThumbnailFile(source: File, thumbnailSize : Int): File { // File name like "image.png"
         val bounds = BitmapFactory.Options()
         bounds.inJustDecodeBounds = true
         BitmapFactory.decodeFile(source.path, bounds)

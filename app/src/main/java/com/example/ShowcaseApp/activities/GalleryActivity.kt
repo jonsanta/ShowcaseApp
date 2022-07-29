@@ -15,7 +15,7 @@ import com.example.showcaseApp.adapters.GalleryAdapter
 import com.example.showcaseApp.classes.Gallery
 import com.example.showcaseApp.classes.GridSpacingItemDecoration
 
-class GalleryActivity : AppCompatActivity() {
+class GalleryActivity : AppCompatActivity(){
     private val READ_REQUEST_CODE = 123
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,7 +42,14 @@ class GalleryActivity : AppCompatActivity() {
         }
     }
 
-    private fun loadGallery()
+    override fun onStart() {
+        super.onStart()
+        findViewById<ImageButton>(R.id.ac4_btn_discard).setOnClickListener{
+            onBackPressed()
+        }
+    }
+
+    public fun loadGallery()
     {
         var recyclerView = findViewById<RecyclerView>(R.id.ac4_recyclerView)
         // LayoutManager depends on device orientation
@@ -85,5 +92,11 @@ class GalleryActivity : AppCompatActivity() {
             finish()
         }
         Gallery.setEditMode(false, this)
+    }
+
+    fun fragmentClosed() {
+        findViewById<ImageButton>(R.id.ac4_btn_discard).setOnClickListener{
+            onBackPressed()
+        }
     }
 }

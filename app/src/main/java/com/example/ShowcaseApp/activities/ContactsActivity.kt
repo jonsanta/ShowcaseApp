@@ -1,6 +1,5 @@
 package com.example.showcaseApp.activities
 
-import android.content.pm.ActivityInfo
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -13,7 +12,6 @@ class ContactsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.contacts_activity)
-        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT //Fuerza modo Vertical para está actividad
 
         val admin = AdminSQLiteOpenHelper(this, "Contacts", null, 1)
         val db : SQLiteDatabase = admin.writableDatabase

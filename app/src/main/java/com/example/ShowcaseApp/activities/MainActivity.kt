@@ -1,7 +1,6 @@
 package com.example.showcaseApp.activities
 
 import android.content.Intent
-import android.content.pm.ActivityInfo
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.widget.Button
@@ -9,15 +8,12 @@ import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.showcaseApp.*
-import com.example.showcaseApp.classes.Gallery
 import java.io.File
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT //Fuerza modo Vertical para está actividad
-
 
         //Creamos un objeto de MediaPlayer y por constructor pasamos el sonido que queremos que reproduzca
         val mp : MediaPlayer = MediaPlayer.create(this, R.raw.cancion)
@@ -64,7 +60,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun loadData(){
+    private fun loadData(){
         File("${getExternalFilesDir(null)}/images/thumbnails").mkdirs()
         val tempFolder  = File("${getExternalFilesDir(null)}/temp")
         if(tempFolder.exists())

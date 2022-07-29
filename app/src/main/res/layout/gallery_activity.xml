@@ -6,6 +6,18 @@
     android:layout_height="match_parent"
     tools:context=".activities.GalleryActivity">
 
+    <FrameLayout
+        android:id="@+id/ac4_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:translationZ="90dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ac4_linearLayout">
+
+    </FrameLayout>
+
     <LinearLayout
         android:id="@+id/ac4_linearLayout"
         android:layout_width="match_parent"
