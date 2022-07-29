@@ -1,5 +1,7 @@
 package com.example.showcaseApp.classes
 
+import android.app.Activity
+import android.content.Context
 import android.view.View
 import android.widget.ImageButton
 import android.widget.TextView
@@ -45,9 +47,9 @@ class Gallery {
             photos.add(photo)
         }
 
-        fun setPhotos(activity: GalleryActivity){
-            val directory = removeThumbnailDirectory(File("${activity.getExternalFilesDir(null)}/images/").listFiles())
-            val thumbnails = File("${activity.getExternalFilesDir(null)}/images/thumbnails/").listFiles()
+        fun setPhotos(context: Context){
+            val directory = removeThumbnailDirectory(File("${context.getExternalFilesDir(null)}/images/").listFiles())
+            val thumbnails = File("${context.getExternalFilesDir(null)}/images/thumbnails/").listFiles()
 
             //Loads gallery images
             if (photos.size != directory.size && directory.isNotEmpty() && thumbnails != null) {

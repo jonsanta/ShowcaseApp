@@ -1,18 +1,15 @@
 package com.example.showcaseApp.adapters
 
 import android.app.AlertDialog
-import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import androidx.core.graphics.drawable.toBitmap
 import androidx.recyclerview.widget.RecyclerView
-import com.example.showcaseApp.BuildConfig
 import com.example.showcaseApp.interfaces.OnImageClickListener
 import com.example.showcaseApp.R
 import com.squareup.picasso.Picasso
-import java.io.File
 
 class IconListAdapter(private val images : List<String>, private val alertDialog: AlertDialog, private val onImageClickListener: OnImageClickListener) : RecyclerView.Adapter<IconListAdapter.ViewHolder>() {
 

@@ -6,7 +6,6 @@ import android.content.ContentValues
 import android.database.sqlite.SQLiteDatabase
 import android.graphics.*
 import android.net.Uri
-import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.EditText
@@ -22,8 +21,6 @@ import com.example.showcaseApp.activities.ContactsActivity
 import com.example.showcaseApp.adapters.IconListAdapter
 import com.example.showcaseApp.interfaces.OnImageClickListener
 import java.io.ByteArrayOutputStream
-import java.io.File
-
 
 class Contacts {
     companion object{
@@ -127,10 +124,10 @@ class Contacts {
 
             val list = mutableListOf(getURLOfDrawable(R.drawable.male_avatar), getURLOfDrawable(R.drawable.female_avatar))
 
-            File("${container?.context?.getExternalFilesDir(null)}/images/").listFiles()?.forEach {
-                list.add(it.toUri().toString())
+            Gallery.setPhotos(fragment.requireContext())
+            Gallery.getPhotos().forEach{
+                list.add(it.getThumbnail().toUri().toString())
             }
-
 
             val recyclerView = iconList.findViewById<RecyclerView>(R.id.icons_rv)
             recyclerView.layoutManager = LinearLayoutManager(alertDialog.context)

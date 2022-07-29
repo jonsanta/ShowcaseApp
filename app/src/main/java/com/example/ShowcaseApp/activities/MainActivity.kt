@@ -9,6 +9,7 @@ import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.showcaseApp.*
+import com.example.showcaseApp.classes.Gallery
 import java.io.File
 
 class MainActivity : AppCompatActivity() {

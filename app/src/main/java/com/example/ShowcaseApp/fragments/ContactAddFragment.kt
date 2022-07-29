@@ -2,7 +2,6 @@ package com.example.showcaseApp.fragments
 
 import android.database.sqlite.SQLiteDatabase
 import android.graphics.*
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,7 +14,6 @@ import com.example.showcaseApp.interfaces.OnImageClickListener
 import com.example.showcaseApp.R
 import com.example.showcaseApp.activities.ContactsActivity
 import com.example.showcaseApp.classes.Contacts
-import java.io.File
 
 class ContactAddFragment(private val db : SQLiteDatabase, private val activity : ContactsActivity) : Fragment(),
     OnImageClickListener {
