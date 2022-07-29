@@ -26,7 +26,7 @@ class ImagePreviewFragment(private val file : File, private val activity: Camera
         Picasso.get().load(Uri.fromFile(file)).noFade().fit().centerCrop().into(view.findViewById<ImageView>(R.id.ipf_image))
 
         view.findViewById<ImageButton>(R.id.ipf_btn_save).setOnClickListener{
-            Gallery.photos.add(Photo(file, makeThumbnailFile(file, 400)))
+            Gallery.setSinglePhoto(Photo(file, makeThumbnailFile(file, 400)))
             activity.supportFragmentManager.popBackStack()
             CameraActivity.isAvailable(true)
         }

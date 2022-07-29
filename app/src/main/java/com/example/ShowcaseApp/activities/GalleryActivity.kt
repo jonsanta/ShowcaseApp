@@ -1,6 +1,7 @@
 package com.example.showcaseApp.activities
 
 import android.Manifest
+import android.content.Context
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.os.Bundle
@@ -13,8 +14,6 @@ import com.example.showcaseApp.R
 import com.example.showcaseApp.adapters.GalleryAdapter
 import com.example.showcaseApp.classes.Gallery
 import com.example.showcaseApp.classes.GridSpacingItemDecoration
-import com.example.showcaseApp.classes.Photo
-import java.io.File
 
 class GalleryActivity : AppCompatActivity() {
     private val READ_REQUEST_CODE = 123
@@ -33,52 +32,38 @@ class GalleryActivity : AppCompatActivity() {
         }
 
         findViewById<ImageButton>(R.id.ac4_remove).setOnClickListener{
-            Gallery.removePhotos()
-            Gallery.clearSelected()
-            findViewById<RecyclerView>(R.id.ac4_recyclerView).adapter?.notifyDataSetChanged()
-            Gallery.countSelectedPhotos(this)
+            val minValue = Gallery.getSelected().last()
+            Gallery.getSelected().forEach{
+                findViewById<RecyclerView>(R.id.ac4_recyclerView).adapter?.notifyItemRemoved(it)
+            }
+            Gallery.removePhotos(this)
+            findViewById<RecyclerView>(R.id.ac4_recyclerView).adapter?.notifyItemRangeChanged(minValue,Gallery.getPhotos().size)
+            Gallery.setEditMode(false, this)
         }
     }
 
     private fun loadGallery()
     {
-        val recyclerView = findViewById<RecyclerView>(R.id.ac4_recyclerView)
+        var recyclerView = findViewById<RecyclerView>(R.id.ac4_recyclerView)
         // LayoutManager depends on device orientation
-        if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            recyclerView.layoutManager = GridLayoutManager(this, 3)
-            recyclerView.addItemDecoration(GridSpacingItemDecoration(3, -10))
-        }
-        else {
-            recyclerView.layoutManager = GridLayoutManager(this, 5)
-            recyclerView.addItemDecoration(GridSpacingItemDecoration(5, -10))
-        }
+        if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT)
+            recyclerView = setRecyclerView(recyclerView, 3,  this)
+        else
+            recyclerView = setRecyclerView(recyclerView, 5,  this)
 
-        val directory = removeElement(File("${getExternalFilesDir(null)}/images/").listFiles()!!)
-        val thumbnails = File("${getExternalFilesDir(null)}/images/thumbnails/").listFiles()
+        Gallery.setPhotos(this)
 
-
-
-        //Loads gallery images
-        if(thumbnails != null) {
-            if (Gallery.photos.size != directory.size && !thumbnails.isEmpty()) {
-                directory.forEachIndexed{index, file ->
-                    Gallery.photos.add(Photo(file, thumbnails.get(index)))
-                }
-            }
-        }
-
-        recyclerView.adapter = GalleryAdapter(Gallery.photos,this)
+        recyclerView.adapter = GalleryAdapter(Gallery.getPhotos(),this)
         recyclerView.setHasFixedSize(true)
         recyclerView.setItemViewCacheSize(20)
 
         Gallery.setEditMode(Gallery.isEditMode(), this)
     }
 
-    private fun removeElement(arr : Array<File>) : Array<File>{
-        val arrList = arr.toMutableList()
-
-        arrList.removeAt(0)
-        return arrList.toTypedArray()
+    private fun setRecyclerView(recyclerView: RecyclerView, spanCount : Int, context : Context) : RecyclerView{
+        recyclerView.layoutManager = GridLayoutManager(context, spanCount)
+        recyclerView.addItemDecoration(GridSpacingItemDecoration(spanCount, -10))
+        return recyclerView
     }
 
     private fun checkPermissions() : Boolean //True: Permission Granted, False: Permission Denied
@@ -96,10 +81,9 @@ class GalleryActivity : AppCompatActivity() {
 
     override fun onBackPressed(){
         Gallery.clearSelected()
-        Gallery.setEditMode(false, this)
         if(!Gallery.isEditMode()) {
-            Gallery.removeViews()
             finish()
         }
+        Gallery.setEditMode(false, this)
     }
 }

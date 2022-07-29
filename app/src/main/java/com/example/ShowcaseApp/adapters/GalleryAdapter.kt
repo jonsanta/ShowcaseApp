@@ -25,17 +25,16 @@ class GalleryAdapter(private val list: List<Photo>, private val activity : Galle
         val photo = list[position]
 
         Picasso.get().load(Uri.fromFile(photo.getThumbnail())).noFade().fit().centerCrop().into(holder.photo)
-        photo.setView(holder)
 
         holder.photo.adjustViewBounds = true
 
         // EDITMODE CHECK FOR PORTRAIT <--> LAND SWAP REDRAW
         holder.checkBox.isClickable = Gallery.isEditMode()
         holder.checkBox.isVisible = Gallery.isEditMode()
-        holder.checkBox.isChecked = photo.isSelected()
+        holder.checkBox.isChecked = Gallery.isSelected(photo)
 
         // Click Listener
-        onClick(holder, photo)
+        onClick(holder, photo, position)
         photo.setView(holder)
     }
 
@@ -44,24 +43,23 @@ class GalleryAdapter(private val list: List<Photo>, private val activity : Galle
         return list.size
     }
 
-    private fun onClick(holder : ViewHolder, photo : Photo){
+    private fun onClick(holder : ViewHolder, photo : Photo, position : Int){
         holder.photo.setOnLongClickListener{
             if(!Gallery.isEditMode()) { // LONG CLICK EVENT - while !editMode
                 Gallery.setEditMode(true, activity)// Enables editMode
-                buttonAction(holder, photo)
+                buttonAction(holder, photo, position)
             }
-            else buttonAction(holder, photo)
+            else buttonAction(holder, photo, position)
             true
         }
 
         holder.photo.setOnClickListener{
-            if(Gallery.isEditMode()) buttonAction(holder, photo) // CLICK EVENT - while editMode
+            if(Gallery.isEditMode()) buttonAction(holder, photo, position) // CLICK EVENT - while editMode
         }
     }
 
-    private fun buttonAction(holder : ViewHolder, photo : Photo){
-        photo.setSelected(!photo.isSelected())
-        Gallery.countSelectedPhotos(activity)
+    private fun buttonAction(holder : ViewHolder, photo : Photo, position: Int){
+        Gallery.setSelected(photo, position, activity)
         holder.checkBox.isChecked = !holder.checkBox.isChecked
     }
 
