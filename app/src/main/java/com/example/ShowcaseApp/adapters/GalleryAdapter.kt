@@ -24,7 +24,7 @@ class GalleryAdapter(private val list: List<Photo>, private val activity : Galle
 
         val photo = list[position]
 
-        Picasso.get().load(Uri.fromFile(photo.getFile())).noFade().fit().centerCrop().into(holder.photo)
+        Picasso.get().load(Uri.fromFile(photo.getThumbnail())).noFade().fit().centerCrop().into(holder.photo)
         photo.setView(holder)
 
         holder.photo.adjustViewBounds = true

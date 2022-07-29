@@ -3,7 +3,7 @@ package com.example.showcaseApp.classes
 import com.example.showcaseApp.adapters.GalleryAdapter
 import java.io.File
 
-class Photo(private val file : File) {
+class Photo(private val file : File, private val thumbnail : File) {
 
     private var view : GalleryAdapter.ViewHolder? = null
     private var selected : Boolean = false
@@ -22,6 +22,11 @@ class Photo(private val file : File) {
 
     fun removeFile(){
         file.delete()
+        thumbnail.delete()
+    }
+
+    fun getThumbnail() : File{
+        return thumbnail
     }
 
     fun isSelected() : Boolean{

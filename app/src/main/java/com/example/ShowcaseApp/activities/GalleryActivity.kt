@@ -53,12 +53,18 @@ class GalleryActivity : AppCompatActivity() {
             recyclerView.addItemDecoration(GridSpacingItemDecoration(5, -10))
         }
 
-        val directory = File("${getExternalFilesDir(null)}/images/").listFiles()
+        val directory = removeElement(File("${getExternalFilesDir(null)}/images/").listFiles()!!)
+        val thumbnails = File("${getExternalFilesDir(null)}/images/thumbnails/").listFiles()
+
+
 
         //Loads gallery images
-        directory?.forEach {
-            if(Gallery.photos.size != directory.size)
-                Gallery.photos.add(Photo(it))
+        if(thumbnails != null) {
+            if (Gallery.photos.size != directory.size && !thumbnails.isEmpty()) {
+                directory.forEachIndexed{index, file ->
+                    Gallery.photos.add(Photo(file, thumbnails.get(index)))
+                }
+            }
         }
 
         recyclerView.adapter = GalleryAdapter(Gallery.photos,this)
@@ -66,6 +72,13 @@ class GalleryActivity : AppCompatActivity() {
         recyclerView.setItemViewCacheSize(20)
 
         Gallery.setEditMode(Gallery.isEditMode(), this)
+    }
+
+    private fun removeElement(arr : Array<File>) : Array<File>{
+        val arrList = arr.toMutableList()
+
+        arrList.removeAt(0)
+        return arrList.toTypedArray()
     }
 
     private fun checkPermissions() : Boolean //True: Permission Granted, False: Permission Denied

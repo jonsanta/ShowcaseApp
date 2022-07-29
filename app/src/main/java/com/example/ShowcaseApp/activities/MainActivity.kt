@@ -22,24 +22,7 @@ class MainActivity : AppCompatActivity() {
         val mp : MediaPlayer = MediaPlayer.create(this, R.raw.cancion)
         var position = 0 //variable que guardara la posicion de la reproduccion en milisegundos
 
-        File("${getExternalFilesDir(null)}/images/").mkdirs()
-        /*
-        //Loads gallery images
-        val directory = File("${getExternalFilesDir(null)}/images/").listFiles()
-        if (directory != null) {
-            lifecycleScope.launch{ // Generate Bitmaps
-                withContext(Dispatchers.IO){
-                    for(file in directory){
-                        Gallery.setBitmap(file)
-                        runOnUiThread{
-                            if(Gallery.isRecyclerViewInitialized())
-                                Gallery.getRecyclerView().adapter?.notifyDataSetChanged()
-                        }
-                    }
-                }
-            }
-        }
-*/
+        File("${getExternalFilesDir(null)}/images/thumbnails").mkdirs()
 
         findViewById<ImageButton>(R.id.acm_imagebtn_play).setOnClickListener {
             if(!mp.isPlaying){ //Si se pulsa el botón start y no se está reproduciendo
