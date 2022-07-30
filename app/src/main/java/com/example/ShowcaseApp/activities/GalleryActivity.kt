@@ -14,9 +14,11 @@ import com.example.showcaseApp.R
 import com.example.showcaseApp.adapters.GalleryAdapter
 import com.example.showcaseApp.classes.Gallery
 import com.example.showcaseApp.classes.GridSpacingItemDecoration
+import com.example.showcaseApp.fragments.PhotoPreviewFragment
 
 class GalleryActivity : AppCompatActivity(){
     private val READ_REQUEST_CODE = 123
+    private var photoPreviewFragment : PhotoPreviewFragment? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,13 +34,7 @@ class GalleryActivity : AppCompatActivity(){
         }
 
         findViewById<ImageButton>(R.id.ac4_remove).setOnClickListener{
-            val minValue = Gallery.getSelected().last()
-            Gallery.getSelected().forEach{
-                findViewById<RecyclerView>(R.id.ac4_recyclerView).adapter?.notifyItemRemoved(it)
-            }
-            Gallery.removePhotos(this)
-            findViewById<RecyclerView>(R.id.ac4_recyclerView).adapter?.notifyItemRangeChanged(minValue,Gallery.getPhotos().size)
-            Gallery.setEditMode(false, this)
+            removePhoto()
         }
     }
 
@@ -49,7 +45,7 @@ class GalleryActivity : AppCompatActivity(){
         }
     }
 
-    public fun loadGallery()
+    private fun loadGallery()
     {
         var recyclerView = findViewById<RecyclerView>(R.id.ac4_recyclerView)
         // LayoutManager depends on device orientation
@@ -87,16 +83,42 @@ class GalleryActivity : AppCompatActivity(){
     }
 
     override fun onBackPressed(){
-        Gallery.clearSelected()
-        if(!Gallery.isEditMode()) {
-            finish()
+        if(photoPreviewFragment == null){
+            Gallery.clearSelected()
+            if(!Gallery.isEditMode()) {
+                finish()
+            }
+            Gallery.setEditMode(false, this)
+        }else{
+            Gallery.setViewVisibility(findViewById<ImageButton>(R.id.ac4_remove), false)
+            supportFragmentManager.popBackStack()
+            fragmentClosed()
         }
-        Gallery.setEditMode(false, this)
     }
 
     fun fragmentClosed() {
         findViewById<ImageButton>(R.id.ac4_btn_discard).setOnClickListener{
             onBackPressed()
         }
+        findViewById<ImageButton>(R.id.ac4_remove).setOnClickListener{
+            removePhoto()
+        }
+        photoPreviewFragment = null
+        Gallery.clearSelected()
     }
+
+    fun removePhoto(){
+        val minValue = Gallery.getSelected().last()
+        Gallery.getSelected().forEach{
+            findViewById<RecyclerView>(R.id.ac4_recyclerView).adapter?.notifyItemRemoved(it)
+        }
+        Gallery.removePhotos(this)
+        findViewById<RecyclerView>(R.id.ac4_recyclerView).adapter?.notifyItemRangeChanged(minValue,Gallery.getPhotos().size)
+        Gallery.setEditMode(false, this)
+    }
+
+    fun setPhotoPreviewFragment(photoPreviewFragment: PhotoPreviewFragment){
+        this.photoPreviewFragment = photoPreviewFragment
+    }
+
 }

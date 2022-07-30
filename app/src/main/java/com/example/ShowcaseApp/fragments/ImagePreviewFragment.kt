@@ -13,7 +13,6 @@ import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import com.example.showcaseApp.R
 import com.example.showcaseApp.activities.CameraActivity
-import com.example.showcaseApp.classes.Contacts
 import com.example.showcaseApp.classes.Gallery
 import com.example.showcaseApp.classes.Photo
 import com.example.showcaseApp.classes.Utils
@@ -29,7 +28,7 @@ class ImagePreviewFragment(private val file : File, private val activity: Camera
         view.findViewById<ImageButton>(R.id.ipf_btn_save).setOnClickListener{
             val copy = Utils.copyFile(FileInputStream(file), File("${activity.getExternalFilesDir(null)}/images/"+file.name))
             file.delete()
-            Gallery.setSinglePhoto(Photo(copy, makeThumbnailFile(copy, 1000)))
+            Gallery.setSinglePhoto(Photo(copy, makeThumbnailFile(copy)))
             activity.supportFragmentManager.popBackStack()
             CameraActivity.isAvailable(true)
         }
@@ -41,7 +40,8 @@ class ImagePreviewFragment(private val file : File, private val activity: Camera
         return view
     }
 
-    private fun makeThumbnailFile(source: File, thumbnailSize : Int): File {
+    private fun makeThumbnailFile(source: File): File {
+        val thumbnailSize = 1000
         val bounds = BitmapFactory.Options()
         bounds.inJustDecodeBounds = true
         BitmapFactory.decodeFile(source.path, bounds)

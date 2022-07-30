@@ -42,13 +42,11 @@ class CameraActivity : AppCompatActivity() {
         viewBinding = CameraActivityBinding.inflate(layoutInflater)
         setContentView(viewBinding.root)
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            window.setDecorFitsSystemWindows(false)
-        }else{
-            //DEPRECATED BUT STILL WORKING IN OLD VERSIONS
-            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
-        }
         window.navigationBarColor = resources.getColor(R.color.black, resources.newTheme())
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
+            window.setDecorFitsSystemWindows(false)
+        else
+            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN //DEPRECATED BUT STILL WORKING IN OLD VERSIONS
 
         // Request camera permissions
         if (allPermissionsGranted()) {

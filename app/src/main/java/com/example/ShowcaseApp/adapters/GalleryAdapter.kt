@@ -8,9 +8,9 @@ import android.widget.CheckBox
 import android.widget.ImageButton
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import com.example.showcaseApp.classes.Gallery
 import com.example.showcaseApp.R
 import com.example.showcaseApp.activities.GalleryActivity
+import com.example.showcaseApp.classes.Gallery
 import com.example.showcaseApp.classes.Photo
 import com.example.showcaseApp.fragments.PhotoPreviewFragment
 import com.squareup.picasso.Picasso
@@ -45,18 +45,20 @@ class GalleryAdapter(private val list: List<Photo>, private val activity : Galle
     }
 
     private fun onClick(holder : ViewHolder, photo : Photo, position : Int){
+
         holder.photo.setOnLongClickListener{
             if(!Gallery.isEditMode()) { // LONG CLICK EVENT - while !editMode
                 Gallery.setEditMode(true, activity)// Enables editMode
-                buttonAction(holder, photo, position)
+                select(holder, photo, position)
             }
-            else buttonAction(holder, photo, position)
+            else select(holder, photo, position)
             true
         }
 
         holder.photo.setOnClickListener{
-            if(Gallery.isEditMode()) buttonAction(holder, photo, position) // CLICK EVENT - while editMode
+            if(Gallery.isEditMode()) select(holder, photo, position) // CLICK EVENT - while editMode
             else{
+                Gallery.setSelected(photo, position, activity)
                 val transaction = activity.supportFragmentManager.beginTransaction()
                 transaction.addToBackStack(null)
                 transaction.add(R.id.ac4_fragment, PhotoPreviewFragment(photo.getFile(), activity)).commit()
@@ -64,7 +66,7 @@ class GalleryAdapter(private val list: List<Photo>, private val activity : Galle
         }
     }
 
-    private fun buttonAction(holder : ViewHolder, photo : Photo, position: Int){
+    private fun select(holder : ViewHolder, photo : Photo, position: Int){
         Gallery.setSelected(photo, position, activity)
         holder.checkBox.isChecked = !holder.checkBox.isChecked
     }
