@@ -6,12 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.ImageButton
+import android.widget.LinearLayout
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.example.showcaseApp.R
 import com.example.showcaseApp.activities.GalleryActivity
 import com.example.showcaseApp.classes.Gallery
 import com.example.showcaseApp.classes.Photo
+import com.example.showcaseApp.classes.Utils
+import com.example.showcaseApp.fragments.ContactInfoFragment
 import com.example.showcaseApp.fragments.PhotoPreviewFragment
 import com.squareup.picasso.Picasso
 
@@ -55,7 +58,8 @@ class GalleryAdapter(private val list: List<Photo>, private val activity : Galle
             true
         }
 
-        holder.photo.setOnClickListener{
+        holder.photo.setOnClickListener { view ->
+            Utils.preventTwoClick(view)
             if(Gallery.isEditMode()) select(holder, photo, position) // CLICK EVENT - while editMode
             else{
                 Gallery.setSelected(photo, position, activity)

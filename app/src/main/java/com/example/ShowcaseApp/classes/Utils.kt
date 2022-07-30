@@ -47,5 +47,14 @@ class Utils {
         fun getURLOfDrawable(resId : Int) : String{
             return Uri.parse("android.resource://"+ BuildConfig.APPLICATION_ID+"/" +resId).toString()
         }
+
+        fun preventTwoClick(view : View){
+            view.isEnabled = false
+            view.postDelayed(
+                { view.isEnabled = true },
+                500
+            )
+
+        }
     }
 }

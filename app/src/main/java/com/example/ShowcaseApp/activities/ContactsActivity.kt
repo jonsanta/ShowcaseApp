@@ -6,11 +6,15 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.showcaseApp.classes.AdminSQLiteOpenHelper
 import com.example.showcaseApp.fragments.ContactListFragment
 import com.example.showcaseApp.R
+import com.example.showcaseApp.databinding.ContactsActivityBinding
 
 class ContactsActivity : AppCompatActivity() {
+    private lateinit var viewBinding : ContactsActivityBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.contacts_activity)
+        viewBinding = ContactsActivityBinding.inflate(layoutInflater)
+        setContentView(viewBinding.root)
 
         val admin = AdminSQLiteOpenHelper(this, "Contacts", null, 1)
         val db : SQLiteDatabase = admin.writableDatabase

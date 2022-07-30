@@ -8,36 +8,44 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
-import android.widget.ImageView
+import android.widget.LinearLayout
 import androidx.core.net.toUri
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.example.showcaseApp.R
 import com.example.showcaseApp.activities.CameraActivity
 import com.example.showcaseApp.classes.Gallery
 import com.example.showcaseApp.classes.Photo
 import com.example.showcaseApp.classes.Utils
+import com.example.showcaseApp.databinding.ImagePreviewBinding
 import com.squareup.picasso.Picasso
 import java.io.*
 
 class ImagePreviewFragment(private val file : File, private val activity: CameraActivity) : Fragment(){
+    private lateinit var viewBinding : ImagePreviewBinding
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.image_preview, container, false)
+        viewBinding = ImagePreviewBinding.inflate(layoutInflater)
 
-        Picasso.get().load(Uri.parse(file.toUri().toString())).noFade().fit().centerCrop().into(view.findViewById<ImageView>(R.id.ppf_image))
+        Picasso.get().load(Uri.parse(file.toUri().toString())).noFade().fit().centerCrop().into(viewBinding.ppfImage)
 
-        view.findViewById<ImageButton>(R.id.ipf_btn_save).setOnClickListener{
+        viewBinding.ipfBtnSave.setOnClickListener { view ->
+            Utils.preventTwoClick(view)
             val copy = Utils.copyFile(FileInputStream(file), File("${activity.getExternalFilesDir(null)}/images/"+file.name))
             file.delete()
             Gallery.setSinglePhoto(Photo(copy, makeThumbnailFile(copy)))
             activity.supportFragmentManager.popBackStack()
             CameraActivity.isAvailable(true)
         }
-        view.findViewById<ImageButton>(R.id.ipf_btn_del).setOnClickListener{
+
+        viewBinding.ipfBtnDel.setOnClickListener { view ->
+            Utils.preventTwoClick(view)
             file.delete()
             activity.supportFragmentManager.popBackStack()
             CameraActivity.isAvailable(true)
         }
-        return view
+
+        return viewBinding.root.rootView
     }
 
     private fun makeThumbnailFile(source: File): File {

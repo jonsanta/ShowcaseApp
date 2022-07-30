@@ -9,6 +9,7 @@ import androidx.core.graphics.drawable.toBitmap
 import androidx.recyclerview.widget.RecyclerView
 import com.example.showcaseApp.interfaces.OnImageClickListener
 import com.example.showcaseApp.R
+import com.example.showcaseApp.classes.Utils
 import com.squareup.picasso.Picasso
 
 class IconListAdapter(private val images : List<String>, private val alertDialog: AlertDialog, private val onImageClickListener: OnImageClickListener) : RecyclerView.Adapter<IconListAdapter.ViewHolder>() {
@@ -23,7 +24,8 @@ class IconListAdapter(private val images : List<String>, private val alertDialog
         Picasso.get().load(images[position]).noFade().fit().centerCrop().into(holder.photo)
         holder.photo.adjustViewBounds = true
 
-        holder.photo.setOnClickListener{
+        holder.photo.setOnClickListener { view ->
+            Utils.preventTwoClick(view)
             onImageClickListener.onImageClick(holder.photo.drawable.toBitmap())
             alertDialog.cancel()
         }

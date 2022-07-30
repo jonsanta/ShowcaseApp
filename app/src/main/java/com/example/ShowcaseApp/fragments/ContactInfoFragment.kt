@@ -11,7 +11,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageButton
-import android.widget.LinearLayout
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
@@ -20,32 +19,36 @@ import com.example.showcaseApp.R
 import com.example.showcaseApp.activities.ContactsActivity
 import com.example.showcaseApp.classes.Contacts
 import com.example.showcaseApp.classes.Utils
+import com.example.showcaseApp.databinding.ContactInfoFragmentBinding
 
 class ContactInfoFragment(private val contactID : Int, private val db : SQLiteDatabase, private val activity : ContactsActivity) : Fragment(), OnImageClickListener {
+    private lateinit var viewBinding : ContactInfoFragmentBinding
 
     private var editMode = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.contact_info_fragment, container, false)
+        viewBinding = ContactInfoFragmentBinding.inflate(layoutInflater)
 
         val cafBtnAdd: ImageButton = activity.findViewById(R.id.caf_btn_add)
         val cafBtnVolver : ImageButton = activity.findViewById(R.id.caf_btn_volver)
 
         cafBtnAdd.background = AppCompatResources.getDrawable(this.requireContext(), R.drawable.edit)
 
-        val name = view.findViewById<EditText>(R.id.caf_name)
-        val tel = view.findViewById<EditText>(R.id.caf_tel)
-        val info = view.findViewById<EditText>(R.id.caf_info)
-        val icon = view.findViewById<ImageButton>(R.id.caf_btn_add_image)
+        val name = viewBinding.cafName
+        val tel = viewBinding.cafTel
+        val info = viewBinding.cafInfo
+        val icon = viewBinding.cafBtnAddImage
         setEditMode(editMode, listOf(name, tel, info), icon)
 
         Contacts.select(contactID, name, tel, info, icon, db)
 
-        view.setOnClickListener{
-            Utils.closeKeyboard(context, view)
+        viewBinding.root.rootView.setOnClickListener { view ->
+            Utils.preventTwoClick(view)
+            Utils.closeKeyboard(viewBinding.root.rootView.context, viewBinding.root.rootView)
         }
 
-        view.findViewById<LinearLayout>(R.id.caf_tel_linear).setOnClickListener{
+        viewBinding.cafTelLinear.setOnClickListener { view ->
+            Utils.preventTwoClick(view)
             if(!editMode){
                 val intent = Intent(Intent.ACTION_DIAL)
                 intent.data = Uri.parse("tel:"+tel.text.toString())
@@ -53,16 +56,19 @@ class ContactInfoFragment(private val contactID : Int, private val db : SQLiteDa
             }
         }
 
-        view.findViewById<ImageButton>(R.id.caf_btn_add_image).setOnClickListener{
+        viewBinding.cafBtnAddImage.setOnClickListener { view ->
+            Utils.preventTwoClick(view)
             Contacts.getAlertDialog(inflater, container, this, this).show()
         }
 
-        view.findViewById<ImageButton>(R.id.caf_btn_borrar).setOnClickListener{
+        viewBinding.cafBtnBorrar.setOnClickListener { view ->
+            Utils.preventTwoClick(view)
             db.delete("Contacts", "id='$contactID'", null)
             activity.supportFragmentManager.popBackStack()
         }
 
-        cafBtnAdd.setOnClickListener{
+        cafBtnAdd.setOnClickListener { view ->
+            Utils.preventTwoClick(view)
             if(editMode){
                 Contacts.update(contactID, name.text.toString(), tel.text.toString(), info.text.toString(), icon.drawable.toBitmap(), db, activity)
                 swapMode(name, tel, info, icon, cafBtnAdd, cafBtnVolver)
@@ -71,14 +77,15 @@ class ContactInfoFragment(private val contactID : Int, private val db : SQLiteDa
             }
         }
 
-        cafBtnVolver.setOnClickListener{
+        cafBtnVolver.setOnClickListener { view ->
+            Utils.preventTwoClick(view)
             if(!editMode)
                 activity.supportFragmentManager.popBackStack()
             else
                 swapMode(name, tel, info, icon, cafBtnAdd, cafBtnVolver)
         }
 
-        return view
+        return viewBinding.root.rootView
     }
 
     private fun swapMode(name : EditText, tel : EditText, info : EditText, icon : ImageButton, cafBtnAdd : ImageButton, cafBtnVolver : ImageButton)
@@ -112,13 +119,13 @@ class ContactInfoFragment(private val contactID : Int, private val db : SQLiteDa
             else {
                 list[i].inputType = InputType.TYPE_NULL
                 list[1].setOnClickListener{
-                    view?.findViewById<LinearLayout>(R.id.caf_tel_linear)?.performClick()
+                    viewBinding.cafTelLinear.performClick()
                 }
             }
         }
     }
 
     override fun onImageClick(data: Bitmap) {
-        this.activity.findViewById<ImageButton>(R.id.caf_btn_add_image).setImageBitmap(Utils.roundBitmap(data))
+        viewBinding.cafBtnAddImage.setImageBitmap(Utils.roundBitmap(data))
     }
 }

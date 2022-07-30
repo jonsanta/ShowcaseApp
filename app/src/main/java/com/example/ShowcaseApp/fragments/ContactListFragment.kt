@@ -10,7 +10,6 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -24,33 +23,34 @@ import com.example.showcaseApp.R
 import com.example.showcaseApp.activities.ContactsActivity
 import com.example.showcaseApp.adapters.ContactsAdapter
 import com.example.showcaseApp.classes.AdminSQLiteOpenHelper
-import com.example.showcaseApp.classes.Contacts
 import com.example.showcaseApp.classes.Utils
 import com.example.showcaseApp.classes.XMLReader
+import com.example.showcaseApp.databinding.ContactListFragmentBinding
 import java.io.File
-import java.io.FileOutputStream
 import java.io.InputStream
 
 
 class ContactListFragment(private val db : SQLiteDatabase, private val admin : AdminSQLiteOpenHelper, private val activity : ContactsActivity) : Fragment() {
+    private lateinit var viewBinding : ContactListFragmentBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         var cursor = db.rawQuery("SELECT * FROM contacts ORDER BY UPPER(name) ASC" , null)
+        viewBinding = ContactListFragmentBinding.inflate(layoutInflater)
+
         activity.findViewById<ImageButton>(R.id.caf_btn_add).background = AppCompatResources.getDrawable(this.requireContext(), R.drawable.menu)
         activity.findViewById<ImageButton>(R.id.caf_btn_volver).background = AppCompatResources.getDrawable(this.requireContext(), R.drawable.arrow)
 
-        val view = inflater.inflate(R.layout.contact_list_fragment, container, false)
-
-        val recyclerView = view.findViewById<RecyclerView>(R.id.icons_rv)
-        recyclerView.layoutManager = LinearLayoutManager(view.context)
+        val recyclerView = viewBinding.iconsRv
+        recyclerView.layoutManager = LinearLayoutManager(viewBinding.root.context)
         val adapter = ContactsAdapter(cursor, db, activity)
         recyclerView.adapter = adapter
 
-        view.findViewById<EditText>(R.id.clf_search).setOnClickListener{
+        viewBinding.clfSearch.setOnClickListener { view ->
+            Utils.preventTwoClick(view)
             recyclerView.stopScroll()
         }
 
-        view.findViewById<EditText>(R.id.clf_search).addTextChangedListener(object : TextWatcher {
+        viewBinding.clfSearch.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {
                 //Never used. Implementation required for addTextChangedListener
             }
@@ -60,18 +60,18 @@ class ContactListFragment(private val db : SQLiteDatabase, private val admin : A
             }
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                if(view.findViewById<EditText>(R.id.clf_search).text.toString() == "")
+                if(viewBinding.clfSearch.text.toString() == "")
                     cursor = db.rawQuery("SELECT * FROM contacts ORDER BY UPPER(name) ASC" , null)
                 else
-                    cursor = db.rawQuery("SELECT * FROM contacts WHERE name LIKE '" + view.findViewById<EditText>(
-                        R.id.clf_search
-                    ).text.toString().uppercase() + "%' ORDER BY UPPER(name) ASC", null)
+                    cursor = db.rawQuery("SELECT * FROM contacts WHERE name LIKE '" + viewBinding.clfSearch
+                        .text.toString().uppercase() + "%' ORDER BY UPPER(name) ASC", null)
 
                 adapter.setCursor(cursor)
             }
         })
 
-        view.findViewById<ImageButton>(R.id.clf_btn_add).setOnClickListener{
+        viewBinding.clfBtnAdd.setOnClickListener { view ->
+            Utils.preventTwoClick(view)
             activity.findViewById<LinearLayout>(R.id.ac2_dropdown).isVisible = false
             cursor.close()
             val transaction = activity.supportFragmentManager.beginTransaction()
@@ -80,18 +80,20 @@ class ContactListFragment(private val db : SQLiteDatabase, private val admin : A
             transaction.commit()
         }
 
-        activity.findViewById<TextView>(R.id.ac2_export).setOnClickListener{
+        activity.findViewById<TextView>(R.id.ac2_export).setOnClickListener { view ->
+            Utils.preventTwoClick(view)
             activity.findViewById<LinearLayout>(R.id.ac2_dropdown).isVisible = false
             XMLReader.export(db, activity)
         }
 
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                Utils.closeKeyboard(context, view)
+                Utils.closeKeyboard(viewBinding.root.rootView.context, viewBinding.root.rootView)
             }
         })
 
-        activity.findViewById<TextView>(R.id.ac2_import).setOnClickListener{
+        activity.findViewById<TextView>(R.id.ac2_import).setOnClickListener { view ->
+            Utils.preventTwoClick(view)
             activity.findViewById<LinearLayout>(R.id.ac2_dropdown).isVisible = false
             val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
             intent.addCategory(Intent.CATEGORY_OPENABLE)
@@ -100,11 +102,13 @@ class ContactListFragment(private val db : SQLiteDatabase, private val admin : A
             import.launch(Intent.createChooser(intent, "Select file."))
         }
 
-        activity.findViewById<ImageButton>(R.id.caf_btn_add).setOnClickListener{
+        activity.findViewById<ImageButton>(R.id.caf_btn_add).setOnClickListener { view ->
+            Utils.preventTwoClick(view)
             activity.findViewById<LinearLayout>(R.id.ac2_dropdown).isVisible = !activity.findViewById<LinearLayout>(R.id.ac2_dropdown).isVisible
         }
 
-        activity.findViewById<ImageButton>(R.id.caf_btn_volver).setOnClickListener{
+        activity.findViewById<ImageButton>(R.id.caf_btn_volver).setOnClickListener { view ->
+            Utils.preventTwoClick(view)
             db.close()
             admin.close()
             cursor.close()
@@ -112,7 +116,7 @@ class ContactListFragment(private val db : SQLiteDatabase, private val admin : A
             activity.finish()
         }
 
-        return view
+        return viewBinding.root.rootView
     }
 
     private val import = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->

@@ -19,6 +19,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.showcaseApp.R
 import com.example.showcaseApp.classes.LuminosityAnalyzer
+import com.example.showcaseApp.classes.Utils
 import com.example.showcaseApp.databinding.CameraActivityBinding
 import com.example.showcaseApp.fragments.ImagePreviewFragment
 import java.io.File
@@ -56,17 +57,20 @@ class CameraActivity : AppCompatActivity() {
         }
 
         // Set up the listeners for take photo and video capture buttons
-        viewBinding.imageCaptureButton.setOnClickListener {
-            if(isAvailable())
+        viewBinding.imageCaptureButton.setOnClickListener { view ->
+            Utils.preventTwoClick(view)
+            if (isAvailable())
                 takePhoto()
         }
 
-        viewBinding.ac3BtnVolver.setOnClickListener{
+        viewBinding.ac3BtnVolver.setOnClickListener { view ->
+            Utils.preventTwoClick(view)
             finish()
         }
 
-        viewBinding.ac3BtnSwitch.setOnClickListener{
-            if(isAvailable()) {
+        viewBinding.ac3BtnSwitch.setOnClickListener { view ->
+            Utils.preventTwoClick(view)
+            if (isAvailable()) {
                 cameraSelector = if (cameraSelector == DEFAULT_BACK_CAMERA)
                     DEFAULT_FRONT_CAMERA
                 else

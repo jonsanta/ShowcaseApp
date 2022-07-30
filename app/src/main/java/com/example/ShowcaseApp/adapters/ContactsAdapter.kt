@@ -13,6 +13,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.example.showcaseApp.R
 import com.example.showcaseApp.activities.ContactsActivity
+import com.example.showcaseApp.classes.Utils
 import com.example.showcaseApp.fragments.ContactInfoFragment
 
 class ContactsAdapter(private var cursor : Cursor, private val db : SQLiteDatabase, private val activity : ContactsActivity) : RecyclerView.Adapter<ContactsAdapter.ViewHolder>() {
@@ -41,7 +42,8 @@ class ContactsAdapter(private var cursor : Cursor, private val db : SQLiteDataba
         holder.info.text = info
         holder.icon.setImageBitmap(icon)
 
-        holder.itemView.setOnClickListener{
+        holder.itemView.setOnClickListener { view ->
+            Utils.preventTwoClick(view)
             val transaction = activity.supportFragmentManager.beginTransaction()
             cursor.close()
             transaction.replace(R.id.ac2_fragment, ContactInfoFragment(id.toInt(), db, activity))

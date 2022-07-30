@@ -15,20 +15,21 @@ import com.example.showcaseApp.R
 import com.example.showcaseApp.activities.ContactsActivity
 import com.example.showcaseApp.classes.Contacts
 import com.example.showcaseApp.classes.Utils
+import com.example.showcaseApp.databinding.ContactAddFragmentBinding
 
-class ContactAddFragment(private val db : SQLiteDatabase, private val activity : ContactsActivity) : Fragment(),
-    OnImageClickListener {
+class ContactAddFragment(private val db : SQLiteDatabase, private val activity : ContactsActivity) : Fragment(), OnImageClickListener {
+    private lateinit var viewBinding: ContactAddFragmentBinding
 
     private var edited = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-
-        val view = inflater.inflate(R.layout.contact_add_fragment, container, false)
+        viewBinding = ContactAddFragmentBinding.inflate(layoutInflater)
 
         val cafBtnAdd: ImageButton = activity.findViewById(R.id.caf_btn_add)
         val cafBtnVolver : ImageButton = activity.findViewById(R.id.caf_btn_volver)
 
-        view.setOnClickListener{
+        viewBinding.root.rootView.setOnClickListener { view ->
+            Utils.preventTwoClick(view)
             Utils.closeKeyboard(context, view)
         }
 
@@ -37,32 +38,35 @@ class ContactAddFragment(private val db : SQLiteDatabase, private val activity :
 
         cafBtnVolver.background = AppCompatResources.getDrawable(this.requireContext(), R.drawable.cancelar)
 
-        view.findViewById<ImageButton>(R.id.caf_btn_add_image).setOnClickListener{
+        viewBinding.cafBtnAddImage.setOnClickListener { view ->
+            Utils.preventTwoClick(view)
             Contacts.getAlertDialog(inflater, container, this, this).show()
         }
 
-        cafBtnAdd.setOnClickListener{
-            val name = view.findViewById<EditText>(R.id.caf_name).text.toString()
-            val tel = view.findViewById<EditText>(R.id.caf_tel).text.toString()
-            val info = view.findViewById<EditText>(R.id.caf_info).text.toString()
+        cafBtnAdd.setOnClickListener { view ->
+            Utils.preventTwoClick(view)
+            val name = viewBinding.cafName.text.toString()
+            val tel = viewBinding.cafTel.text.toString()
+            val info = viewBinding.cafInfo.text.toString()
 
             if(edited){
-                val bitmap = view.findViewById<ImageButton>(R.id.caf_btn_add_image).drawable.toBitmap()
+                val bitmap = viewBinding.cafBtnAddImage.drawable.toBitmap()
                 Contacts.insert(name, tel, info, bitmap, db, activity)
             } else {
                 Contacts.insert(name, tel, info, Utils.getURLOfDrawable(R.drawable.male_avatar), db, activity)
             }
         }
 
-        cafBtnVolver.setOnClickListener{
+        cafBtnVolver.setOnClickListener { view ->
+            Utils.preventTwoClick(view)
             activity.supportFragmentManager.popBackStack()
         }
 
-        return view
+        return viewBinding.root.rootView
     }
 
     override fun onImageClick(data: Bitmap) {
-        this.activity.findViewById<ImageButton>(R.id.caf_btn_add_image).setImageBitmap(Utils.roundBitmap(data))
+        viewBinding.cafBtnAddImage.setImageBitmap(Utils.roundBitmap(data))
         edited = true
     }
 }

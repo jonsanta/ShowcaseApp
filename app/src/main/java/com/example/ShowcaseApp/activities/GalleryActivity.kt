@@ -14,40 +14,40 @@ import com.example.showcaseApp.R
 import com.example.showcaseApp.adapters.GalleryAdapter
 import com.example.showcaseApp.classes.Gallery
 import com.example.showcaseApp.classes.GridSpacingItemDecoration
+import com.example.showcaseApp.classes.Utils
+import com.example.showcaseApp.databinding.GalleryActivityBinding
 import com.example.showcaseApp.fragments.PhotoPreviewFragment
 
 class GalleryActivity : AppCompatActivity(){
+    private lateinit var viewBinding : GalleryActivityBinding
+
     private val READ_REQUEST_CODE = 123
     private var photoPreviewFragment : PhotoPreviewFragment? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.gallery_activity)
+        viewBinding = GalleryActivityBinding.inflate(layoutInflater)
+        setContentView(viewBinding.root)
 
         if(checkPermissions())
             loadGallery()
         else//Ask for READING Permissions
             requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), READ_REQUEST_CODE)
 
-        findViewById<ImageButton>(R.id.ac4_btn_discard).setOnClickListener{
+        viewBinding.ac4BtnDiscard.setOnClickListener { view ->
+            Utils.preventTwoClick(view)
             onBackPressed()
         }
 
-        findViewById<ImageButton>(R.id.ac4_remove).setOnClickListener{
+        viewBinding.ac4Remove.setOnClickListener { view ->
+            Utils.preventTwoClick(view)
             removePhoto()
-        }
-    }
-
-    override fun onStart() {
-        super.onStart()
-        findViewById<ImageButton>(R.id.ac4_btn_discard).setOnClickListener{
-            onBackPressed()
         }
     }
 
     private fun loadGallery()
     {
-        var recyclerView = findViewById<RecyclerView>(R.id.ac4_recyclerView)
+        var recyclerView = viewBinding.ac4RecyclerView
         // LayoutManager depends on device orientation
         if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT)
             recyclerView = setRecyclerView(recyclerView, 3,  this)
@@ -97,10 +97,13 @@ class GalleryActivity : AppCompatActivity(){
     }
 
     fun fragmentClosed() {
-        findViewById<ImageButton>(R.id.ac4_btn_discard).setOnClickListener{
+        viewBinding.ac4BtnDiscard.setOnClickListener { view ->
+            Utils.preventTwoClick(view)
             onBackPressed()
         }
-        findViewById<ImageButton>(R.id.ac4_remove).setOnClickListener{
+
+        viewBinding.ac4Remove.setOnClickListener { view ->
+            Utils.preventTwoClick(view)
             removePhoto()
         }
         photoPreviewFragment = null
@@ -110,15 +113,14 @@ class GalleryActivity : AppCompatActivity(){
     fun removePhoto(){
         val minValue = Gallery.getSelected().last()
         Gallery.getSelected().forEach{
-            findViewById<RecyclerView>(R.id.ac4_recyclerView).adapter?.notifyItemRemoved(it)
+            viewBinding.ac4RecyclerView.adapter?.notifyItemRemoved(it)
         }
         Gallery.removePhotos(this)
-        findViewById<RecyclerView>(R.id.ac4_recyclerView).adapter?.notifyItemRangeChanged(minValue,Gallery.getPhotos().size)
+        viewBinding.ac4RecyclerView.adapter?.notifyItemRangeChanged(minValue,Gallery.getPhotos().size)
         Gallery.setEditMode(false, this)
     }
 
     fun setPhotoPreviewFragment(photoPreviewFragment: PhotoPreviewFragment){
         this.photoPreviewFragment = photoPreviewFragment
     }
-
 }
