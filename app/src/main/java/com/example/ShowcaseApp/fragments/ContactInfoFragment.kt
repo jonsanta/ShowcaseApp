@@ -1,6 +1,5 @@
 package com.example.showcaseApp.fragments
 
-import android.app.Activity
 import android.content.Intent
 import android.database.sqlite.SQLiteDatabase
 import android.graphics.*
@@ -10,7 +9,6 @@ import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.LinearLayout
@@ -21,6 +19,7 @@ import com.example.showcaseApp.interfaces.OnImageClickListener
 import com.example.showcaseApp.R
 import com.example.showcaseApp.activities.ContactsActivity
 import com.example.showcaseApp.classes.Contacts
+import com.example.showcaseApp.classes.Utils
 
 class ContactInfoFragment(private val contactID : Int, private val db : SQLiteDatabase, private val activity : ContactsActivity) : Fragment(), OnImageClickListener {
 
@@ -41,6 +40,10 @@ class ContactInfoFragment(private val contactID : Int, private val db : SQLiteDa
         setEditMode(editMode, listOf(name, tel, info), icon)
 
         Contacts.select(contactID, name, tel, info, icon, db)
+
+        view.setOnClickListener{
+            Utils.closeKeyboard(context, view)
+        }
 
         view.findViewById<LinearLayout>(R.id.caf_tel_linear).setOnClickListener{
             if(!editMode){
@@ -86,8 +89,7 @@ class ContactInfoFragment(private val contactID : Int, private val db : SQLiteDa
             cafBtnAdd.background = AppCompatResources.getDrawable(this.requireContext(), R.drawable.edit)
             cafBtnVolver.background = AppCompatResources.getDrawable(this.requireContext(), R.drawable.arrow)
 
-            val imm = (context?.getSystemService(Activity.INPUT_METHOD_SERVICE)) as InputMethodManager
-            imm.hideSoftInputFromWindow(view?.windowToken, 0)
+            Utils.closeKeyboard(context, view)
             Contacts.select(contactID, name, tel, info, icon, db)
         }else{
             cafBtnAdd.background = AppCompatResources.getDrawable(this.requireContext(), R.drawable.check)
@@ -117,6 +119,6 @@ class ContactInfoFragment(private val contactID : Int, private val db : SQLiteDa
     }
 
     override fun onImageClick(data: Bitmap) {
-        this.activity.findViewById<ImageButton>(R.id.caf_btn_add_image).setImageBitmap(Contacts.roundBitmap(data))
+        this.activity.findViewById<ImageButton>(R.id.caf_btn_add_image).setImageBitmap(Utils.roundBitmap(data))
     }
 }

@@ -14,6 +14,7 @@ import com.example.showcaseApp.interfaces.OnImageClickListener
 import com.example.showcaseApp.R
 import com.example.showcaseApp.activities.ContactsActivity
 import com.example.showcaseApp.classes.Contacts
+import com.example.showcaseApp.classes.Utils
 
 class ContactAddFragment(private val db : SQLiteDatabase, private val activity : ContactsActivity) : Fragment(),
     OnImageClickListener {
@@ -26,6 +27,10 @@ class ContactAddFragment(private val db : SQLiteDatabase, private val activity :
 
         val cafBtnAdd: ImageButton = activity.findViewById(R.id.caf_btn_add)
         val cafBtnVolver : ImageButton = activity.findViewById(R.id.caf_btn_volver)
+
+        view.setOnClickListener{
+            Utils.closeKeyboard(context, view)
+        }
 
         cafBtnAdd.background = AppCompatResources.getDrawable(this.requireContext(),
             R.drawable.check)
@@ -45,7 +50,7 @@ class ContactAddFragment(private val db : SQLiteDatabase, private val activity :
                 val bitmap = view.findViewById<ImageButton>(R.id.caf_btn_add_image).drawable.toBitmap()
                 Contacts.insert(name, tel, info, bitmap, db, activity)
             } else {
-                Contacts.insert(name, tel, info, Contacts.getURLOfDrawable(R.drawable.male_avatar), db, activity)
+                Contacts.insert(name, tel, info, Utils.getURLOfDrawable(R.drawable.male_avatar), db, activity)
             }
         }
 
@@ -57,7 +62,7 @@ class ContactAddFragment(private val db : SQLiteDatabase, private val activity :
     }
 
     override fun onImageClick(data: Bitmap) {
-        this.activity.findViewById<ImageButton>(R.id.caf_btn_add_image).setImageBitmap(Contacts.roundBitmap(data))
+        this.activity.findViewById<ImageButton>(R.id.caf_btn_add_image).setImageBitmap(Utils.roundBitmap(data))
         edited = true
     }
 }

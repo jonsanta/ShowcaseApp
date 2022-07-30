@@ -15,12 +15,11 @@ import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.showcaseApp.BuildConfig
 import com.example.showcaseApp.R
 import com.example.showcaseApp.activities.ContactsActivity
 import com.example.showcaseApp.adapters.IconListAdapter
 import com.example.showcaseApp.interfaces.OnImageClickListener
-import java.io.ByteArrayOutputStream
+import java.io.*
 
 class Contacts {
     companion object{
@@ -50,7 +49,7 @@ class Contacts {
             if(!checkEmpty(name, tel, activity)){
                 val stream = activity.contentResolver.openInputStream(Uri.parse(path))
                 val bitmap = BitmapFactory.decodeStream(stream)
-                val registry = getContentValues(name, tel, info, roundBitmap(Bitmap.createScaledBitmap(bitmap, 500, 500, true)))
+                val registry = getContentValues(name, tel, info, Utils.roundBitmap(Bitmap.createScaledBitmap(bitmap, 500, 500, true)))
                 db.insert("Contacts", null, registry)
                 registry.clear()
                 activity.supportFragmentManager.popBackStack()
@@ -58,7 +57,7 @@ class Contacts {
         }
 
         fun import(list : List<String>, bitmap : Bitmap, db: SQLiteDatabase){
-            val registry = getContentValues(list[0], list[1], list[2], roundBitmap(bitmap))
+            val registry = getContentValues(list[0], list[1], list[2], Utils.roundBitmap(bitmap))
             db.insert("Contacts", null, registry)
             registry.clear()
         }
@@ -92,24 +91,6 @@ class Contacts {
             return contentValues
         }
 
-        fun roundBitmap(data : Bitmap) : Bitmap{
-            val output = Bitmap.createBitmap(data.width, data.height, Bitmap.Config.ARGB_8888)
-            val canvas = Canvas(output)
-            val paint = Paint()
-            val rect = Rect(0, 0, data.width, data.height)
-            val roundPx = 360f
-            paint.isAntiAlias = true
-            canvas.drawRoundRect(RectF(rect), roundPx, roundPx, paint)
-            paint.xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_IN)
-            canvas.drawBitmap(data, rect, rect, paint)
-
-            return output
-        }
-
-        fun getURLOfDrawable(resId : Int) : String{
-            return Uri.parse("android.resource://"+ BuildConfig.APPLICATION_ID+"/" +resId).toString()
-        }
-
         fun getAlertDialog(inflater : LayoutInflater, container : ViewGroup?, fragment: Fragment, onImageClickListener: OnImageClickListener) : AlertDialog{
             val builder = AlertDialog.Builder(fragment.requireContext())
             builder.setTitle("Selecciona Imagen")
@@ -122,7 +103,7 @@ class Contacts {
 
             val iconList = inflater.inflate(R.layout.icon_list, container, false)
 
-            val list = mutableListOf(getURLOfDrawable(R.drawable.male_avatar), getURLOfDrawable(R.drawable.female_avatar))
+            val list = mutableListOf(Utils.getURLOfDrawable(R.drawable.male_avatar), Utils.getURLOfDrawable(R.drawable.female_avatar))
 
             Gallery.setPhotos(fragment.requireContext())
             Gallery.getPhotos().forEach{

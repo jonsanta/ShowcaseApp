@@ -4,14 +4,16 @@ import android.app.Activity
 import android.content.Intent
 import android.database.sqlite.SQLiteDatabase
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.EditText
+import android.widget.ImageButton
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.isVisible
@@ -22,10 +24,13 @@ import com.example.showcaseApp.R
 import com.example.showcaseApp.activities.ContactsActivity
 import com.example.showcaseApp.adapters.ContactsAdapter
 import com.example.showcaseApp.classes.AdminSQLiteOpenHelper
+import com.example.showcaseApp.classes.Contacts
+import com.example.showcaseApp.classes.Utils
 import com.example.showcaseApp.classes.XMLReader
 import java.io.File
+import java.io.FileOutputStream
 import java.io.InputStream
-import java.nio.file.StandardCopyOption
+
 
 class ContactListFragment(private val db : SQLiteDatabase, private val admin : AdminSQLiteOpenHelper, private val activity : ContactsActivity) : Fragment() {
 
@@ -40,6 +45,10 @@ class ContactListFragment(private val db : SQLiteDatabase, private val admin : A
         recyclerView.layoutManager = LinearLayoutManager(view.context)
         val adapter = ContactsAdapter(cursor, db, activity)
         recyclerView.adapter = adapter
+
+        view.findViewById<EditText>(R.id.clf_search).setOnClickListener{
+            recyclerView.stopScroll()
+        }
 
         view.findViewById<EditText>(R.id.clf_search).addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {
@@ -76,13 +85,19 @@ class ContactListFragment(private val db : SQLiteDatabase, private val admin : A
             XMLReader.export(db, activity)
         }
 
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                Utils.closeKeyboard(context, view)
+            }
+        })
+
         activity.findViewById<TextView>(R.id.ac2_import).setOnClickListener{
             activity.findViewById<LinearLayout>(R.id.ac2_dropdown).isVisible = false
             val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
             intent.addCategory(Intent.CATEGORY_OPENABLE)
             intent.type = "text/xml"
 
-            resultLauncher.launch(Intent.createChooser(intent, "Select file."))
+            import.launch(Intent.createChooser(intent, "Select file."))
         }
 
         activity.findViewById<ImageButton>(R.id.caf_btn_add).setOnClickListener{
@@ -100,27 +115,16 @@ class ContactListFragment(private val db : SQLiteDatabase, private val admin : A
         return view
     }
 
-    private val resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+    private val import = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
-            val data: Intent? = result.data
-            val uri: Uri? = data?.data
-            val file = File("${activity.getExternalFilesDir(null)}/xml/temp.xml")
+            val uri: Uri? = result.data?.data
+            var inputStream : InputStream? = null
 
             if(uri != null)
-            {
-                val inputStream : InputStream? = activity.contentResolver.openInputStream(uri)
+                inputStream  = activity.contentResolver.openInputStream(uri)
 
-                file.createNewFile()
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    java.nio.file.Files.copy(
-                        inputStream,
-                        file.toPath(),
-                        StandardCopyOption.REPLACE_EXISTING)
-                }
-                inputStream?.close()
-            }
+            val file = Utils.copyFile(inputStream, File("${activity.getExternalFilesDir(null)}/xml/temp.xml"))
             XMLReader.import(file, db, activity)
-
 
             activity.finish()
             startActivity(activity.intent)

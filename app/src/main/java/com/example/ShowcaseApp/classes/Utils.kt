@@ -1,0 +1,51 @@
+package com.example.showcaseApp.classes
+
+import android.app.Activity
+import android.content.Context
+import android.graphics.*
+import android.net.Uri
+import android.view.View
+import android.view.inputmethod.InputMethodManager
+import com.example.showcaseApp.BuildConfig
+import java.io.File
+import java.io.FileOutputStream
+import java.io.InputStream
+
+class Utils {
+    companion object{
+        fun copyFile(input : InputStream?, copy: File) : File {
+            FileOutputStream(copy).use { out ->
+                val buf = ByteArray(1024)
+                var len: Int
+                while (input?.read(buf).also { len = it!! }!! > 0) {
+                    out.write(buf, 0, len)
+                }
+            }
+            input?.close()
+            return copy
+        }
+
+        fun closeKeyboard(context: Context?, view : View?){
+            val imm = (context?.getSystemService(Activity.INPUT_METHOD_SERVICE)) as InputMethodManager
+            imm.hideSoftInputFromWindow(view?.windowToken, 0)
+        }
+
+        fun roundBitmap(data : Bitmap) : Bitmap {
+            val output = Bitmap.createBitmap(data.width, data.height, Bitmap.Config.ARGB_8888)
+            val canvas = Canvas(output)
+            val paint = Paint()
+            val rect = Rect(0, 0, data.width, data.height)
+            val roundPx = 360f
+            paint.isAntiAlias = true
+            canvas.drawRoundRect(RectF(rect), roundPx, roundPx, paint)
+            paint.xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_IN)
+            canvas.drawBitmap(data, rect, rect, paint)
+
+            return output
+        }
+
+        fun getURLOfDrawable(resId : Int) : String{
+            return Uri.parse("android.resource://"+ BuildConfig.APPLICATION_ID+"/" +resId).toString()
+        }
+    }
+}

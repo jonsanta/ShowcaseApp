@@ -13,8 +13,10 @@ import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import com.example.showcaseApp.R
 import com.example.showcaseApp.activities.CameraActivity
+import com.example.showcaseApp.classes.Contacts
 import com.example.showcaseApp.classes.Gallery
 import com.example.showcaseApp.classes.Photo
+import com.example.showcaseApp.classes.Utils
 import com.squareup.picasso.Picasso
 import java.io.*
 
@@ -25,7 +27,7 @@ class ImagePreviewFragment(private val file : File, private val activity: Camera
         Picasso.get().load(Uri.parse(file.toUri().toString())).noFade().fit().centerCrop().into(view.findViewById<ImageView>(R.id.ppf_image))
 
         view.findViewById<ImageButton>(R.id.ipf_btn_save).setOnClickListener{
-            val copy = copyFile(file)
+            val copy = Utils.copyFile(FileInputStream(file), File("${activity.getExternalFilesDir(null)}/images/"+file.name))
             file.delete()
             Gallery.setSinglePhoto(Photo(copy, makeThumbnailFile(copy, 1000)))
             activity.supportFragmentManager.popBackStack()
@@ -39,22 +41,7 @@ class ImagePreviewFragment(private val file : File, private val activity: Camera
         return view
     }
 
-    private fun copyFile(src: File?) : File{
-        val copy = File("${activity.getExternalFilesDir(null)}/images/"+file.name)
-        FileInputStream(src).use { `in` ->
-            FileOutputStream(copy).use { out ->
-                // Transfer bytes from in to out
-                val buf = ByteArray(1024)
-                var len: Int
-                while (`in`.read(buf).also { len = it } > 0) {
-                    out.write(buf, 0, len)
-                }
-            }
-        }
-        return copy
-    }
-
-    private fun makeThumbnailFile(source: File, thumbnailSize : Int): File { // File name like "image.png"
+    private fun makeThumbnailFile(source: File, thumbnailSize : Int): File {
         val bounds = BitmapFactory.Options()
         bounds.inJustDecodeBounds = true
         BitmapFactory.decodeFile(source.path, bounds)
