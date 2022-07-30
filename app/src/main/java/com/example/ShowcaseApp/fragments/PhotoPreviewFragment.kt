@@ -8,8 +8,8 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentContainerView
 import com.example.showcaseApp.R
-import com.example.showcaseApp.activities.CameraActivity
 import com.example.showcaseApp.activities.GalleryActivity
 import com.example.showcaseApp.classes.Gallery
 import com.example.showcaseApp.classes.Utils
@@ -31,8 +31,11 @@ class PhotoPreviewFragment(private val file : File, private val activity: Galler
         activity.findViewById<ImageButton>(R.id.ac4_remove).setOnClickListener { view ->
             Utils.preventTwoClick(view)
             Gallery.setViewVisibility(activity.findViewById<ImageButton>(R.id.ac4_remove), false)
+            activity.supportFragmentManager.beginTransaction()
+                .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right)
+                .remove(this)
+                .commit()
             activity.removePhoto()
-            activity.supportFragmentManager.popBackStack()
             activity.fragmentClosed()
         }
 

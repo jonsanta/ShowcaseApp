@@ -7,10 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.LinearLayout
 import androidx.core.net.toUri
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.example.showcaseApp.R
 import com.example.showcaseApp.activities.CameraActivity
@@ -34,18 +31,25 @@ class ImagePreviewFragment(private val file : File, private val activity: Camera
             val copy = Utils.copyFile(FileInputStream(file), File("${activity.getExternalFilesDir(null)}/images/"+file.name))
             file.delete()
             Gallery.setSinglePhoto(Photo(copy, makeThumbnailFile(copy)))
-            activity.supportFragmentManager.popBackStack()
+            closeFragment()
             CameraActivity.isAvailable(true)
         }
 
         viewBinding.ipfBtnDel.setOnClickListener { view ->
             Utils.preventTwoClick(view)
             file.delete()
-            activity.supportFragmentManager.popBackStack()
+            closeFragment()
             CameraActivity.isAvailable(true)
         }
 
         return viewBinding.root.rootView
+    }
+
+    private fun closeFragment(){
+        activity.supportFragmentManager.beginTransaction()
+            .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right)
+            .remove(this)
+            .commit()
     }
 
     private fun makeThumbnailFile(source: File): File {

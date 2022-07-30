@@ -108,11 +108,11 @@ class CameraActivity : AppCompatActivity() {
                 override fun onImageSaved(output: ImageCapture.OutputFileResults){
                     val msg = "${R.string.ac3_btn_capture} ${file.path}"
                     Log.d(TAG, msg)
-
-                    val transaction = supportFragmentManager.beginTransaction()
-                    transaction.addToBackStack(null)
-                    transaction.add(R.id.ac3_fragment, ImagePreviewFragment(file, activity)).commit()
-
+                    supportFragmentManager.beginTransaction()
+                        .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right)
+                        .add(R.id.ac3_fragment, ImagePreviewFragment(file, activity))
+                        .addToBackStack(null)
+                        .commit()
                 }
             }
         )

@@ -10,13 +10,15 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.showcaseApp.R
 import com.example.showcaseApp.activities.ContactsActivity
 import com.example.showcaseApp.classes.Utils
+import com.example.showcaseApp.fragments.ContactAddFragment
 import com.example.showcaseApp.fragments.ContactInfoFragment
 
-class ContactsAdapter(private var cursor : Cursor, private val db : SQLiteDatabase, private val activity : ContactsActivity) : RecyclerView.Adapter<ContactsAdapter.ViewHolder>() {
+class ContactsAdapter(private var cursor : Cursor, private val db : SQLiteDatabase, private val fragment : Fragment, private val activity : ContactsActivity) : RecyclerView.Adapter<ContactsAdapter.ViewHolder>() {
 
     fun setCursor(c : Cursor){
         cursor = c
@@ -44,11 +46,12 @@ class ContactsAdapter(private var cursor : Cursor, private val db : SQLiteDataba
 
         holder.itemView.setOnClickListener { view ->
             Utils.preventTwoClick(view)
-            val transaction = activity.supportFragmentManager.beginTransaction()
             cursor.close()
-            transaction.replace(R.id.ac2_fragment, ContactInfoFragment(id.toInt(), db, activity))
-            transaction.addToBackStack(null)
-            transaction.commit()
+            activity.supportFragmentManager.beginTransaction()
+                .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right)
+                .replace(R.id.ac2_fragment, ContactInfoFragment(id.toInt(), db, fragment, activity), "ContactInfoFragment")
+                .addToBackStack(null)
+                .commit()
             activity.findViewById<LinearLayout>(R.id.ac2_dropdown).isVisible = false
         }
     }

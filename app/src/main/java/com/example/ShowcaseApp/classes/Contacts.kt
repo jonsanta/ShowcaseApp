@@ -41,7 +41,6 @@ class Contacts {
                 val registry = getContentValues(name, tel, info, bitmap)
                 db.insert("Contacts", null, registry)
                 registry.clear()
-                activity.supportFragmentManager.popBackStack()
             }
         }
 
@@ -52,7 +51,6 @@ class Contacts {
                 val registry = getContentValues(name, tel, info, Utils.roundBitmap(Bitmap.createScaledBitmap(bitmap, 500, 500, true)))
                 db.insert("Contacts", null, registry)
                 registry.clear()
-                activity.supportFragmentManager.popBackStack()
             }
         }
 

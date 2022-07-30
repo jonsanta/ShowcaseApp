@@ -12,7 +12,6 @@ import com.example.showcaseApp.activities.GalleryActivity
 import java.io.File
 import java.text.MessageFormat
 import java.util.*
-import kotlin.Comparator
 
 class Gallery {
     companion object{

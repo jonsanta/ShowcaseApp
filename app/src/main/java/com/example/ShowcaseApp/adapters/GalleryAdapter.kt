@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.ImageButton
-import android.widget.LinearLayout
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.example.showcaseApp.R
@@ -14,7 +13,7 @@ import com.example.showcaseApp.activities.GalleryActivity
 import com.example.showcaseApp.classes.Gallery
 import com.example.showcaseApp.classes.Photo
 import com.example.showcaseApp.classes.Utils
-import com.example.showcaseApp.fragments.ContactInfoFragment
+import com.example.showcaseApp.fragments.ContactAddFragment
 import com.example.showcaseApp.fragments.PhotoPreviewFragment
 import com.squareup.picasso.Picasso
 
@@ -63,9 +62,11 @@ class GalleryAdapter(private val list: List<Photo>, private val activity : Galle
             if(Gallery.isEditMode()) select(holder, photo, position) // CLICK EVENT - while editMode
             else{
                 Gallery.setSelected(photo, position, activity)
-                val transaction = activity.supportFragmentManager.beginTransaction()
-                transaction.addToBackStack(null)
-                transaction.add(R.id.ac4_fragment, PhotoPreviewFragment(photo.getFile(), activity)).commit()
+                activity.supportFragmentManager.beginTransaction()
+                    .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right)
+                    .replace(R.id.ac4_fragment, PhotoPreviewFragment(photo.getFile(), activity), "PhotoPreviewFragment")
+                    .addToBackStack(null)
+                    .commit()
             }
         }
     }

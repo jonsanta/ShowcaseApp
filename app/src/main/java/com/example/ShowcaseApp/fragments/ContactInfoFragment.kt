@@ -21,7 +21,7 @@ import com.example.showcaseApp.classes.Contacts
 import com.example.showcaseApp.classes.Utils
 import com.example.showcaseApp.databinding.ContactInfoFragmentBinding
 
-class ContactInfoFragment(private val contactID : Int, private val db : SQLiteDatabase, private val activity : ContactsActivity) : Fragment(), OnImageClickListener {
+class ContactInfoFragment(private val contactID : Int, private val db : SQLiteDatabase, private val fragment : Fragment, private val activity : ContactsActivity) : Fragment(), OnImageClickListener {
     private lateinit var viewBinding : ContactInfoFragmentBinding
 
     private var editMode = false
@@ -64,7 +64,11 @@ class ContactInfoFragment(private val contactID : Int, private val db : SQLiteDa
         viewBinding.cafBtnBorrar.setOnClickListener { view ->
             Utils.preventTwoClick(view)
             db.delete("Contacts", "id='$contactID'", null)
-            activity.supportFragmentManager.popBackStack()
+            activity.supportFragmentManager.beginTransaction()
+                .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right)
+                .remove(this)
+                .replace(R.id.ac2_fragment, fragment)
+                .commit()
         }
 
         cafBtnAdd.setOnClickListener { view ->
@@ -80,7 +84,11 @@ class ContactInfoFragment(private val contactID : Int, private val db : SQLiteDa
         cafBtnVolver.setOnClickListener { view ->
             Utils.preventTwoClick(view)
             if(!editMode)
-                activity.supportFragmentManager.popBackStack()
+                activity.supportFragmentManager.beginTransaction()
+                    .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right)
+                    .remove(this)
+                    .replace(R.id.ac2_fragment, fragment)
+                    .commit()
             else
                 swapMode(name, tel, info, icon, cafBtnAdd, cafBtnVolver)
         }

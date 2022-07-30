@@ -10,6 +10,8 @@ import android.widget.*
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import com.example.showcaseApp.interfaces.OnImageClickListener
 import com.example.showcaseApp.R
 import com.example.showcaseApp.activities.ContactsActivity
@@ -17,7 +19,7 @@ import com.example.showcaseApp.classes.Contacts
 import com.example.showcaseApp.classes.Utils
 import com.example.showcaseApp.databinding.ContactAddFragmentBinding
 
-class ContactAddFragment(private val db : SQLiteDatabase, private val activity : ContactsActivity) : Fragment(), OnImageClickListener {
+class ContactAddFragment(private val db : SQLiteDatabase, private val fragment: Fragment, private val activity : ContactsActivity) : Fragment(), OnImageClickListener {
     private lateinit var viewBinding: ContactAddFragmentBinding
 
     private var edited = false
@@ -55,11 +57,20 @@ class ContactAddFragment(private val db : SQLiteDatabase, private val activity :
             } else {
                 Contacts.insert(name, tel, info, Utils.getURLOfDrawable(R.drawable.male_avatar), db, activity)
             }
+            activity.supportFragmentManager.beginTransaction()
+                .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right)
+                .remove(this)
+                .replace(R.id.ac2_fragment, fragment)
+                .commit()
         }
 
         cafBtnVolver.setOnClickListener { view ->
             Utils.preventTwoClick(view)
-            activity.supportFragmentManager.popBackStack()
+            activity.supportFragmentManager.beginTransaction()
+                .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right)
+                .remove(this)
+                .replace(R.id.ac2_fragment, fragment)
+                .commit()
         }
 
         return viewBinding.root.rootView

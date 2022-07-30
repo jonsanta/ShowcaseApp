@@ -19,6 +19,6 @@ class ContactsActivity : AppCompatActivity() {
         val admin = AdminSQLiteOpenHelper(this, "Contacts", null, 1)
         val db : SQLiteDatabase = admin.writableDatabase
 
-        supportFragmentManager.beginTransaction().add(R.id.ac2_fragment, ContactListFragment(db, admin,this)).commit()
+        supportFragmentManager.beginTransaction().add(R.id.ac2_fragment, ContactListFragment(db, admin,this), "ContactListFragment").commit()
     }
 }

@@ -42,7 +42,7 @@ class ContactListFragment(private val db : SQLiteDatabase, private val admin : A
 
         val recyclerView = viewBinding.iconsRv
         recyclerView.layoutManager = LinearLayoutManager(viewBinding.root.context)
-        val adapter = ContactsAdapter(cursor, db, activity)
+        val adapter = ContactsAdapter(cursor, db, this, activity)
         recyclerView.adapter = adapter
 
         viewBinding.clfSearch.setOnClickListener { view ->
@@ -74,10 +74,12 @@ class ContactListFragment(private val db : SQLiteDatabase, private val admin : A
             Utils.preventTwoClick(view)
             activity.findViewById<LinearLayout>(R.id.ac2_dropdown).isVisible = false
             cursor.close()
-            val transaction = activity.supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.ac2_fragment, ContactAddFragment(db, activity))
-            transaction.addToBackStack(null)
-            transaction.commit()
+
+            activity.supportFragmentManager.beginTransaction()
+                .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right)
+                .replace(R.id.ac2_fragment, ContactAddFragment(db, this, activity), "ContactAddFragment")
+                .addToBackStack(null)
+                .commit()
         }
 
         activity.findViewById<TextView>(R.id.ac2_export).setOnClickListener { view ->

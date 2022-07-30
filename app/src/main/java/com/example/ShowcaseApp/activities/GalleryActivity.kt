@@ -91,7 +91,6 @@ class GalleryActivity : AppCompatActivity(){
             Gallery.setEditMode(false, this)
         }else{
             Gallery.setViewVisibility(findViewById<ImageButton>(R.id.ac4_remove), false)
-            supportFragmentManager.popBackStack()
             fragmentClosed()
         }
     }
@@ -106,6 +105,11 @@ class GalleryActivity : AppCompatActivity(){
             Utils.preventTwoClick(view)
             removePhoto()
         }
+        supportFragmentManager.beginTransaction()
+            .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right)
+            .remove(photoPreviewFragment!!)
+            .commit()
+
         photoPreviewFragment = null
         Gallery.clearSelected()
     }
