@@ -70,7 +70,7 @@ class GalleryAdapter(private val list: List<Photo>, private val activity : Galle
     }
 
     // Holds the views for adding it to image and text
-    class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val photo: ImageButton = itemView.findViewById(R.id.icv_imageBtn_imagen)
         val checkBox : CheckBox = itemView.findViewById(R.id.icv_checkbox)
     }

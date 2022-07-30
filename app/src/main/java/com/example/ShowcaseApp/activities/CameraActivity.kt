@@ -48,7 +48,7 @@ class CameraActivity : AppCompatActivity() {
             //DEPRECATED BUT STILL WORKING IN OLD VERSIONS
             window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
         }
-        window.navigationBarColor = resources.getColor(R.color.black)
+        window.navigationBarColor = resources.getColor(R.color.black, resources.newTheme())
 
         // Request camera permissions
         if (allPermissionsGranted()) {

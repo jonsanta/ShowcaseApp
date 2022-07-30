@@ -43,9 +43,11 @@ class ContactListFragment(private val db : SQLiteDatabase, private val admin : A
 
         view.findViewById<EditText>(R.id.clf_search).addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {
+                //Never used. Implementation required for addTextChangedListener
             }
 
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+                //Never used. Implementation required for addTextChangedListener
             }
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {

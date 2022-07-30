@@ -57,7 +57,7 @@ class ContactsAdapter(private var cursor : Cursor, private val db : SQLiteDataba
     }
 
     // Holds the views for adding it to image and text
-    class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val name : TextView = itemView.findViewById(R.id.ccv_name)
         val tel : TextView = itemView.findViewById(R.id.ccv_tel)
         val info : TextView = itemView.findViewById(R.id.ccv_info)

@@ -10,6 +10,6 @@ class AdminSQLiteOpenHelper(context: Context, name: String, factory: SQLiteDatab
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int){
-
+        //Never used. Implementation required for AdminSQLiteOpenHelper
     }
 }
