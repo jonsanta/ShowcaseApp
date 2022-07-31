@@ -14,15 +14,15 @@ import com.example.showcaseApp.R
 import com.example.showcaseApp.adapters.GalleryAdapter
 import com.example.showcaseApp.classes.Gallery
 import com.example.showcaseApp.classes.GridSpacingItemDecoration
+import com.example.showcaseApp.classes.Photo
 import com.example.showcaseApp.classes.Utils
 import com.example.showcaseApp.databinding.GalleryActivityBinding
-import com.example.showcaseApp.fragments.PhotoPreviewFragment
 
 class GalleryActivity : AppCompatActivity(){
     private lateinit var viewBinding : GalleryActivityBinding
+    private var photo : Photo? = null
 
     private val READ_REQUEST_CODE = 123
-    private var photoPreviewFragment : PhotoPreviewFragment? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +42,31 @@ class GalleryActivity : AppCompatActivity(){
         viewBinding.ac4Remove.setOnClickListener { view ->
             Utils.preventTwoClick(view)
             removePhoto()
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode : Int, permissions : Array<out String>, grantResults : IntArray){
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if(requestCode == READ_REQUEST_CODE && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+            loadGallery() //Permissions granted - Load Images
+        else//Permissions denied
+            Toast.makeText(this, "Permissions Denied", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onBackPressed(){
+        if(photo != null) {
+            if (!Gallery.isEditMode())
+                finish()
+        }
+        else closeImage()
+        Gallery.setEditMode(false, this)
+        Gallery.clearSelected()
+    }
+
+    fun closeImage(){
+        viewBinding.ac4BtnDiscard.setOnClickListener { view ->
+            Utils.preventTwoClick(view)
+            onBackPressed()
         }
     }
 
@@ -74,47 +99,7 @@ class GalleryActivity : AppCompatActivity(){
         return (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
     }
 
-    override fun onRequestPermissionsResult(requestCode : Int, permissions : Array<out String>, grantResults : IntArray){
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if(requestCode == READ_REQUEST_CODE && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-            loadGallery() //Permissions granted - Load Images
-        else//Permissions denied
-            Toast.makeText(this, "Permissions Denied", Toast.LENGTH_SHORT).show()
-    }
-
-    override fun onBackPressed(){
-        if(photoPreviewFragment == null){
-            Gallery.clearSelected()
-            if(!Gallery.isEditMode()) {
-                finish()
-            }
-            Gallery.setEditMode(false, this)
-        }else{
-            Gallery.setViewVisibility(findViewById<ImageButton>(R.id.ac4_remove), false)
-            fragmentClosed()
-        }
-    }
-
-    fun fragmentClosed() {
-        viewBinding.ac4BtnDiscard.setOnClickListener { view ->
-            Utils.preventTwoClick(view)
-            onBackPressed()
-        }
-
-        viewBinding.ac4Remove.setOnClickListener { view ->
-            Utils.preventTwoClick(view)
-            removePhoto()
-        }
-        supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right)
-            .remove(photoPreviewFragment!!)
-            .commit()
-
-        photoPreviewFragment = null
-        Gallery.clearSelected()
-    }
-
-    fun removePhoto(){
+    private fun removePhoto(){
         val minValue = Gallery.getSelected().last()
         Gallery.getSelected().forEach{
             viewBinding.ac4RecyclerView.adapter?.notifyItemRemoved(it)
@@ -122,9 +107,6 @@ class GalleryActivity : AppCompatActivity(){
         Gallery.removePhotos(this)
         viewBinding.ac4RecyclerView.adapter?.notifyItemRangeChanged(minValue,Gallery.getPhotos().size)
         Gallery.setEditMode(false, this)
-    }
-
-    fun setPhotoPreviewFragment(photoPreviewFragment: PhotoPreviewFragment){
-        this.photoPreviewFragment = photoPreviewFragment
+        closeImage()
     }
 }

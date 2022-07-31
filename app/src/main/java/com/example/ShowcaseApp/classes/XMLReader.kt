@@ -16,7 +16,7 @@ import javax.xml.transform.stream.StreamResult
 
 class XMLReader {
     companion object{
-        fun import(file : File, db: SQLiteDatabase, activity: ContactsActivity){
+        fun import(file : File, activity: ContactsActivity){
             val factory = DocumentBuilderFactory.newInstance()
             val builder = factory.newDocumentBuilder()
             val document = builder.parse(file)
@@ -26,7 +26,7 @@ class XMLReader {
                 R.drawable.male_avatar
             ), 500, 500, true)
 
-            switchContact(document.getElementsByTagName("contacts").item(0).childNodes, bitmap, db)
+            switchContact(document.getElementsByTagName("contacts").item(0).childNodes, bitmap, activity.getDataBase())
             file.delete()
         }
 
@@ -57,8 +57,8 @@ class XMLReader {
                 .forEach { action(it) }
         }
 
-        fun export(db : SQLiteDatabase, activity : ContactsActivity){
-            val cursor = db.rawQuery("SELECT * FROM contacts", null)
+        fun export(activity : ContactsActivity){
+            val cursor = activity.getDataBase().rawQuery("SELECT * FROM contacts", null)
 
             val factory = DocumentBuilderFactory.newInstance()
             val builder = factory.newDocumentBuilder()

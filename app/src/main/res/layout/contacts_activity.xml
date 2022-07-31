@@ -53,17 +53,18 @@
 
     </LinearLayout>
 
-    <FrameLayout
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/ac2_fragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:translationZ="80dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
-
-    </FrameLayout>
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout3"
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/contact_activity_nav_graph"/>
 
     <LinearLayout
         android:id="@+id/ac2_dropdown"

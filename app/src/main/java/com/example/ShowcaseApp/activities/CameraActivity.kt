@@ -17,6 +17,7 @@ import androidx.camera.core.ImageCapture.FLASH_MODE_AUTO
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.navigation.Navigation
 import com.example.showcaseApp.R
 import com.example.showcaseApp.classes.LuminosityAnalyzer
 import com.example.showcaseApp.classes.Utils
@@ -33,7 +34,7 @@ typealias LumaListener = (luma: Double) -> Unit
 class CameraActivity : AppCompatActivity() {
     private lateinit var viewBinding: CameraActivityBinding
 
-    private var imageCapture: ImageCapture? = null
+    private lateinit var imageCapture: ImageCapture
 
     private lateinit var cameraExecutor: ExecutorService
 

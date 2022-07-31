@@ -3,15 +3,19 @@ package com.example.showcaseApp.classes
 import android.content.Context
 import android.os.Build
 import android.view.View
-import android.widget.ImageButton
-import android.widget.TextView
+import android.view.animation.Animation
+import android.view.animation.ScaleAnimation
+import android.widget.*
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.net.toUri
 import androidx.core.view.isVisible
+import androidx.recyclerview.widget.RecyclerView
 import com.example.showcaseApp.R
 import com.example.showcaseApp.activities.GalleryActivity
 import java.io.File
 import java.text.MessageFormat
 import java.util.*
+
 
 class Gallery {
     companion object{
@@ -99,8 +103,6 @@ class Gallery {
         fun clearSelected(){
             selectedPhotos.clear()
         }
-
-
 
         // Selection Text on EditMode
         private fun countSelected(activity: GalleryActivity){

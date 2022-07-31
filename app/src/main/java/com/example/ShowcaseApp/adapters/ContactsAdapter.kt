@@ -1,7 +1,6 @@
 package com.example.showcaseApp.adapters
 
 import android.database.Cursor
-import android.database.sqlite.SQLiteDatabase
 import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.View
@@ -10,15 +9,14 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.example.showcaseApp.R
 import com.example.showcaseApp.activities.ContactsActivity
 import com.example.showcaseApp.classes.Utils
-import com.example.showcaseApp.fragments.ContactAddFragment
-import com.example.showcaseApp.fragments.ContactInfoFragment
+import com.example.showcaseApp.fragments.*
 
-class ContactsAdapter(private var cursor : Cursor, private val db : SQLiteDatabase, private val fragment : Fragment, private val activity : ContactsActivity) : RecyclerView.Adapter<ContactsAdapter.ViewHolder>() {
+class ContactsAdapter(private var cursor : Cursor, private val view : View, private val activity : ContactsActivity) : RecyclerView.Adapter<ContactsAdapter.ViewHolder>() {
 
     fun setCursor(c : Cursor){
         cursor = c
@@ -47,11 +45,12 @@ class ContactsAdapter(private var cursor : Cursor, private val db : SQLiteDataba
         holder.itemView.setOnClickListener { view ->
             Utils.preventTwoClick(view)
             cursor.close()
-            activity.supportFragmentManager.beginTransaction()
-                .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right)
-                .replace(R.id.ac2_fragment, ContactInfoFragment(id.toInt(), db, fragment, activity), "ContactInfoFragment")
-                .addToBackStack(null)
-                .commit()
+
+            val action = ContactListFragmentDirections.actionContactListFragmentToContactInfoFragment(id.toInt())
+
+            Navigation.findNavController(view).navigate(action)
+
+
             activity.findViewById<LinearLayout>(R.id.ac2_dropdown).isVisible = false
         }
     }

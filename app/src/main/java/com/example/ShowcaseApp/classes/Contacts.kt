@@ -23,7 +23,7 @@ import java.io.*
 
 class Contacts {
     companion object{
-        fun select(id: Int, name : EditText, tel : EditText, info : EditText, icon : ImageButton, db : SQLiteDatabase){
+        fun select(id: Number, name : EditText, tel : EditText, info : EditText, icon : ImageButton, db : SQLiteDatabase){
             val cursor = db.rawQuery("SELECT * FROM contacts WHERE id = $id", null)
 
             while(cursor.moveToNext()) {
@@ -36,20 +36,20 @@ class Contacts {
             cursor.close()
         }
 
-        fun insert(name : String, tel : String, info: String, bitmap: Bitmap, db : SQLiteDatabase, activity: ContactsActivity){
+        fun insert(name : String, tel : String, info: String, bitmap: Bitmap, activity: ContactsActivity){
             if(!checkEmpty(name, tel, activity)){
                 val registry = getContentValues(name, tel, info, bitmap)
-                db.insert("Contacts", null, registry)
+                activity.getDataBase().insert("Contacts", null, registry)
                 registry.clear()
             }
         }
 
-        fun insert(name : String, tel : String, info: String, path : String, db : SQLiteDatabase, activity: ContactsActivity){
+        fun insert(name : String, tel : String, info: String, path : String, activity: ContactsActivity){
             if(!checkEmpty(name, tel, activity)){
                 val stream = activity.contentResolver.openInputStream(Uri.parse(path))
                 val bitmap = BitmapFactory.decodeStream(stream)
                 val registry = getContentValues(name, tel, info, Utils.roundBitmap(Bitmap.createScaledBitmap(bitmap, 500, 500, true)))
-                db.insert("Contacts", null, registry)
+                activity.getDataBase().insert("Contacts", null, registry)
                 registry.clear()
             }
         }
@@ -60,10 +60,10 @@ class Contacts {
             registry.clear()
         }
 
-        fun update(id : Int, name : String, tel : String, info : String, image : Bitmap, db : SQLiteDatabase, activity : ContactsActivity){
+        fun update(id : Number, name : String, tel : String, info : String, image : Bitmap, activity : ContactsActivity){
             if(!checkEmpty(name, tel, activity)){
                 val registry = getContentValues(name, tel, info, image)
-                db.update("Contacts", registry, "id='$id'", null)
+                activity.getDataBase().update("Contacts", registry, "id='$id'", null)
                 registry.clear()
             }
         }
@@ -89,7 +89,7 @@ class Contacts {
             return contentValues
         }
 
-        fun getAlertDialog(inflater : LayoutInflater, container : ViewGroup?, fragment: Fragment, onImageClickListener: OnImageClickListener) : AlertDialog{
+        fun getAlertDialog(inflater : LayoutInflater, fragment: Fragment, onImageClickListener: OnImageClickListener) : AlertDialog{
             val builder = AlertDialog.Builder(fragment.requireContext())
             builder.setTitle("Selecciona Imagen")
 
@@ -99,7 +99,7 @@ class Contacts {
                 dialog.dismiss()
             }
 
-            val iconList = inflater.inflate(R.layout.icon_list, container, false)
+            val iconList = inflater.inflate(R.layout.icon_list, fragment.view as ViewGroup, false)
 
             val list = mutableListOf(Utils.getURLOfDrawable(R.drawable.male_avatar), Utils.getURLOfDrawable(R.drawable.female_avatar))
 

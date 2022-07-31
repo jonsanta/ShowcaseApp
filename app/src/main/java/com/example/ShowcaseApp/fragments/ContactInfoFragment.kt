@@ -1,7 +1,6 @@
 package com.example.showcaseApp.fragments
 
 import android.content.Intent
-import android.database.sqlite.SQLiteDatabase
 import android.graphics.*
 import android.net.Uri
 import android.os.Bundle
@@ -14,6 +13,8 @@ import android.widget.ImageButton
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
+import androidx.navigation.fragment.navArgs
 import com.example.showcaseApp.interfaces.OnImageClickListener
 import com.example.showcaseApp.R
 import com.example.showcaseApp.activities.ContactsActivity
@@ -21,16 +22,25 @@ import com.example.showcaseApp.classes.Contacts
 import com.example.showcaseApp.classes.Utils
 import com.example.showcaseApp.databinding.ContactInfoFragmentBinding
 
-class ContactInfoFragment(private val contactID : Int, private val db : SQLiteDatabase, private val fragment : Fragment, private val activity : ContactsActivity) : Fragment(), OnImageClickListener {
+class ContactInfoFragment: Fragment(), OnImageClickListener {
     private lateinit var viewBinding : ContactInfoFragmentBinding
+    private lateinit var contactsActivity: ContactsActivity
+    private lateinit var contactID : Number
 
     private var editMode = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         viewBinding = ContactInfoFragmentBinding.inflate(layoutInflater)
+        contactsActivity = requireActivity() as ContactsActivity
+        val args : ContactInfoFragmentArgs by navArgs()
+        contactID = args.contactID
+        return viewBinding.root.rootView
+    }
 
-        val cafBtnAdd: ImageButton = activity.findViewById(R.id.caf_btn_add)
-        val cafBtnVolver : ImageButton = activity.findViewById(R.id.caf_btn_volver)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val cafBtnAdd: ImageButton = contactsActivity.findViewById(R.id.caf_btn_add)
+        val cafBtnVolver : ImageButton = contactsActivity.findViewById(R.id.caf_btn_volver)
 
         cafBtnAdd.background = AppCompatResources.getDrawable(this.requireContext(), R.drawable.edit)
 
@@ -40,15 +50,15 @@ class ContactInfoFragment(private val contactID : Int, private val db : SQLiteDa
         val icon = viewBinding.cafBtnAddImage
         setEditMode(editMode, listOf(name, tel, info), icon)
 
-        Contacts.select(contactID, name, tel, info, icon, db)
+        Contacts.select(contactID, name, tel, info, icon, contactsActivity.getDataBase())
 
-        viewBinding.root.rootView.setOnClickListener { view ->
-            Utils.preventTwoClick(view)
-            Utils.closeKeyboard(viewBinding.root.rootView.context, viewBinding.root.rootView)
+        view.setOnClickListener {
+            Utils.preventTwoClick(it)
+            Utils.closeKeyboard(this.requireContext(), view)
         }
 
-        viewBinding.cafTelLinear.setOnClickListener { view ->
-            Utils.preventTwoClick(view)
+        viewBinding.cafTelLinear.setOnClickListener {
+            Utils.preventTwoClick(it)
             if(!editMode){
                 val intent = Intent(Intent.ACTION_DIAL)
                 intent.data = Uri.parse("tel:"+tel.text.toString())
@@ -56,44 +66,34 @@ class ContactInfoFragment(private val contactID : Int, private val db : SQLiteDa
             }
         }
 
-        viewBinding.cafBtnAddImage.setOnClickListener { view ->
-            Utils.preventTwoClick(view)
-            Contacts.getAlertDialog(inflater, container, this, this).show()
+        viewBinding.cafBtnAddImage.setOnClickListener {
+            Utils.preventTwoClick(it)
+            Contacts.getAlertDialog(this.layoutInflater, this, this).show()
         }
 
-        viewBinding.cafBtnBorrar.setOnClickListener { view ->
-            Utils.preventTwoClick(view)
-            db.delete("Contacts", "id='$contactID'", null)
-            activity.supportFragmentManager.beginTransaction()
-                .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right)
-                .remove(this)
-                .replace(R.id.ac2_fragment, fragment)
-                .commit()
+        viewBinding.cafBtnBorrar.setOnClickListener {
+            Utils.preventTwoClick(it)
+            contactsActivity.getDataBase().delete("Contacts", "id='$contactID'", null)
+            Navigation.findNavController(view).navigate(R.id.action_contactInfoFragment_to_contactListFragment)
         }
 
-        cafBtnAdd.setOnClickListener { view ->
-            Utils.preventTwoClick(view)
+        cafBtnAdd.setOnClickListener {
+            Utils.preventTwoClick(it)
             if(editMode){
-                Contacts.update(contactID, name.text.toString(), tel.text.toString(), info.text.toString(), icon.drawable.toBitmap(), db, activity)
+                Contacts.update(contactID, name.text.toString(), tel.text.toString(), info.text.toString(), icon.drawable.toBitmap(), contactsActivity)
                 swapMode(name, tel, info, icon, cafBtnAdd, cafBtnVolver)
             }else{
                 swapMode(name, tel, info, icon, cafBtnAdd, cafBtnVolver)
             }
         }
 
-        cafBtnVolver.setOnClickListener { view ->
-            Utils.preventTwoClick(view)
+        cafBtnVolver.setOnClickListener {
+            Utils.preventTwoClick(it)
             if(!editMode)
-                activity.supportFragmentManager.beginTransaction()
-                    .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right)
-                    .remove(this)
-                    .replace(R.id.ac2_fragment, fragment)
-                    .commit()
+                Navigation.findNavController(view).navigate(R.id.action_contactInfoFragment_to_contactListFragment)
             else
                 swapMode(name, tel, info, icon, cafBtnAdd, cafBtnVolver)
         }
-
-        return viewBinding.root.rootView
     }
 
     private fun swapMode(name : EditText, tel : EditText, info : EditText, icon : ImageButton, cafBtnAdd : ImageButton, cafBtnVolver : ImageButton)
@@ -105,7 +105,7 @@ class ContactInfoFragment(private val contactID : Int, private val db : SQLiteDa
             cafBtnVolver.background = AppCompatResources.getDrawable(this.requireContext(), R.drawable.arrow)
 
             Utils.closeKeyboard(context, view)
-            Contacts.select(contactID, name, tel, info, icon, db)
+            Contacts.select(contactID, name, tel, info, icon, contactsActivity.getDataBase())
         }else{
             cafBtnAdd.background = AppCompatResources.getDrawable(this.requireContext(), R.drawable.check)
             cafBtnVolver.background = AppCompatResources.getDrawable(this.requireContext(), R.drawable.cancelar)
