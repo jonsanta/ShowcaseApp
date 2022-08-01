@@ -1,6 +1,5 @@
 package com.example.showcaseApp.adapters
 
-import android.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +11,7 @@ import com.example.showcaseApp.R
 import com.example.showcaseApp.classes.Utils
 import com.squareup.picasso.Picasso
 
-class IconListAdapter(private val images : List<String>, private val alertDialog: AlertDialog, private val onImageClickListener: OnImageClickListener) : RecyclerView.Adapter<IconListAdapter.ViewHolder>() {
+class IconListAdapter(private val images : List<String>, private val onImageClickListener: OnImageClickListener) : RecyclerView.Adapter<IconListAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.icon, parent, false)
@@ -27,7 +26,6 @@ class IconListAdapter(private val images : List<String>, private val alertDialog
         holder.photo.setOnClickListener { view ->
             Utils.preventTwoClick(view)
             onImageClickListener.onImageClick(holder.photo.drawable.toBitmap())
-            alertDialog.cancel()
         }
     }
 

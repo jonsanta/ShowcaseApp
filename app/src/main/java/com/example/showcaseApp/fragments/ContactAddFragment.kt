@@ -1,5 +1,6 @@
 package com.example.showcaseApp.fragments
 
+import android.app.AlertDialog
 import android.graphics.*
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -22,6 +23,7 @@ class ContactAddFragment : Fragment(), OnImageClickListener {
     private lateinit var viewBinding: ContactAddFragmentBinding
     private lateinit var contactsActivity: ContactsActivity
     private lateinit var navController: NavController
+    private lateinit var alertDialog: AlertDialog
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         viewBinding = ContactAddFragmentBinding.inflate(layoutInflater)
@@ -49,7 +51,8 @@ class ContactAddFragment : Fragment(), OnImageClickListener {
 
         viewBinding.cafBtnAddImage.setOnClickListener {
             Utils.preventTwoClick(it)
-            Contacts.getAlertDialog(contactsActivity.layoutInflater, this, this).show()
+            alertDialog = Contacts.getAlertDialog(contactsActivity.layoutInflater, this, this)
+            alertDialog.show()
         }
 
         cafBtnAdd.setOnClickListener {
@@ -76,6 +79,7 @@ class ContactAddFragment : Fragment(), OnImageClickListener {
     override fun onImageClick(data: Bitmap) {
         viewBinding.cafBtnAddImage.setImageBitmap(Utils.roundBitmap(data))
         edited = true
+        alertDialog.cancel()
     }
 
     companion object{

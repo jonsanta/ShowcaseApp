@@ -1,5 +1,6 @@
 package com.example.showcaseApp.fragments
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.*
 import android.net.Uri
@@ -26,6 +27,7 @@ class ContactInfoFragment: Fragment(), OnImageClickListener {
     private lateinit var viewBinding : ContactInfoFragmentBinding
     private lateinit var contactsActivity: ContactsActivity
     private lateinit var contactID : Number
+    private lateinit var alertDialog: AlertDialog
 
     private var editMode = false
 
@@ -71,7 +73,8 @@ class ContactInfoFragment: Fragment(), OnImageClickListener {
 
         viewBinding.cafBtnAddImage.setOnClickListener {
             Utils.preventTwoClick(it)
-            Contacts.getAlertDialog(this.layoutInflater, this, this).show()
+            alertDialog = Contacts.getAlertDialog(this.layoutInflater, this, this)
+            alertDialog.show()
         }
 
         viewBinding.cafBtnBorrar.setOnClickListener {
@@ -138,6 +141,7 @@ class ContactInfoFragment: Fragment(), OnImageClickListener {
 
     override fun onImageClick(data: Bitmap) {
         viewBinding.cafBtnAddImage.setImageBitmap(Utils.roundBitmap(data))
+        alertDialog.cancel()
     }
 
 

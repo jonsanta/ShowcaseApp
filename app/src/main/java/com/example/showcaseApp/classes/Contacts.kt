@@ -110,7 +110,7 @@ class Contacts {
 
             val recyclerView = iconList.findViewById<RecyclerView>(R.id.icons_rv)
             recyclerView.layoutManager = LinearLayoutManager(alertDialog.context)
-            recyclerView.adapter = IconListAdapter(list, alertDialog, onImageClickListener)
+            recyclerView.adapter = IconListAdapter(list, onImageClickListener)
 
             alertDialog.setView(iconList)
             return alertDialog
