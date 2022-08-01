@@ -8,6 +8,29 @@
     android:background="@color/appBG"
     tools:context=".activities.GalleryActivity">
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:translationZ="90dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ac4_linearLayout">
+
+        <ImageView
+            android:id="@+id/ac4_imagepreview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            android:paddingStart="250dp"
+            android:paddingEnd="250dp"
+            android:focusable="true"
+            android:clickable="true"
+            android:visibility="invisible"
+            android:translationZ="90dp" />
+
+    </FrameLayout>
+
     <LinearLayout
         android:id="@+id/ac4_linearLayout"
         android:layout_width="match_parent"

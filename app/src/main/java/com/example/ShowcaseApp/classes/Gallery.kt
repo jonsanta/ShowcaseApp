@@ -96,6 +96,10 @@ class Gallery {
             return selectedPhotos.values.toList().sortedDescending()
         }
 
+        fun getSelectedPhotos() : List<Photo>{
+            return selectedPhotos.keys.toList()
+        }
+
         fun isSelected(photo: Photo) : Boolean{
             return selectedPhotos.contains(photo)
         }

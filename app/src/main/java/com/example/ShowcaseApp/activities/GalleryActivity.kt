@@ -5,7 +5,8 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.os.Bundle
-import android.widget.ImageButton
+import android.view.View
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
@@ -20,7 +21,7 @@ import com.example.showcaseApp.databinding.GalleryActivityBinding
 
 class GalleryActivity : AppCompatActivity(){
     private lateinit var viewBinding : GalleryActivityBinding
-    private var photo : Photo? = null
+    var galleryActivityListener: GalleryActivityListener? = null
 
     private val READ_REQUEST_CODE = 123
 
@@ -54,20 +55,28 @@ class GalleryActivity : AppCompatActivity(){
     }
 
     override fun onBackPressed(){
-        if(photo != null) {
+        if(galleryActivityListener == null) {
             if (!Gallery.isEditMode())
                 finish()
+            Gallery.setEditMode(false, this)
+            Gallery.clearSelected()
         }
-        else closeImage()
-        Gallery.setEditMode(false, this)
-        Gallery.clearSelected()
+        else if (Gallery.getSelected().size > 0) {
+            galleryActivityListener!!.onClickListener(Gallery.getSelectedPhotos()[0], 150)
+        } else{
+            findViewById<ImageView>(R.id.ac4_imagepreview).visibility = View.INVISIBLE
+            galleryActivityListener = null
+        }
     }
 
-    fun closeImage(){
-        viewBinding.ac4BtnDiscard.setOnClickListener { view ->
-            Utils.preventTwoClick(view)
-            onBackPressed()
+    fun removePhoto(){
+        val minValue = Gallery.getSelected().last()
+        Gallery.getSelected().forEach{
+            viewBinding.ac4RecyclerView.adapter?.notifyItemRemoved(it)
         }
+        Gallery.removePhotos(this)
+        viewBinding.ac4RecyclerView.adapter?.notifyItemRangeChanged(minValue,Gallery.getPhotos().size)
+        onBackPressed()
     }
 
     private fun loadGallery()
@@ -99,14 +108,25 @@ class GalleryActivity : AppCompatActivity(){
         return (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
     }
 
-    private fun removePhoto(){
-        val minValue = Gallery.getSelected().last()
-        Gallery.getSelected().forEach{
-            viewBinding.ac4RecyclerView.adapter?.notifyItemRemoved(it)
+    fun closeImage(){
+        viewBinding.ac4BtnDiscard.setOnClickListener { view ->
+            Utils.preventTwoClick(view)
+            onBackPressed()
         }
-        Gallery.removePhotos(this)
-        viewBinding.ac4RecyclerView.adapter?.notifyItemRangeChanged(minValue,Gallery.getPhotos().size)
+        viewBinding.ac4Remove.setOnClickListener { view ->
+            Utils.preventTwoClick(view)
+            removePhoto()
+        }
+        Gallery.getSelectedPhotos().forEach{
+            it.getView()!!.photo.alpha = 1f
+        }
         Gallery.setEditMode(false, this)
-        closeImage()
+        Gallery.clearSelected()
+        findViewById<ImageView>(R.id.ac4_imagepreview).visibility = View.INVISIBLE
+        galleryActivityListener = null
+    }
+
+    interface GalleryActivityListener{
+        fun onClickListener(photo: Photo, duration : Int)
     }
 }

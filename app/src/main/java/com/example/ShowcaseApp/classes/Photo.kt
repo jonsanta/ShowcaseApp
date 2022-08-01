@@ -6,6 +6,7 @@ import java.io.File
 class Photo(private val file : File, private val thumbnail : File) {
 
     private var view : GalleryAdapter.ViewHolder? = null
+    private var position : Int = 0
 
     fun setView(view : GalleryAdapter.ViewHolder?){
         this.view = view
@@ -21,6 +22,14 @@ class Photo(private val file : File, private val thumbnail : File) {
 
     fun getFile() : File{
         return file
+    }
+
+    fun setPosition(pos : Int){
+        position = pos
+    }
+
+    fun getPosition() : Int{
+        return position
     }
 
     fun removeFile(){

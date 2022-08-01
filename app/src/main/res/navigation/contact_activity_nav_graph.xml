@@ -9,10 +9,14 @@
         android:label="ContactListFragment" >
         <action
             android:id="@+id/action_contactListFragment_to_contactInfoFragment"
-            app:destination="@id/contactInfoFragment" />
+            app:destination="@id/contactInfoFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_in_right" />
         <action
             android:id="@+id/action_contactListFragment_to_contactAddFragment"
-            app:destination="@id/contactAddFragment" />
+            app:destination="@id/contactAddFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_in_right" />
     </fragment>
     <fragment
         android:id="@+id/contactAddFragment"
@@ -20,7 +24,9 @@
         android:label="ContactAddFragment" >
         <action
             android:id="@+id/action_contactAddFragment_to_contactListFragment"
-            app:destination="@id/contactListFragment" />
+            app:destination="@id/contactListFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_in_right" />
     </fragment>
     <fragment
         android:id="@+id/contactInfoFragment"
@@ -28,7 +34,9 @@
         android:label="ContactInfoFragment" >
         <action
             android:id="@+id/action_contactInfoFragment_to_contactListFragment"
-            app:destination="@id/contactListFragment" />
+            app:destination="@id/contactListFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_in_right" />
         <argument
             android:name="contactID"
             app:argType="integer" />
