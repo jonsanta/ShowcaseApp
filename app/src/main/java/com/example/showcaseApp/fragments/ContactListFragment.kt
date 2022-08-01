@@ -32,7 +32,7 @@ import java.io.File
 import java.io.InputStream
 
 @Suppress("UNUSED_ANONYMOUS_PARAMETER")
-class ContactListFragment : Fragment() {
+class ContactListFragment : Fragment(), ContactsAdapter.ContactListener{
     private lateinit var viewBinding : ContactListFragmentBinding
     private lateinit var navController: NavController
 
@@ -57,7 +57,7 @@ class ContactListFragment : Fragment() {
 
         val recyclerView = viewBinding.iconsRv
         recyclerView.layoutManager = LinearLayoutManager(this.requireContext())
-        val adapter = ContactsAdapter(cursor,view, contactsActivity)
+        val adapter = ContactsAdapter(cursor, this)
         recyclerView.adapter = adapter
 
         viewBinding.clfSearch.setOnTouchListener { v, event -> //show dialog here
@@ -140,6 +140,12 @@ class ContactListFragment : Fragment() {
             contactsActivity.findViewById<LinearLayout>(R.id.ac2_dropdown).isVisible = false
             contactsActivity.finish()
         }
+    }
+
+    override fun onItemClick(cId : Int) {
+        val action = ContactListFragmentDirections.actionContactListFragmentToContactInfoFragment(cId)
+        navController.navigate(action)
+        contactsActivity.findViewById<LinearLayout>(R.id.ac2_dropdown).isVisible = false
     }
 
     private val import = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->

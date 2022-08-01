@@ -9,21 +9,14 @@ import android.graphics.Rect
 import android.graphics.RectF
 import android.view.View
 import android.view.animation.DecelerateInterpolator
-import android.widget.ImageButton
 import android.widget.ImageView
-import androidx.core.graphics.drawable.toDrawable
 import androidx.core.net.toUri
-import com.example.showcaseApp.R
-import com.example.showcaseApp.activities.GalleryActivity
 
-class GalleryAnimations(private val activity: GalleryActivity) {
+class GalleryAnimations{
+    fun animate(photo: Photo, expandedImageView: ImageView, center : View){
+        val holder = photo.holder
+        val thumbView = holder.photo
 
-    fun animate(photo: Photo){
-        val holder = photo.getView()!!
-
-        val thumbView = photo.getView()!!.photo
-
-        val expandedImageView: ImageView = activity.findViewById(R.id.ac4_imagepreview)
         expandedImageView.setImageURI(photo.getFile().toUri())
 
         val startBoundsInt = Rect()
@@ -31,8 +24,7 @@ class GalleryAnimations(private val activity: GalleryActivity) {
         val globalOffset = Point()
 
         holder.itemView.getGlobalVisibleRect(startBoundsInt)
-        activity.findViewById<View>(R.id.ac4_recyclerView)
-            .getGlobalVisibleRect(finalBoundsInt, globalOffset)
+        center.getGlobalVisibleRect(finalBoundsInt, globalOffset)
         startBoundsInt.offset(-globalOffset.x, -globalOffset.y)
         finalBoundsInt.offset(-globalOffset.x, -globalOffset.y)
 
@@ -63,24 +55,16 @@ class GalleryAnimations(private val activity: GalleryActivity) {
         expandedImageView.pivotY = 0f
 
         if(!holder.expanded){
-            expand(expandedImageView, startBounds, finalBounds, startScale, 250, photo)
+            expand(expandedImageView, startBounds, finalBounds, startScale)
             holder.expanded = true
         }else {
-            shrink(expandedImageView, startBounds, startScale, 150)
+            shrink(expandedImageView, startBounds, startScale)
             holder.expanded = false
             thumbView.alpha = 1f
-        }
-
-        activity.findViewById<ImageButton>(R.id.ac4_remove).setOnClickListener{
-            Utils.preventTwoClick(it)
-            Gallery.setViewVisibility(activity.findViewById(R.id.ac4_remove), false)
-            thumbView.alpha = 1f
-            activity.removePhoto()
-            holder.expanded = false
         }
     }
 
-    private fun expand(expandedImageView : ImageView, startBounds : RectF, finalBounds : RectF, startScale : Float, animDuration: Int, photo: Photo){
+    private fun expand(expandedImageView : ImageView, startBounds : RectF, finalBounds : RectF, startScale : Float){
         AnimatorSet().apply {
             play(
                 ObjectAnimator.ofFloat(
@@ -93,15 +77,12 @@ class GalleryAnimations(private val activity: GalleryActivity) {
                 with(ObjectAnimator.ofFloat(expandedImageView, View.SCALE_X, startScale, 1f))
                 with(ObjectAnimator.ofFloat(expandedImageView, View.SCALE_Y, startScale, 1f))
             }
-            duration = animDuration.toLong()
+            duration = 250
             interpolator = DecelerateInterpolator()
             addListener(object : AnimatorListenerAdapter() {
 
                 override fun onAnimationEnd(animation: Animator) {
                     expandedImageView.visibility = View.VISIBLE
-                    expandedImageView.background = activity.resources.getColor(R.color.white, activity.theme).toDrawable()
-                    Gallery.setViewVisibility(activity.findViewById<ImageButton>(R.id.ac4_remove), true)
-                    Gallery.setSelected(photo, photo.getPosition(), activity)
                 }
 
                 override fun onAnimationCancel(animation: Animator) {
@@ -111,29 +92,23 @@ class GalleryAnimations(private val activity: GalleryActivity) {
         }
     }
 
-    private fun shrink(expandedImageView : ImageView, startBounds : RectF, startScale : Float, animDuration: Int){
-        Gallery.setViewVisibility(activity.findViewById(R.id.ac4_remove), false)
-
-        // Animate the four positioning/sizing properties in parallel,
-        // back to their original values.
+    private fun shrink(expandedImageView : ImageView, startBounds : RectF, startScale : Float){
         AnimatorSet().apply {
             play(ObjectAnimator.ofFloat(expandedImageView, View.X, startBounds.left)).apply {
                 with(ObjectAnimator.ofFloat(expandedImageView, View.Y, startBounds.top))
                 with(ObjectAnimator.ofFloat(expandedImageView, View.SCALE_X, startScale))
                 with(ObjectAnimator.ofFloat(expandedImageView, View.SCALE_Y, startScale))
             }
-            duration = animDuration.toLong()
+            duration = 150
             interpolator = DecelerateInterpolator()
             addListener(object : AnimatorListenerAdapter() {
 
                 override fun onAnimationEnd(animation: Animator) {
                     expandedImageView.visibility = View.GONE
-                    activity.closeImage()
                 }
 
                 override fun onAnimationCancel(animation: Animator) {
                     expandedImageView.visibility = View.GONE
-                    activity.closeImage()
                 }
             })
             start()

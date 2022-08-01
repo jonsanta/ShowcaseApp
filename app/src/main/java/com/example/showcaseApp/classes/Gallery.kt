@@ -3,19 +3,14 @@ package com.example.showcaseApp.classes
 import android.content.Context
 import android.os.Build
 import android.view.View
-import android.view.animation.Animation
-import android.view.animation.ScaleAnimation
 import android.widget.*
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.core.net.toUri
 import androidx.core.view.isVisible
-import androidx.recyclerview.widget.RecyclerView
 import com.example.showcaseApp.R
 import com.example.showcaseApp.activities.GalleryActivity
 import java.io.File
 import java.text.MessageFormat
 import java.util.*
-
 
 class Gallery {
     companion object{
@@ -27,9 +22,9 @@ class Gallery {
         // Enables UI for editing mode
         fun setEditMode(flag : Boolean, activity : GalleryActivity){
             for(photo in photos){
-                photo.getView()?.checkBox?.isVisible = flag
+                photo.holder.checkBox.isVisible = flag
                 if(!flag)
-                    photo.getView()?.checkBox?.isChecked = false
+                    photo.holder.checkBox.isChecked = false
             }
 
             val btnDiscard = activity.findViewById<ImageButton>(R.id.ac4_btn_discard)
@@ -46,6 +41,15 @@ class Gallery {
 
         fun isEditMode() : Boolean{
             return editMode
+        }
+
+        // Enable-Disable EditMode views (Top box & buttons)
+        fun setViewVisibility(view : View, flag: Boolean) {
+            view.isEnabled = flag
+            if(flag)
+                view.visibility = View.VISIBLE
+            else
+                view.visibility = View.INVISIBLE
         }
 
         fun setSinglePhoto(photo : Photo){
@@ -114,16 +118,6 @@ class Gallery {
             val format = activity.resources.getText(R.string.count_images).toString()
             textview.text = MessageFormat.format(format, selectedPhotos.size)
         }
-
-        // Enable-Disable EditMode views (Top box & buttons)
-        fun setViewVisibility(view : View, flag: Boolean) {
-            view.isEnabled = flag
-            if(flag)
-                view.visibility = View.VISIBLE
-            else
-                view.visibility = View.INVISIBLE
-        }
-
 
         private fun removeThumbnailDirectory(arr: Array<File>?) : Array<File>{
             if(arr != null) {

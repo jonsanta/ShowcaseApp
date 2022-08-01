@@ -9,14 +9,12 @@ import android.widget.ImageButton
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.example.showcaseApp.R
-import com.example.showcaseApp.activities.GalleryActivity
 import com.example.showcaseApp.classes.Gallery
-import com.example.showcaseApp.classes.GalleryAnimations
 import com.example.showcaseApp.classes.Photo
 import com.example.showcaseApp.classes.Utils
 import com.squareup.picasso.Picasso
 
-class GalleryAdapter(private val list: List<Photo>, private val galleryActivity: GalleryActivity) : RecyclerView.Adapter<GalleryAdapter.ViewHolder>(), GalleryActivity.GalleryActivityListener {
+class GalleryAdapter(private val list: List<Photo>, private val galleryListener: GalleryListener) : RecyclerView.Adapter<GalleryAdapter.ViewHolder>(){
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.photo, parent, false)
         return ViewHolder(view)
@@ -35,9 +33,18 @@ class GalleryAdapter(private val list: List<Photo>, private val galleryActivity:
         holder.checkBox.isVisible = Gallery.isEditMode()
         holder.checkBox.isChecked = Gallery.isSelected(photo)
 
-        photo.setView(holder)
+        holder.photo.setOnLongClickListener{
+            galleryListener.onLongItemClick(photo, position)
+            true
+        }
+
+        holder.photo.setOnClickListener {
+            Utils.preventTwoClick(it)
+            galleryListener.onShortItemClick(photo, position)
+        }
+
+        photo.holder = holder
         photo.setPosition(position)
-        onClick(photo)
     }
 
     // return the number of the items in the list
@@ -45,42 +52,15 @@ class GalleryAdapter(private val list: List<Photo>, private val galleryActivity:
         return list.size
     }
 
-    override fun onClickListener(photo: Photo) {
-        galleryActivity.galleryActivityListener = this
-        GalleryAnimations(galleryActivity).animate(photo)
-    }
-
-    private fun onClick(photo : Photo){
-        val holder = photo.getView()!!
-        val position = photo.getPosition()
-
-        holder.photo.setOnLongClickListener{
-            if(!Gallery.isEditMode()) { // LONG CLICK EVENT - while !editMode
-                Gallery.setEditMode(true, galleryActivity)// Enables editMode
-                select(holder, photo, position)
-            }
-            else select(holder, photo, position)
-            true
-        }
-
-        holder.photo.setOnClickListener { view ->
-            Utils.preventTwoClick(view)
-            if(Gallery.isEditMode()) select(holder, photo, position)
-            else{
-                onClickListener(photo)
-            }
-        }
-    }
-
-    private fun select(holder : ViewHolder, photo : Photo, position: Int){
-        Gallery.setSelected(photo, position, galleryActivity)
-        holder.checkBox.isChecked = !holder.checkBox.isChecked
-    }
-
     // Holds the views for adding it to image and text
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val photo: ImageButton = itemView.findViewById(R.id.icv_imageBtn_imagen)
         val checkBox : CheckBox = itemView.findViewById(R.id.icv_checkbox)
         var expanded : Boolean = false
+    }
+
+    interface GalleryListener{
+        fun onLongItemClick(photo : Photo, position: Int)
+        fun onShortItemClick(photo : Photo, position: Int)
     }
 }

@@ -4,17 +4,8 @@ import com.example.showcaseApp.adapters.GalleryAdapter
 import java.io.File
 
 class Photo(private val file : File, private val thumbnail : File) {
-
-    private var view : GalleryAdapter.ViewHolder? = null
-    private var position : Int = 0
-
-    fun setView(view : GalleryAdapter.ViewHolder?){
-        this.view = view
-    }
-
-    fun getView() : GalleryAdapter.ViewHolder?{
-        return view
-    }
+    lateinit var holder : GalleryAdapter.ViewHolder
+    private var position : Int? = null
 
     fun getThumbnail() : File{
         return thumbnail
@@ -24,12 +15,16 @@ class Photo(private val file : File, private val thumbnail : File) {
         return file
     }
 
-    fun setPosition(pos : Int){
-        position = pos
+    fun setPosition(position : Int){
+        this.position = position
     }
 
     fun getPosition() : Int{
-        return position
+        return position!!
+    }
+
+    fun isInitialized() : Boolean{
+        return this::holder.isInitialized
     }
 
     fun removeFile(){

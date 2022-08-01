@@ -6,17 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.core.view.isVisible
-import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.example.showcaseApp.R
-import com.example.showcaseApp.activities.ContactsActivity
 import com.example.showcaseApp.classes.Utils
-import com.example.showcaseApp.fragments.*
 
-class ContactsAdapter(private var cursor : Cursor, private val view : View, private val activity : ContactsActivity) : RecyclerView.Adapter<ContactsAdapter.ViewHolder>() {
+class ContactsAdapter(private var cursor : Cursor, private val contactListener: ContactListener) : RecyclerView.Adapter<ContactsAdapter.ViewHolder>() {
 
     fun setCursor(c : Cursor){
         cursor = c
@@ -45,13 +40,7 @@ class ContactsAdapter(private var cursor : Cursor, private val view : View, priv
         holder.itemView.setOnClickListener { view ->
             Utils.preventTwoClick(view)
             cursor.close()
-
-            val action = ContactListFragmentDirections.actionContactListFragmentToContactInfoFragment(id.toInt())
-
-            Navigation.findNavController(view).navigate(action)
-
-
-            activity.findViewById<LinearLayout>(R.id.ac2_dropdown).isVisible = false
+            contactListener.onItemClick(id.toInt())
         }
     }
 
@@ -66,5 +55,9 @@ class ContactsAdapter(private var cursor : Cursor, private val view : View, priv
         val tel : TextView = itemView.findViewById(R.id.ccv_tel)
         val info : TextView = itemView.findViewById(R.id.ccv_info)
         val icon : ImageView = itemView.findViewById(R.id.ccv_icon)
+    }
+
+    interface ContactListener{
+        fun onItemClick(id : Int)
     }
 }
