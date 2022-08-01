@@ -55,6 +55,9 @@ class ContactInfoFragment: Fragment(), OnImageClickListener {
         view.setOnClickListener {
             Utils.preventTwoClick(it)
             Utils.closeKeyboard(this.requireContext(), view)
+            viewBinding.cafName.clearFocus()
+            viewBinding.cafTel.clearFocus()
+            viewBinding.cafInfo.clearFocus()
         }
 
         viewBinding.cafTelLinear.setOnClickListener {
@@ -136,4 +139,6 @@ class ContactInfoFragment: Fragment(), OnImageClickListener {
     override fun onImageClick(data: Bitmap) {
         viewBinding.cafBtnAddImage.setImageBitmap(Utils.roundBitmap(data))
     }
+
+
 }

@@ -45,9 +45,9 @@ class GalleryAdapter(private val list: List<Photo>, private val galleryActivity:
         return list.size
     }
 
-    override fun onClickListener(photo: Photo, duration: Int) {
+    override fun onClickListener(photo: Photo) {
         galleryActivity.galleryActivityListener = this
-        GalleryAnimations(galleryActivity).animate(photo, duration)
+        GalleryAnimations(galleryActivity).animate(photo)
     }
 
     private fun onClick(photo : Photo){
@@ -67,7 +67,7 @@ class GalleryAdapter(private val list: List<Photo>, private val galleryActivity:
             Utils.preventTwoClick(view)
             if(Gallery.isEditMode()) select(holder, photo, position)
             else{
-                onClickListener(photo, 150)
+                onClickListener(photo)
             }
         }
     }

@@ -53,7 +53,7 @@ class ImagePreviewFragment(private val file : File, private val activity: Camera
     }
 
     private fun makeThumbnailFile(source: File): File {
-        val thumbnailSize = 1000
+        val thumbnailSize = 700
         val bounds = BitmapFactory.Options()
         bounds.inJustDecodeBounds = true
         BitmapFactory.decodeFile(source.path, bounds)

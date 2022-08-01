@@ -62,7 +62,7 @@ class GalleryActivity : AppCompatActivity(){
             Gallery.clearSelected()
         }
         else if (Gallery.getSelected().size > 0) {
-            galleryActivityListener!!.onClickListener(Gallery.getSelectedPhotos()[0], 150)
+            galleryActivityListener!!.onClickListener(Gallery.getSelectedPhotos()[0])
         } else{
             findViewById<ImageView>(R.id.ac4_imagepreview).visibility = View.INVISIBLE
             galleryActivityListener = null
@@ -127,6 +127,6 @@ class GalleryActivity : AppCompatActivity(){
     }
 
     interface GalleryActivityListener{
-        fun onClickListener(photo: Photo, duration : Int)
+        fun onClickListener(photo: Photo)
     }
 }

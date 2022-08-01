@@ -1,5 +1,6 @@
 package com.example.showcaseApp.fragments
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
@@ -30,6 +31,7 @@ import com.example.showcaseApp.databinding.ContactListFragmentBinding
 import java.io.File
 import java.io.InputStream
 
+@Suppress("UNUSED_ANONYMOUS_PARAMETER")
 class ContactListFragment : Fragment() {
     private lateinit var viewBinding : ContactListFragmentBinding
     private lateinit var navController: NavController
@@ -43,6 +45,7 @@ class ContactListFragment : Fragment() {
         return viewBinding.root.rootView
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         navController = Navigation.findNavController(view)
@@ -57,10 +60,9 @@ class ContactListFragment : Fragment() {
         val adapter = ContactsAdapter(cursor,view, contactsActivity)
         recyclerView.adapter = adapter
 
-
-        viewBinding.clfSearch.setOnClickListener {
-            Utils.preventTwoClick(it)
+        viewBinding.clfSearch.setOnTouchListener { v, event -> //show dialog here
             recyclerView.stopScroll()
+            false
         }
 
         viewBinding.clfSearch.addTextChangedListener(object : TextWatcher {
@@ -97,10 +99,21 @@ class ContactListFragment : Fragment() {
             XMLReader.export(contactsActivity)
         }
 
-        //2 BUGS - 1: writing is detected as scroll. 2: Scrolling should exti EditText editing and not just close keyboard
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            var text : String? = null
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (newState != RecyclerView.SCROLL_STATE_IDLE) {
+                    text = viewBinding.clfSearch.text.toString()
+                    return
+                }
+            }
+
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                Utils.closeKeyboard(view.context, view)
+                if(text == viewBinding.clfSearch.text.toString()) {
+                    Utils.closeKeyboard(view.context, view)
+                    viewBinding.clfSearch.clearFocus()
+                }
             }
         })
 

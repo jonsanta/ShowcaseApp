@@ -39,6 +39,9 @@ class ContactAddFragment : Fragment(), OnImageClickListener {
         view.setOnClickListener {
             Utils.preventTwoClick(it)
             Utils.closeKeyboard(context, view)
+            viewBinding.cafName.clearFocus()
+            viewBinding.cafTel.clearFocus()
+            viewBinding.cafInfo.clearFocus()
         }
 
         cafBtnAdd.background = AppCompatResources.getDrawable(this.requireContext(), R.drawable.check)

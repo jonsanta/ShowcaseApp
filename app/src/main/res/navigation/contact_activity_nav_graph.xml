@@ -16,7 +16,8 @@
             android:id="@+id/action_contactListFragment_to_contactAddFragment"
             app:destination="@id/contactAddFragment"
             app:enterAnim="@anim/slide_in_left"
-            app:exitAnim="@anim/slide_in_right" />
+            app:exitAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_in_right" />
     </fragment>
     <fragment
         android:id="@+id/contactAddFragment"

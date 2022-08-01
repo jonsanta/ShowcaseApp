@@ -18,7 +18,7 @@ import com.example.showcaseApp.activities.GalleryActivity
 
 class GalleryAnimations(private val activity: GalleryActivity) {
 
-    fun animate(photo: Photo, duration : Int){
+    fun animate(photo: Photo){
         val holder = photo.getView()!!
 
         val thumbView = photo.getView()!!.photo
@@ -30,7 +30,7 @@ class GalleryAnimations(private val activity: GalleryActivity) {
         val finalBoundsInt = Rect()
         val globalOffset = Point()
 
-        thumbView.getGlobalVisibleRect(startBoundsInt)
+        holder.itemView.getGlobalVisibleRect(startBoundsInt)
         activity.findViewById<View>(R.id.ac4_recyclerView)
             .getGlobalVisibleRect(finalBoundsInt, globalOffset)
         startBoundsInt.offset(-globalOffset.x, -globalOffset.y)
@@ -63,11 +63,12 @@ class GalleryAnimations(private val activity: GalleryActivity) {
         expandedImageView.pivotY = 0f
 
         if(!holder.expanded){
-            expand(expandedImageView, startBounds, finalBounds, startScale, duration, photo)
+            expand(expandedImageView, startBounds, finalBounds, startScale, 250, photo)
             holder.expanded = true
         }else {
-            shrink(expandedImageView, startBounds, startScale, duration, thumbView)
+            shrink(expandedImageView, startBounds, startScale, 150)
             holder.expanded = false
+            thumbView.alpha = 1f
         }
 
         activity.findViewById<ImageButton>(R.id.ac4_remove).setOnClickListener{
@@ -110,7 +111,7 @@ class GalleryAnimations(private val activity: GalleryActivity) {
         }
     }
 
-    private fun shrink(expandedImageView : ImageView, startBounds : RectF, startScale : Float, animDuration: Int, thumbView : ImageView){
+    private fun shrink(expandedImageView : ImageView, startBounds : RectF, startScale : Float, animDuration: Int){
         Gallery.setViewVisibility(activity.findViewById(R.id.ac4_remove), false)
 
         // Animate the four positioning/sizing properties in parallel,
@@ -126,13 +127,11 @@ class GalleryAnimations(private val activity: GalleryActivity) {
             addListener(object : AnimatorListenerAdapter() {
 
                 override fun onAnimationEnd(animation: Animator) {
-                    thumbView.alpha = 1f
                     expandedImageView.visibility = View.GONE
                     activity.closeImage()
                 }
 
                 override fun onAnimationCancel(animation: Animator) {
-                    thumbView.alpha = 1f
                     expandedImageView.visibility = View.GONE
                     activity.closeImage()
                 }
