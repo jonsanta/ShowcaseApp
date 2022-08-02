@@ -44,7 +44,6 @@ class GalleryAdapter(private val list: List<Photo>, private val galleryListener:
         }
 
         photo.holder = holder
-        photo.setPosition(position)
     }
 
     // return the number of the items in the list
@@ -56,7 +55,6 @@ class GalleryAdapter(private val list: List<Photo>, private val galleryListener:
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val photo: ImageButton = itemView.findViewById(R.id.icv_imageBtn_imagen)
         val checkBox : CheckBox = itemView.findViewById(R.id.icv_checkbox)
-        var expanded : Boolean = false
     }
 
     interface GalleryListener{

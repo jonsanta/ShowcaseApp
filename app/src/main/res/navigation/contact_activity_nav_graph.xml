@@ -11,12 +11,15 @@
             android:id="@+id/action_contactListFragment_to_contactInfoFragment"
             app:destination="@id/contactInfoFragment"
             app:enterAnim="@anim/slide_in_left"
-            app:exitAnim="@anim/slide_in_right" />
+            app:exitAnim="@anim/slide_in_right"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_in_right" />
         <action
             android:id="@+id/action_contactListFragment_to_contactAddFragment"
             app:destination="@id/contactAddFragment"
             app:enterAnim="@anim/slide_in_left"
             app:exitAnim="@anim/slide_in_right"
+            app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_in_right" />
     </fragment>
     <fragment

@@ -43,11 +43,12 @@
 
         <ImageButton
             android:id="@+id/ac4_btn_discard"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="18dp"
-            android:background="@drawable/arrow"
+            android:layout_width="48dp"
+            android:layout_height="match_parent"
+            android:scaleType="centerInside"
+            android:backgroundTint="@color/appBG"
+            android:layout_marginStart="8dp"
+            android:src="@drawable/arrow"
             android:contentDescription="@string/ac4_btn_discard"
             tools:ignore="TouchTargetSizeCheck" />
 
@@ -63,11 +64,12 @@
 
         <ImageButton
             android:id="@+id/ac4_remove"
-            android:layout_width="23dp"
-            android:layout_height="20dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginEnd="18dp"
-            android:background="@drawable/borrar"
+            android:layout_width="48dp"
+            android:layout_height="match_parent"
+            android:scaleType="centerInside"
+            android:backgroundTint="@color/appBG"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/borrar"
             android:contentDescription="@string/ac4_btn_borrar"
             android:visibility="invisible" />
     </LinearLayout>

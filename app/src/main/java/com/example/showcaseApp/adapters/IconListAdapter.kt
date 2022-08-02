@@ -39,9 +39,4 @@ class IconListAdapter(private val images : List<String>, private val onImageClic
         val photo: ImageButton = itemView.findViewById(R.id.icv_imageBtn_imagen)
 
     }
-
-    interface vergon{
-
-    }
-
 }

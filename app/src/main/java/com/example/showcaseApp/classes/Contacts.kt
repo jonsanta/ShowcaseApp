@@ -36,22 +36,26 @@ class Contacts {
             cursor.close()
         }
 
-        fun insert(name : String, tel : String, info: String, bitmap: Bitmap, activity: ContactsActivity){
+        fun insert(name : String, tel : String, info: String, bitmap: Bitmap, activity: ContactsActivity) : Boolean{
             if(!checkEmpty(name, tel, activity)){
                 val registry = getContentValues(name, tel, info, bitmap)
                 activity.getDataBase().insert("Contacts", null, registry)
                 registry.clear()
-            }
+                return true
+            }else
+                return false
         }
 
-        fun insert(name : String, tel : String, info: String, path : String, activity: ContactsActivity){
+        fun insert(name : String, tel : String, info: String, path : String, activity: ContactsActivity) : Boolean{
             if(!checkEmpty(name, tel, activity)){
                 val stream = activity.contentResolver.openInputStream(Uri.parse(path))
                 val bitmap = BitmapFactory.decodeStream(stream)
                 val registry = getContentValues(name, tel, info, Utils.roundBitmap(Bitmap.createScaledBitmap(bitmap, 500, 500, true)))
                 activity.getDataBase().insert("Contacts", null, registry)
                 registry.clear()
-            }
+                return true
+            }else
+                return false
         }
 
         fun import(list : List<String>, bitmap : Bitmap, db: SQLiteDatabase){

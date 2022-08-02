@@ -14,4 +14,12 @@
         <!-- Customize your theme here. -->
         <item name="android:windowLightStatusBar">true</item>
     </style>
+    <style name="Theme.DesarrolloMP8JonSantamariaZamora.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="Theme.DesarrolloMP8JonSantamariaZamora.AppBarOverlay"
+        parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="Theme.DesarrolloMP8JonSantamariaZamora.PopupOverlay"
+        parent="ThemeOverlay.AppCompat.Light" />
 </resources>

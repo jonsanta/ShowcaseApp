@@ -44,7 +44,7 @@ class ContactInfoFragment: Fragment(), OnImageClickListener {
         val cafBtnAdd: ImageButton = contactsActivity.findViewById(R.id.caf_btn_add)
         val cafBtnVolver : ImageButton = contactsActivity.findViewById(R.id.caf_btn_volver)
 
-        cafBtnAdd.background = AppCompatResources.getDrawable(this.requireContext(), R.drawable.edit)
+        cafBtnAdd.setImageResource(R.drawable.edit)
 
         val name = viewBinding.cafName
         val tel = viewBinding.cafTel
@@ -107,14 +107,14 @@ class ContactInfoFragment: Fragment(), OnImageClickListener {
         setEditMode(!editMode, listOf(name, tel, info), icon)
 
         if(!editMode){
-            cafBtnAdd.background = AppCompatResources.getDrawable(this.requireContext(), R.drawable.edit)
-            cafBtnVolver.background = AppCompatResources.getDrawable(this.requireContext(), R.drawable.arrow)
+            cafBtnAdd.setImageResource(R.drawable.edit)
+            cafBtnVolver.setImageResource(R.drawable.arrow)
 
             Utils.closeKeyboard(context, view)
             Contacts.select(contactID, name, tel, info, icon, contactsActivity.getDataBase())
         }else{
-            cafBtnAdd.background = AppCompatResources.getDrawable(this.requireContext(), R.drawable.check)
-            cafBtnVolver.background = AppCompatResources.getDrawable(this.requireContext(), R.drawable.cancelar)
+            cafBtnAdd.setImageResource(R.drawable.check)
+            cafBtnVolver.setImageResource(R.drawable.cancelar)
         }
     }
 

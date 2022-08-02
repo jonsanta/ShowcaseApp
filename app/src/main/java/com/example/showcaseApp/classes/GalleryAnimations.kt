@@ -54,12 +54,12 @@ class GalleryAnimations{
         expandedImageView.pivotX = 0f
         expandedImageView.pivotY = 0f
 
-        if(!holder.expanded){
+        if(!photo.isExpanded()){
             expand(expandedImageView, startBounds, finalBounds, startScale)
-            holder.expanded = true
+            photo.isExpanded(true)
         }else {
             shrink(expandedImageView, startBounds, startScale)
-            holder.expanded = false
+            photo.isExpanded(false)
             thumbView.alpha = 1f
         }
     }

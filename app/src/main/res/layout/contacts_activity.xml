@@ -21,13 +21,15 @@
 
         <ImageButton
             android:id="@+id/caf_btn_volver"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:layout_gravity="center_vertical|start"
-            android:layout_marginStart="18dp"
-            android:background="@drawable/arrow"
+            android:scaleType="centerInside"
+            android:backgroundTint="@color/appBG"
+            android:layout_marginStart="8dp"
+            android:src="@drawable/arrow"
             android:contentDescription="@string/ac2_btn_volver"
-            tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+            tools:ignore="TouchTargetSizeCheck" />
 
         <TextView
             android:id="@+id/ac2_titulo"
@@ -42,15 +44,15 @@
 
         <ImageButton
             android:id="@+id/caf_btn_add"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:background="@drawable/menu"
-            android:backgroundTint="#000000"
-            android:contentDescription="@string/caf_btn_add"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:layout_gravity="center_vertical|end"
-            android:layout_marginEnd="18dp"
-            tools:ignore="TextContrastCheck,TouchTargetSizeCheck" />
-
+            android:scaleType="centerInside"
+            android:backgroundTint="@color/appBG"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/menu"
+            android:contentDescription="@string/ac2_btn_add"
+            tools:ignore="TouchTargetSizeCheck" />
     </LinearLayout>
 
     <androidx.fragment.app.FragmentContainerView

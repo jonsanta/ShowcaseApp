@@ -31,9 +31,9 @@ class Gallery {
             setViewVisibility(activity.findViewById<TextView>(R.id.ac4_selectText), flag)
             setViewVisibility(activity.findViewById<ImageButton>(R.id.ac4_remove), flag)
             if(flag)
-                btnDiscard.background =  AppCompatResources.getDrawable(activity.applicationContext, R.drawable.cancelar)
+                btnDiscard.setImageResource(R.drawable.cancelar)
             else
-                btnDiscard.background = AppCompatResources.getDrawable(activity.applicationContext, R.drawable.arrow)
+                btnDiscard.setImageResource(R.drawable.arrow)
 
             countSelected(activity)
             editMode = flag

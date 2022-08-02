@@ -54,7 +54,7 @@ class GalleryActivity : AppCompatActivity(), GalleryAdapter.GalleryListener{
         if(Gallery.isEditMode()){
             Gallery.setEditMode(false, this)
         }
-        else if(Gallery.getSelected().size > 0){
+        else if(Gallery.getSelected().isNotEmpty()){
             Gallery.setViewVisibility(findViewById(R.id.ac4_remove), false)
             GalleryAnimations().animate(Gallery.getSelectedPhotos()[0], viewBinding.ac4Imagepreview, viewBinding.ac4RecyclerView)
         }
@@ -111,7 +111,7 @@ class GalleryActivity : AppCompatActivity(), GalleryAdapter.GalleryListener{
         val minValue = Gallery.getSelected().last()
         Gallery.getSelectedPhotos().forEach{
             it.holder.photo.alpha = 1f
-            it.holder.expanded = false
+            it.isExpanded(false)
         }
         Gallery.getSelected().forEach{
             viewBinding.ac4RecyclerView.adapter?.notifyItemRemoved(it)

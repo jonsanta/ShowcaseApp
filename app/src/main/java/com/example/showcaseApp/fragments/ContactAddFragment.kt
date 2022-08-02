@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
@@ -46,8 +45,8 @@ class ContactAddFragment : Fragment(), OnImageClickListener {
             viewBinding.cafInfo.clearFocus()
         }
 
-        cafBtnAdd.background = AppCompatResources.getDrawable(this.requireContext(), R.drawable.check)
-        cafBtnVolver.background = AppCompatResources.getDrawable(this.requireContext(), R.drawable.cancelar)
+        cafBtnAdd.setImageResource(R.drawable.check)
+        cafBtnVolver.setImageResource(R.drawable.cancelar)
 
         viewBinding.cafBtnAddImage.setOnClickListener {
             Utils.preventTwoClick(it)
@@ -61,13 +60,17 @@ class ContactAddFragment : Fragment(), OnImageClickListener {
             val tel = viewBinding.cafTel.text.toString()
             val info = viewBinding.cafInfo.text.toString()
 
+            val aux : Boolean
+
             if(edited){
                 val bitmap = viewBinding.cafBtnAddImage.drawable.toBitmap()
-                Contacts.insert(name, tel, info, bitmap, contactsActivity)
+                aux = Contacts.insert(name, tel, info, bitmap, contactsActivity)
             } else {
-                Contacts.insert(name, tel, info, Utils.getURLOfDrawable(R.drawable.male_avatar), contactsActivity)
+                aux = Contacts.insert(name, tel, info, Utils.getURLOfDrawable(R.drawable.male_avatar), contactsActivity)
             }
-            navController.navigate(R.id.action_contactAddFragment_to_contactListFragment)
+
+            if(aux)
+                navController.navigate(R.id.action_contactAddFragment_to_contactListFragment)
         }
 
         cafBtnVolver.setOnClickListener {

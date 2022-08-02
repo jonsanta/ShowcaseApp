@@ -5,7 +5,7 @@ import java.io.File
 
 class Photo(private val file : File, private val thumbnail : File) {
     lateinit var holder : GalleryAdapter.ViewHolder
-    private var position : Int? = null
+    private var expanded : Boolean = false
 
     fun getThumbnail() : File{
         return thumbnail
@@ -15,16 +15,13 @@ class Photo(private val file : File, private val thumbnail : File) {
         return file
     }
 
-    fun setPosition(position : Int){
-        this.position = position
-    }
-
-    fun getPosition() : Int{
-        return position!!
-    }
-
     fun isInitialized() : Boolean{
         return this::holder.isInitialized
+    }
+
+    fun isExpanded(flag : Boolean = expanded) : Boolean{
+        expanded = flag
+        return expanded
     }
 
     fun removeFile(){

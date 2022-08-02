@@ -58,6 +58,6 @@ class ContactsAdapter(private var cursor : Cursor, private val contactListener: 
     }
 
     interface ContactListener{
-        fun onItemClick(id : Int)
+        fun onItemClick(ContactId : Int)
     }
 }

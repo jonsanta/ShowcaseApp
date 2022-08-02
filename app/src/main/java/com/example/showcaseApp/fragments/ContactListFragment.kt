@@ -52,8 +52,8 @@ class ContactListFragment : Fragment(), ContactsAdapter.ContactListener{
 
         var cursor = contactsActivity.getDataBase().rawQuery("SELECT * FROM contacts ORDER BY UPPER(name) ASC" , null)
 
-        contactsActivity.findViewById<ImageButton>(R.id.caf_btn_add).background = AppCompatResources.getDrawable(this.requireContext(), R.drawable.menu)
-        contactsActivity.findViewById<ImageButton>(R.id.caf_btn_volver).background = AppCompatResources.getDrawable(this.requireContext(), R.drawable.arrow)
+        contactsActivity.findViewById<ImageButton>(R.id.caf_btn_add).setImageResource(R.drawable.menu)
+        contactsActivity.findViewById<ImageButton>(R.id.caf_btn_volver).setImageResource(R.drawable.arrow)
 
         val recyclerView = viewBinding.iconsRv
         recyclerView.layoutManager = LinearLayoutManager(this.requireContext())
@@ -65,11 +65,9 @@ class ContactListFragment : Fragment(), ContactsAdapter.ContactListener{
             false
         }
 
-        viewBinding.clfSearch.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable) {
-                //Never used. Implementation required for addTextChangedListener
-            }
+        var textChanged = false
 
+        viewBinding.clfSearch.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
                 //Never used. Implementation required for addTextChangedListener
             }
@@ -82,6 +80,20 @@ class ContactListFragment : Fragment(), ContactsAdapter.ContactListener{
                         .text.toString().uppercase() + "%' ORDER BY UPPER(name) ASC", null)
 
                 adapter.setCursor(cursor)
+            }
+
+            override fun afterTextChanged(s: Editable) {
+                textChanged = true
+            }
+        })
+
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                if(!textChanged) {
+                    Utils.closeKeyboard(view.context, view)
+                    viewBinding.clfSearch.clearFocus()
+                }
+                textChanged = false
             }
         })
 
@@ -99,28 +111,10 @@ class ContactListFragment : Fragment(), ContactsAdapter.ContactListener{
             XMLReader.export(contactsActivity)
         }
 
-        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            var text : String? = null
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-                if (newState != RecyclerView.SCROLL_STATE_IDLE) {
-                    text = viewBinding.clfSearch.text.toString()
-                    return
-                }
-            }
-
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                if(text == viewBinding.clfSearch.text.toString()) {
-                    Utils.closeKeyboard(view.context, view)
-                    viewBinding.clfSearch.clearFocus()
-                }
-            }
-        })
-
         contactsActivity.findViewById<TextView>(R.id.ac2_import).setOnClickListener {
             Utils.preventTwoClick(it)
             contactsActivity.findViewById<LinearLayout>(R.id.ac2_dropdown).isVisible = false
-            val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
+            val intent = Intent(Intent.ACTION_GET_CONTENT)
             intent.addCategory(Intent.CATEGORY_OPENABLE)
             intent.type = "text/xml"
 
@@ -128,7 +122,6 @@ class ContactListFragment : Fragment(), ContactsAdapter.ContactListener{
         }
 
         contactsActivity.findViewById<ImageButton>(R.id.caf_btn_add).setOnClickListener {
-            Utils.preventTwoClick(it)
             contactsActivity.findViewById<LinearLayout>(R.id.ac2_dropdown).isVisible = !contactsActivity.findViewById<LinearLayout>(R.id.ac2_dropdown).isVisible
         }
 
@@ -142,8 +135,8 @@ class ContactListFragment : Fragment(), ContactsAdapter.ContactListener{
         }
     }
 
-    override fun onItemClick(cId : Int) {
-        val action = ContactListFragmentDirections.actionContactListFragmentToContactInfoFragment(cId)
+    override fun onItemClick(ContactId : Int) {
+        val action = ContactListFragmentDirections.actionContactListFragmentToContactInfoFragment(ContactId)
         navController.navigate(action)
         contactsActivity.findViewById<LinearLayout>(R.id.ac2_dropdown).isVisible = false
     }

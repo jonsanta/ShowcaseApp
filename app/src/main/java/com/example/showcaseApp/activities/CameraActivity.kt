@@ -17,7 +17,6 @@ import androidx.camera.core.ImageCapture.FLASH_MODE_AUTO
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.navigation.Navigation
 import com.example.showcaseApp.R
 import com.example.showcaseApp.classes.LuminosityAnalyzer
 import com.example.showcaseApp.classes.Utils
@@ -87,7 +86,7 @@ class CameraActivity : AppCompatActivity() {
     private fun takePhoto() {
         isAvailable(false)
         // Get a stable reference of the modifiable image capture use case
-        val imageCapture = imageCapture ?: return
+        val imageCapture = imageCapture
         val activity : CameraActivity = this
 
         val file = File("${getExternalFilesDir(null)}/temp/"+SimpleDateFormat(FILENAME_FORMAT, Locale.US)
