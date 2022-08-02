@@ -70,12 +70,12 @@ class ContactAddFragment : Fragment(), OnImageClickListener {
             }
 
             if(aux)
-                navController.navigate(R.id.action_contactAddFragment_to_contactListFragment)
+                navController.popBackStack()
         }
 
         cafBtnVolver.setOnClickListener {
             Utils.preventTwoClick(it)
-            navController.navigate(R.id.action_contactAddFragment_to_contactListFragment)
+            navController.popBackStack()
         }
     }
 

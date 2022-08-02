@@ -21,7 +21,7 @@ class GalleryAdapter(private val list: List<Photo>, private val galleryListener:
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-
+        holder.itemPosition = position
         val photo = list[position]
 
         Picasso.get().load(Uri.fromFile(photo.getThumbnail())).noFade().fit().centerCrop().into(holder.photo)
@@ -55,6 +55,7 @@ class GalleryAdapter(private val list: List<Photo>, private val galleryListener:
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val photo: ImageButton = itemView.findViewById(R.id.icv_imageBtn_imagen)
         val checkBox : CheckBox = itemView.findViewById(R.id.icv_checkbox)
+        var itemPosition : Int = 0
     }
 
     interface GalleryListener{

@@ -7,49 +7,65 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
+import androidx.navigation.Navigator
+import androidx.navigation.fragment.navArgs
 import com.example.showcaseApp.R
 import com.example.showcaseApp.activities.CameraActivity
 import com.example.showcaseApp.classes.Gallery
 import com.example.showcaseApp.classes.Photo
 import com.example.showcaseApp.classes.Utils
+import com.example.showcaseApp.databinding.FragmentCameraBinding
 import com.example.showcaseApp.databinding.ImagePreviewBinding
 import com.squareup.picasso.Picasso
 import java.io.*
 
-class ImagePreviewFragment(private val file : File, private val activity: CameraActivity) : Fragment(){
+class ImagePreviewFragment : Fragment(){
     private lateinit var viewBinding : ImagePreviewBinding
+    private lateinit var cameraActivity: CameraActivity
+
+    private lateinit var file: File
+
+    private lateinit var navController: NavController
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         viewBinding = ImagePreviewBinding.inflate(layoutInflater)
+        cameraActivity = requireActivity() as CameraActivity
+        val args : ImagePreviewFragmentArgs by navArgs()
+        file = File(args.file)
+        cameraActivity.findViewById<ImageButton>(R.id.ac3_btn_volver).visibility = View.GONE
 
-        Picasso.get().load(Uri.parse(file.toUri().toString())).noFade().fit().centerCrop().into(viewBinding.ppfImage)
-
-        viewBinding.ipfBtnSave.setOnClickListener { view ->
-            Utils.preventTwoClick(view)
-            val copy = Utils.copyFile(FileInputStream(file), File("${activity.getExternalFilesDir(null)}/images/"+file.name))
-            file.delete()
-            Gallery.setSinglePhoto(Photo(copy, makeThumbnailFile(copy)))
-            closeFragment()
-            CameraActivity.isAvailable(true)
-        }
-
-        viewBinding.ipfBtnDel.setOnClickListener { view ->
-            Utils.preventTwoClick(view)
-            file.delete()
-            closeFragment()
-            CameraActivity.isAvailable(true)
-        }
 
         return viewBinding.root.rootView
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        navController = Navigation.findNavController(view)
+
+        Picasso.get().load(file).noFade().fit().centerCrop().into(viewBinding.ppfImage)
+
+        viewBinding.ipfBtnSave.setOnClickListener {
+            Utils.preventTwoClick(it)
+            val copy = Utils.copyFile(FileInputStream(file), File("${cameraActivity.getExternalFilesDir(null)}/images/"+file.name))
+            Gallery.setSinglePhoto(Photo(copy, makeThumbnailFile(copy)))
+            closeFragment()
+        }
+
+        viewBinding.ipfBtnDel.setOnClickListener {
+            Utils.preventTwoClick(it)
+            closeFragment()
+        }
+    }
+
     private fun closeFragment(){
-        activity.supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_in_right)
-            .remove(this)
-            .commit()
+        navController.popBackStack()
+        cameraActivity.findViewById<ImageButton>(R.id.ac3_btn_volver).visibility = View.VISIBLE
+        CameraFragment.isAvailable(true)
+        file.delete()
     }
 
     private fun makeThumbnailFile(source: File): File {
@@ -65,7 +81,7 @@ class ImagePreviewFragment(private val file : File, private val activity: Camera
         val bitmap = BitmapFactory.decodeFile(source.path, opts)
         //create a file to write bitmap data
 
-        val file = File("${activity.getExternalFilesDir(null)}/images/thumbnails/"+source.name+".jpg")
+        val file = File("${cameraActivity.getExternalFilesDir(null)}/images/thumbnails/"+source.name+".jpg")
         file.createNewFile()
 
         //Convert bitmap to byte array

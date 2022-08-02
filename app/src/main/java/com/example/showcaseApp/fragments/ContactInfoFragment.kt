@@ -80,7 +80,7 @@ class ContactInfoFragment: Fragment(), OnImageClickListener {
         viewBinding.cafBtnBorrar.setOnClickListener {
             Utils.preventTwoClick(it)
             contactsActivity.getDataBase().delete("Contacts", "id='$contactID'", null)
-            Navigation.findNavController(view).navigate(R.id.action_contactInfoFragment_to_contactListFragment)
+            Navigation.findNavController(view).popBackStack()
         }
 
         cafBtnAdd.setOnClickListener {
@@ -96,7 +96,7 @@ class ContactInfoFragment: Fragment(), OnImageClickListener {
         cafBtnVolver.setOnClickListener {
             Utils.preventTwoClick(it)
             if(!editMode)
-                Navigation.findNavController(view).navigate(R.id.action_contactInfoFragment_to_contactListFragment)
+                Navigation.findNavController(view).popBackStack()
             else
                 swapMode(name, tel, info, icon, cafBtnAdd, cafBtnVolver)
         }
