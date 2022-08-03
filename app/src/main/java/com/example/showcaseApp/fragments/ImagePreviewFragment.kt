@@ -2,26 +2,22 @@ package com.example.showcaseApp.fragments
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
-import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import androidx.navigation.Navigator
 import androidx.navigation.fragment.navArgs
+import com.bumptech.glide.Glide
 import com.example.showcaseApp.R
 import com.example.showcaseApp.activities.CameraActivity
 import com.example.showcaseApp.classes.Gallery
 import com.example.showcaseApp.classes.Photo
 import com.example.showcaseApp.classes.Utils
-import com.example.showcaseApp.databinding.FragmentCameraBinding
 import com.example.showcaseApp.databinding.ImagePreviewBinding
-import com.squareup.picasso.Picasso
 import java.io.*
 
 class ImagePreviewFragment : Fragment(){
@@ -46,7 +42,7 @@ class ImagePreviewFragment : Fragment(){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         navController = Navigation.findNavController(view)
 
-        Picasso.get().load(file).noFade().fit().centerCrop().into(viewBinding.ppfImage)
+        Glide.with(view).load(file).into(viewBinding.ppfImage)
 
         viewBinding.ipfBtnSave.setOnClickListener {
             Utils.preventTwoClick(it)

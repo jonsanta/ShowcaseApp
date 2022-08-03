@@ -11,10 +11,14 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager.widget.ViewPager
+import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 import com.example.showcaseApp.R
 import com.example.showcaseApp.adapters.GalleryAdapter
+import com.example.showcaseApp.adapters.ImageAdapter
 import com.example.showcaseApp.classes.*
 import com.example.showcaseApp.databinding.GalleryActivityBinding
+
 
 class GalleryActivity : AppCompatActivity(), GalleryAdapter.GalleryListener{
     private lateinit var viewBinding : GalleryActivityBinding
@@ -40,6 +44,21 @@ class GalleryActivity : AppCompatActivity(), GalleryAdapter.GalleryListener{
             Utils.preventTwoClick(it)
             removePhoto()
         }
+
+        val activity : GalleryActivity = this
+        (viewBinding.ac4Imagepreview as ViewPager).addOnPageChangeListener(object : OnPageChangeListener {
+            override fun onPageScrollStateChanged(state: Int) {
+            }
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+            }
+
+            override fun onPageSelected(position: Int) {
+                viewBinding.ac4RecyclerView.scrollToPosition(position)
+                Gallery.clearSelected()
+                Gallery.setSelected(Gallery.getPhotos()[position], position, activity)
+                Gallery.getPhotos()[position].isExpanded(true)
+            }
+        })
     }
 
     override fun onRequestPermissionsResult(requestCode : Int, permissions : Array<out String>, grantResults : IntArray){
@@ -56,7 +75,7 @@ class GalleryActivity : AppCompatActivity(), GalleryAdapter.GalleryListener{
         }
         else if(Gallery.getSelected().isNotEmpty()){
             Gallery.setViewVisibility(findViewById(R.id.ac4_remove), false)
-            GalleryAnimations().animate(Gallery.getSelectedPhotos()[0], viewBinding.ac4Imagepreview, viewBinding.ac4RecyclerView)
+            GalleryAnimations().animate(Gallery.getPhotos()[(viewBinding.ac4Imagepreview as ViewPager).currentItem], viewBinding.ac4Imagepreview, viewBinding.ac4RecyclerView)
         }
         else{
             finish()
@@ -79,7 +98,6 @@ class GalleryActivity : AppCompatActivity(), GalleryAdapter.GalleryListener{
         else {
             GalleryAnimations().animate(photo, viewBinding.ac4Imagepreview, viewBinding.ac4RecyclerView)
             Gallery.setViewVisibility(findViewById<ImageButton>(R.id.ac4_remove), true)
-            Gallery.setSelected(photo, position, this)
         }
     }
 
@@ -94,10 +112,14 @@ class GalleryActivity : AppCompatActivity(), GalleryAdapter.GalleryListener{
 
         Gallery.setPhotos(this)
 
+        val viewpager = findViewById<ViewPager>(R.id.ac4_imagepreview)
+        viewpager.adapter = ImageAdapter(this, Gallery.getPhotos().toTypedArray())
+
         recyclerView.adapter = GalleryAdapter(Gallery.getPhotos(),this)
         recyclerView.setHasFixedSize(true)
         recyclerView.setItemViewCacheSize(20)
 
+        //BUG kotlin.UninitializedPropertyAccessException : holder has not been initialized
         if(Gallery.getPhotos()[0].isInitialized())
             Gallery.setEditMode(Gallery.isEditMode(), this)
     }

@@ -14,12 +14,12 @@
         android:layout_width="155dp"
         android:layout_height="wrap_content"
         android:text="@string/acm_btn_bd"
+        app:backgroundTint="@null"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-        app:layout_constraintVertical_bias="0.22000003"
-        app:backgroundTint="@null"
+        app:layout_constraintVertical_bias="0.3"
         tools:ignore="DuplicateSpeakableTextCheck" />
 
     <Button
@@ -27,12 +27,12 @@
         android:layout_width="155dp"
         android:layout_height="wrap_content"
         android:text="@string/acm_btn_camara"
+        app:backgroundTint="@null"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/acm_btn_bd"
-        app:layout_constraintVertical_bias="0.120000005"
-        app:backgroundTint="@null"/>
+        app:layout_constraintVertical_bias="0.1" />
 
     <Button
         android:id="@+id/acm_btn_galeria"
@@ -43,13 +43,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/acm_btn_camara"
-        app:layout_constraintVertical_bias="0.3"
+        app:layout_constraintVertical_bias="0.1"
         app:backgroundTint="@null"/>
 
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="339dp"
-        android:layout_height="379dp"
+        android:layout_height="wrap_content"
         android:background="@drawable/border"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -67,41 +67,6 @@
             android:contentDescription="@string/acm_image_logo"
             app:srcCompat="@drawable/logovet" />
 
-        <androidx.legacy.widget.Space
-            android:layout_width="match_parent"
-            android:layout_height="38dp" />
-
-        <LinearLayout
-            android:id="@+id/linearLayout2"
-            android:layout_width="121dp"
-            android:layout_height="55dp"
-            android:layout_gravity="bottom|center"
-            android:orientation="horizontal"
-            tools:layout_editor_absoluteX="-9dp"
-            tools:layout_editor_absoluteY="381dp">
-
-            <ImageButton
-                android:id="@+id/acm_imagebtn_play"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@drawable/start_button"
-                android:foreground="?android:attr/selectableItemBackground"
-                android:contentDescription="@string/acm_imagebtn_play"
-                app:srcCompat="@drawable/play"
-                tools:ignore="SpeakableTextPresentCheck" />
-
-            <ImageButton
-                android:id="@+id/acm_imagebtn_pause"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@drawable/pause_button"
-                android:foreground="?android:attr/selectableItemBackground"
-                android:contentDescription="@string/acm_imagebtn_pause"
-                app:srcCompat="@drawable/pause"
-                tools:ignore="SpeakableTextPresentCheck" />
-        </LinearLayout>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

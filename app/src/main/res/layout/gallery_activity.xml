@@ -16,14 +16,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ac4_linearLayout">
 
-        <ImageView
+        <androidx.viewpager.widget.ViewPager
             android:id="@+id/ac4_imagepreview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="fitXY"
+            android:background="@color/appBG"
+            android:visibility="invisible"
             android:focusable="true"
-            android:clickable="true"
-            android:visibility="invisible"/>
+            android:clickable="true"/>
 
     </FrameLayout>
 

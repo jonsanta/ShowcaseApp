@@ -11,13 +11,12 @@ import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.widget.ImageView
 import androidx.core.net.toUri
+import androidx.viewpager.widget.ViewPager
 
 class GalleryAnimations{
-    fun animate(photo: Photo, expandedImageView: ImageView, center : View){
+    fun animate(photo: Photo, expandedImageView: View, center : View){
         val holder = photo.holder
         val thumbView = holder.photo
-
-        expandedImageView.setImageURI(photo.getFile().toUri())
 
         val startBoundsInt = Rect()
         val finalBoundsInt = Rect()
@@ -48,7 +47,6 @@ class GalleryAnimations{
             startBounds.bottom += deltaHeight.toInt()
         }
 
-        thumbView.alpha = 0f
         expandedImageView.visibility = View.VISIBLE
 
         expandedImageView.pivotX = 0f
@@ -56,7 +54,7 @@ class GalleryAnimations{
 
         if(!photo.isExpanded()){
             expand(expandedImageView, startBounds, finalBounds, startScale)
-            photo.isExpanded(true)
+            (expandedImageView as ViewPager).setCurrentItem(photo.holder.itemPosition, false)
         }else {
             shrink(expandedImageView, startBounds, startScale)
             photo.isExpanded(false)
@@ -64,7 +62,7 @@ class GalleryAnimations{
         }
     }
 
-    private fun expand(expandedImageView : ImageView, startBounds : RectF, finalBounds : RectF, startScale : Float){
+    private fun expand(expandedImageView : View, startBounds : RectF, finalBounds : RectF, startScale : Float){
         AnimatorSet().apply {
             play(
                 ObjectAnimator.ofFloat(
@@ -92,7 +90,7 @@ class GalleryAnimations{
         }
     }
 
-    private fun shrink(expandedImageView : ImageView, startBounds : RectF, startScale : Float){
+    private fun shrink(expandedImageView : View, startBounds : RectF, startScale : Float){
         AnimatorSet().apply {
             play(ObjectAnimator.ofFloat(expandedImageView, View.X, startBounds.left)).apply {
                 with(ObjectAnimator.ofFloat(expandedImageView, View.Y, startBounds.top))

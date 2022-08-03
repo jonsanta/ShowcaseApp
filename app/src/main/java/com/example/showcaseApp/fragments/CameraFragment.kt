@@ -18,7 +18,6 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.findNavController
 import com.example.showcaseApp.R
 import com.example.showcaseApp.activities.CameraActivity
 import com.example.showcaseApp.classes.LuminosityAnalyzer
@@ -61,8 +60,8 @@ class CameraFragment : Fragment() {
         }
 
         // Set up the listeners for take photo and video capture buttons
-        viewBinding.imageCaptureButton.setOnClickListener { view ->
-            Utils.preventTwoClick(view)
+        viewBinding.imageCaptureButton.setOnClickListener {
+            Utils.preventTwoClick(it)
             if (available)
                 takePhoto()
         }

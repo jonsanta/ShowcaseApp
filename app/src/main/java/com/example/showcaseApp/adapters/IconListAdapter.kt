@@ -6,10 +6,10 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import androidx.core.graphics.drawable.toBitmap
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.showcaseApp.interfaces.OnImageClickListener
 import com.example.showcaseApp.R
 import com.example.showcaseApp.classes.Utils
-import com.squareup.picasso.Picasso
 
 class IconListAdapter(private val images : List<String>, private val onImageClickListener: OnImageClickListener) : RecyclerView.Adapter<IconListAdapter.ViewHolder>() {
 
@@ -20,8 +20,8 @@ class IconListAdapter(private val images : List<String>, private val onImageClic
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        Picasso.get().load(images[position]).noFade().fit().centerCrop().into(holder.photo)
         holder.photo.adjustViewBounds = true
+        Glide.with(holder.itemView).load(images[position]).fitCenter().centerCrop().into(holder.photo)
 
         holder.photo.setOnClickListener { view ->
             Utils.preventTwoClick(view)

@@ -1,6 +1,5 @@
 package com.example.showcaseApp.adapters
 
-import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,11 +7,11 @@ import android.widget.CheckBox
 import android.widget.ImageButton
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.showcaseApp.R
 import com.example.showcaseApp.classes.Gallery
 import com.example.showcaseApp.classes.Photo
 import com.example.showcaseApp.classes.Utils
-import com.squareup.picasso.Picasso
 
 class GalleryAdapter(private val list: List<Photo>, private val galleryListener: GalleryListener) : RecyclerView.Adapter<GalleryAdapter.ViewHolder>(){
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -24,9 +23,8 @@ class GalleryAdapter(private val list: List<Photo>, private val galleryListener:
         holder.itemPosition = position
         val photo = list[position]
 
-        Picasso.get().load(Uri.fromFile(photo.getThumbnail())).noFade().fit().centerCrop().into(holder.photo)
-
         holder.photo.adjustViewBounds = true
+        Glide.with(holder.itemView).load(photo.getThumbnail()).centerCrop().into(holder.photo)
 
         // EDITMODE CHECK FOR PORTRAIT <--> LAND SWAP REDRAW
         holder.checkBox.isClickable = Gallery.isEditMode()

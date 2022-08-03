@@ -4,7 +4,6 @@ package com.example.showcaseApp.activities
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.showcaseApp.databinding.CameraActivityBinding
-import com.example.showcaseApp.fragments.CameraFragment
 
 typealias LumaListener = (luma: Double) -> Unit
 

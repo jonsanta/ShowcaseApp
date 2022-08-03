@@ -4,7 +4,6 @@ import android.content.Context
 import android.os.Build
 import android.view.View
 import android.widget.*
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.isVisible
 import com.example.showcaseApp.R
 import com.example.showcaseApp.activities.GalleryActivity
@@ -109,6 +108,10 @@ class Gallery {
         }
 
         fun clearSelected(){
+            selectedPhotos.keys.forEach{
+                it.isExpanded(false)
+                it.holder.photo.alpha = 1f
+            }
             selectedPhotos.clear()
         }
 
