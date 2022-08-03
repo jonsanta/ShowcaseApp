@@ -20,7 +20,6 @@ class GalleryAdapter(private val list: List<Photo>, private val galleryListener:
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.itemPosition = position
         val photo = list[position]
 
         holder.photo.adjustViewBounds = true
@@ -32,16 +31,13 @@ class GalleryAdapter(private val list: List<Photo>, private val galleryListener:
         holder.checkBox.isChecked = Gallery.isSelected(photo)
 
         holder.photo.setOnLongClickListener{
-            galleryListener.onLongItemClick(photo, position)
+            galleryListener.onLongItemClick(holder, photo, position)
             true
         }
 
         holder.photo.setOnClickListener {
-            Utils.preventTwoClick(it)
-            galleryListener.onShortItemClick(photo, position)
+            galleryListener.onShortItemClick(holder, photo, position, it)
         }
-
-        photo.holder = holder
     }
 
     // return the number of the items in the list
@@ -53,11 +49,10 @@ class GalleryAdapter(private val list: List<Photo>, private val galleryListener:
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val photo: ImageButton = itemView.findViewById(R.id.icv_imageBtn_imagen)
         val checkBox : CheckBox = itemView.findViewById(R.id.icv_checkbox)
-        var itemPosition : Int = 0
     }
 
     interface GalleryListener{
-        fun onLongItemClick(photo : Photo, position: Int)
-        fun onShortItemClick(photo : Photo, position: Int)
+        fun onLongItemClick(holder : ViewHolder, photo : Photo, position: Int)
+        fun onShortItemClick(holder : ViewHolder, photo : Photo, position: Int, view : View)
     }
 }

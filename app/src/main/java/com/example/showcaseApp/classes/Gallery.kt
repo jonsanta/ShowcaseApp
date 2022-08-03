@@ -5,6 +5,7 @@ import android.os.Build
 import android.view.View
 import android.widget.*
 import androidx.core.view.isVisible
+import androidx.recyclerview.widget.RecyclerView
 import com.example.showcaseApp.R
 import com.example.showcaseApp.activities.GalleryActivity
 import java.io.File
@@ -20,22 +21,19 @@ class Gallery {
 
         // Enables UI for editing mode
         fun setEditMode(flag : Boolean, activity : GalleryActivity){
-            for(photo in photos){
-                photo.holder.checkBox.isVisible = flag
-                if(!flag)
-                    photo.holder.checkBox.isChecked = false
-            }
-
             val btnDiscard = activity.findViewById<ImageButton>(R.id.ac4_btn_discard)
             setViewVisibility(activity.findViewById<TextView>(R.id.ac4_selectText), flag)
             setViewVisibility(activity.findViewById<ImageButton>(R.id.ac4_remove), flag)
-            if(flag)
+            if(flag) {
                 btnDiscard.setImageResource(R.drawable.cancelar)
+                selectedPhotos.clear()
+            }
             else
                 btnDiscard.setImageResource(R.drawable.arrow)
 
             countSelected(activity)
             editMode = flag
+            activity.findViewById<RecyclerView>(R.id.ac4_recyclerView).adapter?.notifyItemRangeChanged(0, photos.size)
         }
 
         fun isEditMode() : Boolean{
@@ -87,11 +85,12 @@ class Gallery {
         }
 
         fun setSelected(photo : Photo, position : Int, activity: GalleryActivity){
-            if(selectedPhotos.contains(photo))
-                selectedPhotos.remove(photo)
-            else
-                selectedPhotos[photo] = position
+            selectedPhotos[photo] = position
+            countSelected(activity)
+        }
 
+        fun removeSelected(photo: Photo, activity: GalleryActivity){
+            selectedPhotos.remove(photo)
             countSelected(activity)
         }
 
@@ -108,11 +107,11 @@ class Gallery {
         }
 
         fun clearSelected(){
-            selectedPhotos.keys.forEach{
-                it.isExpanded(false)
-                it.holder.photo.alpha = 1f
-            }
             selectedPhotos.clear()
+        }
+
+        fun clearPhotos(){
+            photos.clear()
         }
 
         // Selection Text on EditMode

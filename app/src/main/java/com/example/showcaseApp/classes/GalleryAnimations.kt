@@ -9,20 +9,20 @@ import android.graphics.Rect
 import android.graphics.RectF
 import android.view.View
 import android.view.animation.DecelerateInterpolator
-import android.widget.ImageView
-import androidx.core.net.toUri
 import androidx.viewpager.widget.ViewPager
+import androidx.viewpager2.widget.ViewPager2
+import com.example.showcaseApp.activities.GalleryActivity
+import com.example.showcaseApp.adapters.GalleryAdapter
 
-class GalleryAnimations{
-    fun animate(photo: Photo, expandedImageView: View, center : View){
-        val holder = photo.holder
+class GalleryAnimations(private val galleryActivity: GalleryActivity){
+    fun animate(holder: GalleryAdapter.ViewHolder, photo: Photo, position: Int, expandedImageView: View, center : View){
         val thumbView = holder.photo
 
         val startBoundsInt = Rect()
         val finalBoundsInt = Rect()
         val globalOffset = Point()
 
-        holder.itemView.getGlobalVisibleRect(startBoundsInt)
+        holder.photo.getGlobalVisibleRect(startBoundsInt)
         center.getGlobalVisibleRect(finalBoundsInt, globalOffset)
         startBoundsInt.offset(-globalOffset.x, -globalOffset.y)
         finalBoundsInt.offset(-globalOffset.x, -globalOffset.y)
@@ -54,10 +54,13 @@ class GalleryAnimations{
 
         if(!photo.isExpanded()){
             expand(expandedImageView, startBounds, finalBounds, startScale)
-            (expandedImageView as ViewPager).setCurrentItem(photo.holder.itemPosition, false)
+            (expandedImageView as ViewPager2).setCurrentItem(position, false)
+            Gallery.setSelected(photo, position, galleryActivity)
+            photo.isExpanded(true)
         }else {
             shrink(expandedImageView, startBounds, startScale)
             photo.isExpanded(false)
+            Gallery.clearSelected()
             thumbView.alpha = 1f
         }
     }
