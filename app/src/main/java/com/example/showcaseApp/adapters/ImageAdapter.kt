@@ -3,17 +3,18 @@ package com.example.showcaseApp.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.example.showcaseApp.R
 import com.example.showcaseApp.classes.Photo
+import com.github.chrisbanes.photoview.PhotoView
+import com.github.chrisbanes.photoview.PhotoViewAttacher
 
 class ImageAdapter(private val list : List<Photo>, private val land : Boolean) : RecyclerView.Adapter<ImageAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        var view : View
+        val view : View
         if(land)
             view = LayoutInflater.from(parent.context).inflate(R.layout.image_viewer_land, parent, false)
         else
@@ -23,6 +24,9 @@ class ImageAdapter(private val list : List<Photo>, private val land : Boolean) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val photo = list[position]
+
+        val pAttacher = PhotoViewAttacher(holder.imageView)
+        pAttacher.update()
 
         //holder.imageView.setImageURI(photo.getFile().toUri())
         val requestOptions = RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -34,6 +38,6 @@ class ImageAdapter(private val list : List<Photo>, private val land : Boolean) :
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val imageView: ImageView = itemView.findViewById(R.id.imageView)
+        val imageView: PhotoView = itemView.findViewById(R.id.imageView)
     }
 }

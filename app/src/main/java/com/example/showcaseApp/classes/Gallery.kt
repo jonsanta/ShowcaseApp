@@ -3,11 +3,8 @@ package com.example.showcaseApp.classes
 import android.content.Context
 import android.os.Build
 import android.view.View
-import android.widget.*
-import androidx.core.view.isVisible
-import androidx.recyclerview.widget.RecyclerView
 import com.example.showcaseApp.R
-import com.example.showcaseApp.activities.GalleryActivity
+import com.example.showcaseApp.databinding.GalleryActivityBinding
 import java.io.File
 import java.text.MessageFormat
 import java.util.*
@@ -20,20 +17,20 @@ class Gallery {
         private val selectedPhotos = mutableMapOf<Photo, Int>()
 
         // Enables UI for editing mode
-        fun setEditMode(flag : Boolean, activity : GalleryActivity){
-            val btnDiscard = activity.findViewById<ImageButton>(R.id.ac4_btn_discard)
-            setViewVisibility(activity.findViewById<TextView>(R.id.ac4_selectText), flag)
-            setViewVisibility(activity.findViewById<ImageButton>(R.id.ac4_remove), flag)
-            if(flag) {
+        fun setEditMode(flag : Boolean, galleryActivityBinding: GalleryActivityBinding){
+            val btnDiscard = galleryActivityBinding.ac4BtnDiscard
+            setViewVisibility(galleryActivityBinding.ac4SelectText, flag)
+            setViewVisibility(galleryActivityBinding.ac4Remove, flag)
+            if(flag)
                 btnDiscard.setImageResource(R.drawable.cancelar)
+            else {
+                btnDiscard.setImageResource(R.drawable.arrow)
                 selectedPhotos.clear()
             }
-            else
-                btnDiscard.setImageResource(R.drawable.arrow)
 
-            countSelected(activity)
+            countSelected(galleryActivityBinding)
             editMode = flag
-            activity.findViewById<RecyclerView>(R.id.ac4_recyclerView).adapter?.notifyItemRangeChanged(0, photos.size)
+            galleryActivityBinding.ac4RecyclerView.adapter?.notifyItemRangeChanged(0, photos.size)
         }
 
         fun isEditMode() : Boolean{
@@ -76,22 +73,22 @@ class Gallery {
             return photos
         }
 
-        fun removePhotos(activity: GalleryActivity){
+        fun removePhotos(galleryActivityBinding: GalleryActivityBinding){
             for(photo in selectedPhotos)
                 photo.key.removeFile()
             photos.removeAll(selectedPhotos.keys)
             clearSelected()
-            countSelected(activity)
+            countSelected(galleryActivityBinding)
         }
 
-        fun setSelected(photo : Photo, position : Int, activity: GalleryActivity){
+        fun setSelected(photo : Photo, position : Int, galleryActivityBinding: GalleryActivityBinding){
             selectedPhotos[photo] = position
-            countSelected(activity)
+            countSelected(galleryActivityBinding)
         }
 
-        fun removeSelected(photo: Photo, activity: GalleryActivity){
+        fun removeSelected(photo: Photo, galleryActivityBinding: GalleryActivityBinding){
             selectedPhotos.remove(photo)
-            countSelected(activity)
+            countSelected(galleryActivityBinding)
         }
 
         fun getSelected() : List<Int>{
@@ -100,10 +97,6 @@ class Gallery {
 
         fun getSelectedPhotos() : List<Photo>{
             return selectedPhotos.keys.toList()
-        }
-
-        fun isSelected(photo: Photo) : Boolean{
-            return selectedPhotos.contains(photo)
         }
 
         fun clearSelected(){
@@ -115,9 +108,9 @@ class Gallery {
         }
 
         // Selection Text on EditMode
-        private fun countSelected(activity: GalleryActivity){
-            val textview = activity.findViewById<TextView>(R.id.ac4_selectText)
-            val format = activity.resources.getText(R.string.count_images).toString()
+        private fun countSelected(galleryActivityBinding: GalleryActivityBinding){
+            val textview = galleryActivityBinding.ac4SelectText
+            val format = galleryActivityBinding.root.resources.getText(R.string.count_images).toString()
             textview.text = MessageFormat.format(format, selectedPhotos.size)
         }
 

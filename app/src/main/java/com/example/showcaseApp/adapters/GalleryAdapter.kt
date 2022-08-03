@@ -11,7 +11,6 @@ import com.bumptech.glide.Glide
 import com.example.showcaseApp.R
 import com.example.showcaseApp.classes.Gallery
 import com.example.showcaseApp.classes.Photo
-import com.example.showcaseApp.classes.Utils
 
 class GalleryAdapter(private val list: List<Photo>, private val galleryListener: GalleryListener) : RecyclerView.Adapter<GalleryAdapter.ViewHolder>(){
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -28,7 +27,7 @@ class GalleryAdapter(private val list: List<Photo>, private val galleryListener:
         // EDITMODE CHECK FOR PORTRAIT <--> LAND SWAP REDRAW
         holder.checkBox.isClickable = Gallery.isEditMode()
         holder.checkBox.isVisible = Gallery.isEditMode()
-        holder.checkBox.isChecked = Gallery.isSelected(photo)
+        holder.checkBox.isChecked = Gallery.getSelectedPhotos().contains(photo)
 
         holder.photo.setOnLongClickListener{
             galleryListener.onLongItemClick(holder, photo, position)

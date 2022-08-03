@@ -9,12 +9,11 @@ import android.graphics.Rect
 import android.graphics.RectF
 import android.view.View
 import android.view.animation.DecelerateInterpolator
-import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
-import com.example.showcaseApp.activities.GalleryActivity
 import com.example.showcaseApp.adapters.GalleryAdapter
+import com.example.showcaseApp.databinding.GalleryActivityBinding
 
-class GalleryAnimations(private val galleryActivity: GalleryActivity){
+class GalleryAnimations(private val galleryActivityBinding: GalleryActivityBinding){
     fun animate(holder: GalleryAdapter.ViewHolder, photo: Photo, position: Int, expandedImageView: View, center : View){
         val thumbView = holder.photo
 
@@ -55,7 +54,7 @@ class GalleryAnimations(private val galleryActivity: GalleryActivity){
         if(!photo.isExpanded()){
             expand(expandedImageView, startBounds, finalBounds, startScale)
             (expandedImageView as ViewPager2).setCurrentItem(position, false)
-            Gallery.setSelected(photo, position, galleryActivity)
+            Gallery.setSelected(photo, position, galleryActivityBinding)
             photo.isExpanded(true)
         }else {
             shrink(expandedImageView, startBounds, startScale)

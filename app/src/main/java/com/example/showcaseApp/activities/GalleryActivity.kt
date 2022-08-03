@@ -1,18 +1,14 @@
 package com.example.showcaseApp.activities
 
 import android.Manifest
-import android.content.Context
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.View
-import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager.widget.ViewPager
-import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 import androidx.viewpager2.widget.ViewPager2
 import com.example.showcaseApp.R
 import com.example.showcaseApp.adapters.GalleryAdapter
@@ -32,9 +28,9 @@ class GalleryActivity : AppCompatActivity(), GalleryAdapter.GalleryListener{
         viewBinding = GalleryActivityBinding.inflate(layoutInflater)
         setContentView(viewBinding.root)
 
-        if(checkPermissions())
+        if(checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
             loadGallery()
-        else//Ask for READING Permissions
+        else
             requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), READ_REQUEST_CODE)
 
         viewBinding.ac4BtnDiscard.setOnClickListener {
@@ -47,7 +43,6 @@ class GalleryActivity : AppCompatActivity(), GalleryAdapter.GalleryListener{
             removePhoto()
         }
 
-        val activity : GalleryActivity = this
         viewBinding.ac4Imagepreview.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback(){
             override fun onPageSelected(position: Int) {
                 if(selected) {
@@ -56,7 +51,7 @@ class GalleryActivity : AppCompatActivity(), GalleryAdapter.GalleryListener{
                         it.isExpanded(false)
                     }
                     Gallery.clearSelected()
-                    Gallery.setSelected(Gallery.getPhotos()[position], position, activity)
+                    Gallery.setSelected(Gallery.getPhotos()[position], position, viewBinding)
                     Gallery.getPhotos()[position].isExpanded(true)
                 }
             }
@@ -73,25 +68,23 @@ class GalleryActivity : AppCompatActivity(), GalleryAdapter.GalleryListener{
 
     override fun onBackPressed(){
         if(Gallery.isEditMode()){
-            Gallery.setEditMode(false, this)
-            selected = false
+            Gallery.setEditMode(false, viewBinding)
         }
         else if(Gallery.getSelected().isNotEmpty()){
             Gallery.setViewVisibility(findViewById(R.id.ac4_remove), false)
-            GalleryAnimations(this).animate(findViewById<RecyclerView>(R.id.ac4_recyclerView).findViewHolderForAdapterPosition(viewBinding.ac4Imagepreview.currentItem) as GalleryAdapter.ViewHolder, Gallery.getPhotos()[viewBinding.ac4Imagepreview.currentItem], viewBinding.ac4Imagepreview.currentItem, viewBinding.ac4Imagepreview, viewBinding.ac4RecyclerView)
-            selected = false
+            GalleryAnimations(viewBinding).animate(findViewById<RecyclerView>(R.id.ac4_recyclerView).findViewHolderForAdapterPosition(viewBinding.ac4Imagepreview.currentItem) as GalleryAdapter.ViewHolder, Gallery.getPhotos()[viewBinding.ac4Imagepreview.currentItem], viewBinding.ac4Imagepreview.currentItem, viewBinding.ac4Imagepreview, viewBinding.ac4RecyclerView)
         }
         else{
             Gallery.clearSelected()
             Gallery.clearPhotos()
             finish()
-            selected = false
         }
+        selected = false
     }
 
     override fun onLongItemClick(holder : GalleryAdapter.ViewHolder, photo: Photo, position: Int) {
-        if(!Gallery.isEditMode()) { // LONG CLICK EVENT - while !editMode
-            Gallery.setEditMode(true, this)// Enables editMode
+        if(!Gallery.isEditMode()) {
+            Gallery.setEditMode(true, viewBinding)
             select(holder, photo, position)
         }
         else select(holder, photo, position)
@@ -102,8 +95,8 @@ class GalleryActivity : AppCompatActivity(), GalleryAdapter.GalleryListener{
             select(holder, photo, position)
         else {
             Utils.preventTwoClick(view)
-            GalleryAnimations(this).animate(holder, photo, position, viewBinding.ac4Imagepreview, viewBinding.ac4RecyclerView)
-            Gallery.setViewVisibility(findViewById<ImageButton>(R.id.ac4_remove), true)
+            GalleryAnimations(viewBinding).animate(holder, photo, position, viewBinding.ac4Imagepreview, viewBinding.ac4RecyclerView)
+            Gallery.setViewVisibility(viewBinding.ac4Remove, true)
             selected = true
         }
     }
@@ -112,14 +105,14 @@ class GalleryActivity : AppCompatActivity(), GalleryAdapter.GalleryListener{
     {
         Gallery.setPhotos(this)
 
-        var recyclerView = viewBinding.ac4RecyclerView
+        val recyclerView = viewBinding.ac4RecyclerView
         val viewpager = viewBinding.ac4Imagepreview
         if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            recyclerView = setRecyclerView(recyclerView, 3, this)
+            setRecyclerView(3)
             viewpager.adapter = ImageAdapter(Gallery.getPhotos(), false)
         }
         else{
-            recyclerView = setRecyclerView(recyclerView, 5,  this)
+            setRecyclerView(5)
             viewpager.adapter = ImageAdapter(Gallery.getPhotos(), true)
         }
 
@@ -127,47 +120,40 @@ class GalleryActivity : AppCompatActivity(), GalleryAdapter.GalleryListener{
         recyclerView.setHasFixedSize(true)
         recyclerView.setItemViewCacheSize(20)
 
-        Gallery.setEditMode(Gallery.isEditMode(), this)
+        Gallery.setEditMode(Gallery.isEditMode(), viewBinding)
     }
 
     private fun select(holder : GalleryAdapter.ViewHolder, photo : Photo, position: Int){
         if(Gallery.getSelectedPhotos().contains(photo)){
-            Gallery.removeSelected(photo,this)
+            Gallery.removeSelected(photo,viewBinding)
             holder.checkBox.isChecked = false
         }
         else {
-            Gallery.setSelected(photo, position, this)
-            holder.checkBox.isChecked = !holder.checkBox.isChecked
+            Gallery.setSelected(photo, position, viewBinding)
+            holder.checkBox.isChecked = true
         }
     }
 
     private fun removePhoto(){
         val minValue = Gallery.getSelected().last()
-        Gallery.getSelectedPhotos().forEach{
-            it.isExpanded(false)
-        }
+
         Gallery.getSelected().forEach{
             viewBinding.ac4RecyclerView.adapter?.notifyItemRemoved(it)
             viewBinding.ac4Imagepreview.adapter?.notifyItemRemoved(it)
+            Gallery.getPhotos()[it].isExpanded(false)
         }
-        Gallery.removePhotos(this)
-        viewBinding.ac4RecyclerView.adapter?.notifyItemRangeChanged(minValue,Gallery.getPhotos().size)
-        Gallery.setViewVisibility(findViewById(R.id.ac4_remove), false)
-        Gallery.setEditMode(false, this)
+        Gallery.removePhotos(viewBinding)
+        viewBinding.ac4RecyclerView.adapter?.notifyItemRangeChanged(minValue, Gallery.getPhotos().size)
+        Gallery.setViewVisibility(viewBinding.ac4Remove, false)
+        Gallery.setEditMode(false, viewBinding)
         viewBinding.ac4Imagepreview.visibility = View.GONE
-        viewBinding.ac4Imagepreview.setCurrentItem(0)
+        viewBinding.ac4Imagepreview.currentItem = 0
         viewBinding.ac4RecyclerView.scrollToPosition(minValue)
         selected = false
     }
 
-    private fun setRecyclerView(recyclerView: RecyclerView, spanCount : Int, context : Context) : RecyclerView{
-        recyclerView.layoutManager = GridLayoutManager(context, spanCount)
-        recyclerView.addItemDecoration(GridSpacingItemDecoration(spanCount, -10))
-        return recyclerView
-    }
-
-    private fun checkPermissions() : Boolean //True: Permission Granted, False: Permission Denied
-    {
-        return (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
+    private fun setRecyclerView(spanCount : Int){
+        viewBinding.ac4RecyclerView.layoutManager = GridLayoutManager(this, spanCount)
+        viewBinding.ac4RecyclerView.addItemDecoration(GridSpacingItemDecoration(spanCount, -10))
     }
 }
