@@ -11,17 +11,20 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.showcaseApp.R
 import com.example.showcaseApp.classes.Photo
 
-class ImageAdapter(private val list : List<Photo>) : RecyclerView.Adapter<ImageAdapter.ViewHolder>() {
+class ImageAdapter(private val list : List<Photo>, private val land : Boolean) : RecyclerView.Adapter<ImageAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.image_viewer, parent, false)
+        var view : View
+        if(land)
+            view = LayoutInflater.from(parent.context).inflate(R.layout.image_viewer_land, parent, false)
+        else
+            view = LayoutInflater.from(parent.context).inflate(R.layout.image_viewer, parent, false)
         return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val photo = list[position]
 
-        holder.imageView.adjustViewBounds = true
-        //imageView.setImageURI(photo.getFile().toUri())
+        //holder.imageView.setImageURI(photo.getFile().toUri())
         val requestOptions = RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL)
         Glide.with(holder.imageView).load(photo.getFile()).apply(requestOptions).into(holder.imageView)
     }

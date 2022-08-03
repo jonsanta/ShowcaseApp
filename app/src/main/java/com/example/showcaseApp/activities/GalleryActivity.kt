@@ -25,6 +25,7 @@ class GalleryActivity : AppCompatActivity(), GalleryAdapter.GalleryListener{
     private lateinit var viewBinding : GalleryActivityBinding
 
     private val READ_REQUEST_CODE = 123
+    private var selected = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,13 +50,15 @@ class GalleryActivity : AppCompatActivity(), GalleryAdapter.GalleryListener{
         val activity : GalleryActivity = this
         viewBinding.ac4Imagepreview.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback(){
             override fun onPageSelected(position: Int) {
-                viewBinding.ac4RecyclerView.scrollToPosition(position)
-                Gallery.getSelectedPhotos().forEach{
-                    it.isExpanded(false)
+                if(selected) {
+                    viewBinding.ac4RecyclerView.scrollToPosition(position)
+                    Gallery.getSelectedPhotos().forEach {
+                        it.isExpanded(false)
+                    }
+                    Gallery.clearSelected()
+                    Gallery.setSelected(Gallery.getPhotos()[position], position, activity)
+                    Gallery.getPhotos()[position].isExpanded(true)
                 }
-                Gallery.clearSelected()
-                Gallery.setSelected(Gallery.getPhotos()[position], position, activity)
-                Gallery.getPhotos()[position].isExpanded(true)
             }
         })
     }
@@ -71,15 +74,18 @@ class GalleryActivity : AppCompatActivity(), GalleryAdapter.GalleryListener{
     override fun onBackPressed(){
         if(Gallery.isEditMode()){
             Gallery.setEditMode(false, this)
+            selected = false
         }
         else if(Gallery.getSelected().isNotEmpty()){
             Gallery.setViewVisibility(findViewById(R.id.ac4_remove), false)
             GalleryAnimations(this).animate(findViewById<RecyclerView>(R.id.ac4_recyclerView).findViewHolderForAdapterPosition(viewBinding.ac4Imagepreview.currentItem) as GalleryAdapter.ViewHolder, Gallery.getPhotos()[viewBinding.ac4Imagepreview.currentItem], viewBinding.ac4Imagepreview.currentItem, viewBinding.ac4Imagepreview, viewBinding.ac4RecyclerView)
+            selected = false
         }
         else{
             Gallery.clearSelected()
             Gallery.clearPhotos()
             finish()
+            selected = false
         }
     }
 
@@ -98,28 +104,29 @@ class GalleryActivity : AppCompatActivity(), GalleryAdapter.GalleryListener{
             Utils.preventTwoClick(view)
             GalleryAnimations(this).animate(holder, photo, position, viewBinding.ac4Imagepreview, viewBinding.ac4RecyclerView)
             Gallery.setViewVisibility(findViewById<ImageButton>(R.id.ac4_remove), true)
+            selected = true
         }
     }
 
     private fun loadGallery()
     {
-        var recyclerView = viewBinding.ac4RecyclerView
-        // LayoutManager depends on device orientation
-        if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT)
-            recyclerView = setRecyclerView(recyclerView, 3,  this)
-        else
-            recyclerView = setRecyclerView(recyclerView, 5,  this)
-
         Gallery.setPhotos(this)
 
-        val viewpager = findViewById<ViewPager2>(R.id.ac4_imagepreview)
-        viewpager.adapter = ImageAdapter(Gallery.getPhotos())
+        var recyclerView = viewBinding.ac4RecyclerView
+        val viewpager = viewBinding.ac4Imagepreview
+        if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            recyclerView = setRecyclerView(recyclerView, 3, this)
+            viewpager.adapter = ImageAdapter(Gallery.getPhotos(), false)
+        }
+        else{
+            recyclerView = setRecyclerView(recyclerView, 5,  this)
+            viewpager.adapter = ImageAdapter(Gallery.getPhotos(), true)
+        }
 
         recyclerView.adapter = GalleryAdapter(Gallery.getPhotos(),this)
         recyclerView.setHasFixedSize(true)
         recyclerView.setItemViewCacheSize(20)
 
-        //BUG kotlin.UninitializedPropertyAccessException : holder has not been initialized
         Gallery.setEditMode(Gallery.isEditMode(), this)
     }
 
@@ -150,6 +157,7 @@ class GalleryActivity : AppCompatActivity(), GalleryAdapter.GalleryListener{
         viewBinding.ac4Imagepreview.visibility = View.GONE
         viewBinding.ac4Imagepreview.setCurrentItem(0)
         viewBinding.ac4RecyclerView.scrollToPosition(minValue)
+        selected = false
     }
 
     private fun setRecyclerView(recyclerView: RecyclerView, spanCount : Int, context : Context) : RecyclerView{
