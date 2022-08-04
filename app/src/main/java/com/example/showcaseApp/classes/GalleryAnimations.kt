@@ -14,7 +14,17 @@ import com.example.showcaseApp.adapters.GalleryAdapter
 import com.example.showcaseApp.databinding.GalleryActivityBinding
 
 class GalleryAnimations(private val galleryActivityBinding: GalleryActivityBinding){
-    fun animate(holder: GalleryAdapter.ViewHolder, photo: Photo, position: Int, expandedImageView: View, center : View){
+
+    /**
+     * Animates selected photo --> expand/shrink
+     *
+     * @param holder : RecyclerView holder which contains selected photo
+     * @param photo : Selected photo instance
+     * @param position : Photo position on RecyclerView & ViewPager (both should be the same)
+     * @param viewPager : ViewPager2 View
+     * @param center : View you want your photo be centered to
+     */
+    fun animate(holder: GalleryAdapter.ViewHolder, photo: Photo, position: Int, viewPager: View, center : View){
         val thumbView = holder.photo
 
         val startBoundsInt = Rect()
@@ -46,24 +56,26 @@ class GalleryAnimations(private val galleryActivityBinding: GalleryActivityBindi
             startBounds.bottom += deltaHeight.toInt()
         }
 
-        expandedImageView.visibility = View.VISIBLE
+        viewPager.visibility = View.VISIBLE
 
-        expandedImageView.pivotX = 0f
-        expandedImageView.pivotY = 0f
+        viewPager.pivotX = 0f
+        viewPager.pivotY = 0f
 
-        if(!photo.isExpanded()){
-            expand(expandedImageView, startBounds, finalBounds, startScale)
-            (expandedImageView as ViewPager2).setCurrentItem(position, false)
-            Gallery.setSelected(photo, position, galleryActivityBinding)
-            photo.isExpanded(true)
+        //If photo is not showing --> Expand -- Else --> Shrink
+        if(!photo.isShowing()){
+            expand(viewPager, startBounds, finalBounds, startScale)
+            (viewPager as ViewPager2).setCurrentItem(position, false)
+            Gallery.setSelection(photo, position, galleryActivityBinding)
+            photo.setShowing(true)
         }else {
-            shrink(expandedImageView, startBounds, startScale)
-            photo.isExpanded(false)
-            Gallery.clearSelected()
+            shrink(viewPager, startBounds, startScale)
+            photo.setShowing(false)
+            Gallery.clearSelection()
             thumbView.alpha = 1f
         }
     }
 
+    //Animates Gallery photo open event
     private fun expand(expandedImageView : View, startBounds : RectF, finalBounds : RectF, startScale : Float){
         AnimatorSet().apply {
             play(
@@ -92,6 +104,8 @@ class GalleryAnimations(private val galleryActivityBinding: GalleryActivityBindi
         }
     }
 
+
+    //Animates Gallery photo closing event
     private fun shrink(expandedImageView : View, startBounds : RectF, startScale : Float){
         AnimatorSet().apply {
             play(ObjectAnimator.ofFloat(expandedImageView, View.X, startBounds.left)).apply {

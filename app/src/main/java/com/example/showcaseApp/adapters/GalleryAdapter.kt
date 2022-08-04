@@ -27,7 +27,7 @@ class GalleryAdapter(private val list: List<Photo>, private val galleryListener:
         // EDITMODE CHECK FOR PORTRAIT <--> LAND SWAP REDRAW
         holder.checkBox.isClickable = Gallery.isEditMode()
         holder.checkBox.isVisible = Gallery.isEditMode()
-        holder.checkBox.isChecked = Gallery.getSelectedPhotos().contains(photo)
+        holder.checkBox.isChecked = Gallery.getSelection().contains(photo)
 
         holder.photo.setOnLongClickListener{
             galleryListener.onLongItemClick(holder, photo, position)

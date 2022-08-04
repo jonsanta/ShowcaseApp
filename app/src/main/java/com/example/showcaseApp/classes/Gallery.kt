@@ -14,7 +14,8 @@ class Gallery {
         private var editMode = false
 
         private val photos = mutableListOf<Photo>()
-        private val selectedPhotos = mutableMapOf<Photo, Int>()
+        private val selection = mutableMapOf<Photo, Int>()
+        private var selectedPhotoPos : Int = -1
 
         // Enables UI for editing mode
         fun setEditMode(flag : Boolean, galleryActivityBinding: GalleryActivityBinding){
@@ -25,7 +26,7 @@ class Gallery {
                 btnDiscard.setImageResource(R.drawable.cancelar)
             else {
                 btnDiscard.setImageResource(R.drawable.arrow)
-                selectedPhotos.clear()
+                selection.clear()
             }
 
             countSelected(galleryActivityBinding)
@@ -74,44 +75,48 @@ class Gallery {
         }
 
         fun removePhotos(galleryActivityBinding: GalleryActivityBinding){
-            for(photo in selectedPhotos)
+            for(photo in selection)
                 photo.key.removeFile()
-            photos.removeAll(selectedPhotos.keys)
-            clearSelected()
+            photos.removeAll(selection.keys)
+            clearSelection()
             countSelected(galleryActivityBinding)
-        }
-
-        fun setSelected(photo : Photo, position : Int, galleryActivityBinding: GalleryActivityBinding){
-            selectedPhotos[photo] = position
-            countSelected(galleryActivityBinding)
-        }
-
-        fun removeSelected(photo: Photo, galleryActivityBinding: GalleryActivityBinding){
-            selectedPhotos.remove(photo)
-            countSelected(galleryActivityBinding)
-        }
-
-        fun getSelected() : List<Int>{
-            return selectedPhotos.values.toList().sortedDescending()
-        }
-
-        fun getSelectedPhotos() : List<Photo>{
-            return selectedPhotos.keys.toList()
-        }
-
-        fun clearSelected(){
-            selectedPhotos.clear()
         }
 
         fun clearPhotos(){
             photos.clear()
         }
 
+        fun setSelection(photo : Photo, position : Int, galleryActivityBinding: GalleryActivityBinding){
+            selection[photo] = position
+            countSelected(galleryActivityBinding)
+        }
+
+        fun getSelection() : MutableMap<Photo, Int>{
+            return selection
+        }
+
+        fun removeSelectionItem(photo: Photo, galleryActivityBinding: GalleryActivityBinding){
+            selection.remove(photo)
+            countSelected(galleryActivityBinding)
+        }
+
+        fun clearSelection(){
+            selection.clear()
+        }
+
+        fun setSelectedPhotoPos(position : Int){
+            selectedPhotoPos = position
+        }
+
+        fun getSelectedPhotoPos() : Int{
+            return selectedPhotoPos
+        }
+
         // Selection Text on EditMode
         private fun countSelected(galleryActivityBinding: GalleryActivityBinding){
             val textview = galleryActivityBinding.ac4SelectText
             val format = galleryActivityBinding.root.resources.getText(R.string.count_images).toString()
-            textview.text = MessageFormat.format(format, selectedPhotos.size)
+            textview.text = MessageFormat.format(format, selection.size)
         }
 
         private fun removeThumbnailDirectory(arr: Array<File>?) : Array<File>{
