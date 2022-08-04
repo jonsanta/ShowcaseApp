@@ -9,31 +9,31 @@
     <ImageView
         android:id="@+id/ppf_image"
         android:layout_width="match_parent"
-        android:layout_height="500dp"
-        android:translationZ="90dp"
-        android:scaleType="fitXY"
+        android:layout_height="600dp"
+        android:scaleType="fitCenter"
         android:contentDescription="@string/ipf_image"
+        android:translationZ="90dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.26"/>
+        app:layout_constraintVertical_bias="0.0" />
 
     <ImageButton
         android:id="@+id/ipf_btn_save"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:backgroundTint="#00FFFFFF"
-        android:scaleType="fitCenter"
         android:contentDescription="@string/ipf_btn_save"
-        app:tint="#FFFFFF"
+        android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.8"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.943"
+        app:layout_constraintVertical_bias="0.98"
         app:srcCompat="@drawable/check"
+        app:tint="#FFFFFF"
         tools:ignore="SpeakableTextPresentCheck" />
 
     <ImageButton
@@ -41,16 +41,16 @@
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:backgroundTint="#00FFFFFF"
-        android:scaleType="fitCenter"
         android:contentDescription="@string/ipf_btn_borrar"
-        app:tint="#FFFFFF"
+        android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.943"
+        app:layout_constraintVertical_bias="0.98"
         app:srcCompat="@drawable/cancelar"
+        app:tint="#FFFFFF"
         tools:ignore="SpeakableTextPresentCheck" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -67,6 +67,8 @@ class GalleryActivity : AppCompatActivity(), GalleryAdapter.GalleryListener{
     }
 
     override fun onBackPressed(){
+        selected = false
+
         if(Gallery.isEditMode()){
             Gallery.setEditMode(false, viewBinding)
         }
@@ -79,7 +81,6 @@ class GalleryActivity : AppCompatActivity(), GalleryAdapter.GalleryListener{
             Gallery.clearPhotos()
             finish()
         }
-        selected = false
     }
 
     override fun onLongItemClick(holder : GalleryAdapter.ViewHolder, photo: Photo, position: Int) {
@@ -135,13 +136,18 @@ class GalleryActivity : AppCompatActivity(), GalleryAdapter.GalleryListener{
     }
 
     private fun removePhoto(){
+        selected = false
         val minValue = Gallery.getSelected().last()
+
+        Gallery.getSelectedPhotos().forEach(){
+            it.isExpanded(false)
+        }
 
         Gallery.getSelected().forEach{
             viewBinding.ac4RecyclerView.adapter?.notifyItemRemoved(it)
             viewBinding.ac4Imagepreview.adapter?.notifyItemRemoved(it)
-            Gallery.getPhotos()[it].isExpanded(false)
         }
+
         Gallery.removePhotos(viewBinding)
         viewBinding.ac4RecyclerView.adapter?.notifyItemRangeChanged(minValue, Gallery.getPhotos().size)
         Gallery.setViewVisibility(viewBinding.ac4Remove, false)
@@ -149,7 +155,6 @@ class GalleryActivity : AppCompatActivity(), GalleryAdapter.GalleryListener{
         viewBinding.ac4Imagepreview.visibility = View.GONE
         viewBinding.ac4Imagepreview.currentItem = 0
         viewBinding.ac4RecyclerView.scrollToPosition(minValue)
-        selected = false
     }
 
     private fun setRecyclerView(spanCount : Int){
