@@ -37,7 +37,7 @@ class XMLReader {
                 if(it.nodeType == Node.ELEMENT_NODE){
                     val element = it as Element
                     if(element.nodeName == "contact"){
-                        Contacts.import(switchContactElement(element.childNodes), bitmap, db)
+                        Contacts.import(switchContactElement(element.childNodes).toTypedArray(), bitmap, db)
                     }
                 }
             }

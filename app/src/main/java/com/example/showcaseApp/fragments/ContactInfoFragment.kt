@@ -15,14 +15,14 @@ import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
-import com.example.showcaseApp.interfaces.OnImageClickListener
 import com.example.showcaseApp.R
 import com.example.showcaseApp.activities.ContactsActivity
+import com.example.showcaseApp.adapters.IconListAdapter
 import com.example.showcaseApp.classes.Contacts
 import com.example.showcaseApp.classes.Utils
 import com.example.showcaseApp.databinding.ContactInfoFragmentBinding
 
-class ContactInfoFragment: Fragment(), OnImageClickListener {
+class ContactInfoFragment: Fragment(), IconListAdapter.OnImageClickListener {
     private lateinit var viewBinding : ContactInfoFragmentBinding
     private lateinit var contactsActivity: ContactsActivity
     private lateinit var contactID : Number
@@ -72,7 +72,7 @@ class ContactInfoFragment: Fragment(), OnImageClickListener {
 
         viewBinding.cafBtnAddImage.setOnClickListener {
             Utils.preventTwoClick(it)
-            alertDialog = Contacts.getAlertDialog(this.layoutInflater, this, this)
+            alertDialog = Contacts.getAlertDialog(this, this)
             alertDialog.show()
         }
 
@@ -85,7 +85,7 @@ class ContactInfoFragment: Fragment(), OnImageClickListener {
         cafBtnAdd.setOnClickListener {
             Utils.preventTwoClick(it)
             if(editMode){
-                Contacts.update(contactID, name.text.toString(), tel.text.toString(), info.text.toString(), icon.drawable.toBitmap(), contactsActivity)
+                Contacts.update(arrayOf(contactID.toString(), name.text.toString(), tel.text.toString(), info.text.toString()), icon.drawable.toBitmap(), contactsActivity.getDataBase(), this.requireContext())
                 swapMode(name, tel, info, icon, cafBtnAdd, cafBtnVolver)
             }else{
                 swapMode(name, tel, info, icon, cafBtnAdd, cafBtnVolver)

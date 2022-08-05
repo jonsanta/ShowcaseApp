@@ -5,6 +5,7 @@ import androidx.camera.core.ImageProxy
 import com.example.showcaseApp.activities.LumaListener
 import java.nio.ByteBuffer
 
+//Detects camera luminosity
 class LuminosityAnalyzer(private val listener: LumaListener) : ImageAnalysis.Analyzer {
 
     private fun ByteBuffer.toByteArray(): ByteArray {

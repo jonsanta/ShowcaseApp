@@ -11,14 +11,14 @@ import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import com.example.showcaseApp.interfaces.OnImageClickListener
 import com.example.showcaseApp.R
 import com.example.showcaseApp.activities.ContactsActivity
+import com.example.showcaseApp.adapters.IconListAdapter
 import com.example.showcaseApp.classes.Contacts
 import com.example.showcaseApp.classes.Utils
 import com.example.showcaseApp.databinding.ContactAddFragmentBinding
 
-class ContactAddFragment : Fragment(), OnImageClickListener {
+class ContactAddFragment : Fragment(), IconListAdapter.OnImageClickListener {
     private lateinit var viewBinding: ContactAddFragmentBinding
     private lateinit var contactsActivity: ContactsActivity
     private lateinit var navController: NavController
@@ -50,7 +50,7 @@ class ContactAddFragment : Fragment(), OnImageClickListener {
 
         viewBinding.cafBtnAddImage.setOnClickListener {
             Utils.preventTwoClick(it)
-            alertDialog = Contacts.getAlertDialog(contactsActivity.layoutInflater, this, this)
+            alertDialog = Contacts.getAlertDialog(this, this)
             alertDialog.show()
         }
 
@@ -64,9 +64,9 @@ class ContactAddFragment : Fragment(), OnImageClickListener {
 
             if(edited){
                 val bitmap = viewBinding.cafBtnAddImage.drawable.toBitmap()
-                aux = Contacts.insert(name, tel, info, bitmap, contactsActivity)
+                aux = Contacts.insert(arrayOf(name, tel, info), bitmap, contactsActivity.getDataBase(), this.requireContext())
             } else {
-                aux = Contacts.insert(name, tel, info, Utils.getURLOfDrawable(R.drawable.male_avatar), contactsActivity)
+                aux = Contacts.insert(arrayOf(name, tel, info), Utils.getURLOfDrawable(R.drawable.male_avatar), contactsActivity.getDataBase(), this.requireContext())
             }
 
             if(aux)

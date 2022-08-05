@@ -3,6 +3,7 @@ package com.example.showcaseApp.classes
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.ContentValues
+import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.graphics.*
 import android.net.Uri
@@ -18,11 +19,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.showcaseApp.R
 import com.example.showcaseApp.activities.ContactsActivity
 import com.example.showcaseApp.adapters.IconListAdapter
-import com.example.showcaseApp.interfaces.OnImageClickListener
 import java.io.*
 
 class Contacts {
     companion object{
+        /** Show selected contact info in UI
+         * @param id : Contact unique id
+         * @param name : Contact name EditText
+         * @param tel : Contact telephone number EditText
+         * @param info : Contact description EditText
+         * @param icon : Contact icon imageButton
+         * @param db : Database instance
+         */
         fun select(id: Number, name : EditText, tel : EditText, info : EditText, icon : ImageButton, db : SQLiteDatabase){
             val cursor = db.rawQuery("SELECT * FROM contacts WHERE id = $id", null)
 
@@ -36,54 +44,91 @@ class Contacts {
             cursor.close()
         }
 
-        fun insert(name : String, tel : String, info: String, bitmap: Bitmap, activity: ContactsActivity) : Boolean{
-            if(!checkEmpty(name, tel, activity)){
-                val registry = getContentValues(name, tel, info, bitmap)
-                activity.getDataBase().insert("Contacts", null, registry)
+        /** Insert contact with custom icon into database
+         * @param data : Contact data (name, tel, info)
+         * @param bitmap : Contact icon image
+         * @param db : Database instance
+         * @param context : Context
+         * @return True: Image inserted. False: insert failed
+         */
+        fun insert(data : Array<String>, bitmap: Bitmap, db: SQLiteDatabase, context: Context) : Boolean{
+            if(!checkEmpty(data[0], data[1], context)){
+                val registry = getContentValues(data, bitmap)
+                db.insert("Contacts", null, registry)
                 registry.clear()
                 return true
             }else
                 return false
         }
 
-        fun insert(name : String, tel : String, info: String, path : String, activity: ContactsActivity) : Boolean{
-            if(!checkEmpty(name, tel, activity)){
-                val stream = activity.contentResolver.openInputStream(Uri.parse(path))
+        /** Insert contact with default icon into database
+         * @param data : Contact data (name, tel, info)
+         * @param path : Drawable path
+         * @param db : Database instance
+         * @param context : Context
+         * @return True: Image inserted. False: insert failed
+         */
+        fun insert(data : Array<String>, path : String, db: SQLiteDatabase, context: Context) : Boolean{
+            if(!checkEmpty(data[0], data[1], context)){
+                val stream = context.contentResolver.openInputStream(Uri.parse(path))
                 val bitmap = BitmapFactory.decodeStream(stream)
-                val registry = getContentValues(name, tel, info, Utils.roundBitmap(Bitmap.createScaledBitmap(bitmap, 500, 500, true)))
-                activity.getDataBase().insert("Contacts", null, registry)
+                val registry = getContentValues(data, Utils.roundBitmap(Bitmap.createScaledBitmap(bitmap, 500, 500, true)))
+                db.insert("Contacts", null, registry)
                 registry.clear()
                 return true
             }else
                 return false
         }
 
-        fun import(list : List<String>, bitmap : Bitmap, db: SQLiteDatabase){
-            val registry = getContentValues(list[0], list[1], list[2], Utils.roundBitmap(bitmap))
+        /** Insert XML contact into database
+         * @param data : Contact data (name, tel, info)
+         * @param bitmap : Contact icon image
+         * @param db : Database instance
+         */
+        fun import(data : Array<String>, bitmap : Bitmap, db: SQLiteDatabase){
+            val registry = getContentValues(data, Utils.roundBitmap(bitmap))
             db.insert("Contacts", null, registry)
             registry.clear()
         }
 
-        fun update(id : Number, name : String, tel : String, info : String, image : Bitmap, activity : ContactsActivity){
-            if(!checkEmpty(name, tel, activity)){
-                val registry = getContentValues(name, tel, info, image)
-                activity.getDataBase().update("Contacts", registry, "id='$id'", null)
+        /** Update given contact
+         * @param data : Contact data (id, name, tel, info)
+         * @param bitmap : Contact icon image
+         * @param db : Database instance
+         * @param context : Context
+         */
+        fun update(data : Array<String>, image : Bitmap, db : SQLiteDatabase, context: Context){
+            if(!checkEmpty(data[1], data[2], context)){
+                val registry = getContentValues(arrayOf(data[1], data[2], data[3]), image)
+                db.update("Contacts", registry, "id='${data[0].toInt()}'", null)
                 registry.clear()
             }
         }
 
-        private fun checkEmpty(name : String, tel : String, activity: ContactsActivity) : Boolean{
+        /** Insert XML contact into database
+         * @param name : Contact name
+         * @param tel : Contact telephone
+         * @param context : Context
+         * @return name or telephone editText empty
+         */
+        private fun checkEmpty(name : String, tel : String, context: Context) : Boolean{
             if(name == "" || tel == ""){
-                Toast.makeText(activity.baseContext, "Faltan campos por rellenar", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Faltan campos por rellenar", Toast.LENGTH_SHORT).show()
                 return true
             }else return false
         }
 
-        private fun getContentValues(name : String, tel: String, info : String, image : Bitmap) : ContentValues{
+        /** build ContentValues with received contact data
+         * Insert XML contact into database
+         * @param data : Contact data (name, tel, info)
+         * @param image : Contact icon image
+         * @return ContactValues containing contact data
+         */
+        private fun getContentValues(data : Array<String>, image : Bitmap) : ContentValues{
             val contentValues = ContentValues()
-            contentValues.put("name", name)
-            contentValues.put("number", tel.toInt())
-            contentValues.put("info", info)
+            contentValues.put("name", data[0])
+            contentValues.put("number", data[1].toInt())
+            contentValues.put("info", data[2])
 
             val stream = ByteArrayOutputStream()
             image.compress(Bitmap.CompressFormat.PNG, 100, stream)
@@ -93,7 +138,12 @@ class Contacts {
             return contentValues
         }
 
-        fun getAlertDialog(inflater : LayoutInflater, fragment: Fragment, onImageClickListener: OnImageClickListener) : AlertDialog{
+        /** Inflates AlertDialog for contact icon selection
+         * @param fragment : Fragment that will inflate AlertDialog and receive data
+         * @param onImageClickListener : AlertDialog item Click Listener
+         * @return inflated AlertDialog
+         */
+        fun getAlertDialog(fragment: Fragment, onImageClickListener: IconListAdapter.OnImageClickListener) : AlertDialog{
             val builder = AlertDialog.Builder(fragment.requireContext())
             builder.setTitle("Selecciona Imagen")
 
@@ -103,10 +153,12 @@ class Contacts {
                 dialog.dismiss()
             }
 
-            val iconList = inflater.inflate(R.layout.icon_list, fragment.view as ViewGroup, false)
+            val iconList = fragment.layoutInflater.inflate(R.layout.icon_list, fragment.view as ViewGroup, false)
 
+            //Add default icons
             val list = mutableListOf(Utils.getURLOfDrawable(R.drawable.male_avatar), Utils.getURLOfDrawable(R.drawable.female_avatar))
 
+            //Add gallery photos to icon list
             Gallery.setPhotos(fragment.requireContext())
             Gallery.getPhotos().forEach{
                 list.add(it.getThumbnail().toUri().toString())

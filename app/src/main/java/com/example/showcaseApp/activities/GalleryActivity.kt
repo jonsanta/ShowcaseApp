@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.get
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.example.showcaseApp.R
@@ -165,6 +166,7 @@ class GalleryActivity : AppCompatActivity(), GalleryAdapter.GalleryAdapterListen
         if(position != -1){ //If ViewPager returs a page --> Open ViewPager on given page
             viewBinding.ac4Imagepreview.visibility = View.VISIBLE
             viewBinding.ac4Imagepreview.setCurrentItem(position, false)
+            viewBinding.ac4Imagepreview.setBackgroundColor(ActivityCompat.getColor(this, R.color.appBG))
             viewBinding.ac4RecyclerView.scrollToPosition(position)
             Gallery.setSelection(Gallery.getPhotos()[position], position, viewBinding)
             Gallery.getPhotos()[position].setShowing(true)

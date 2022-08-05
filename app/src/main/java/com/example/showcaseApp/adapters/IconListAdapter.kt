@@ -1,5 +1,6 @@
 package com.example.showcaseApp.adapters
 
+import android.graphics.Bitmap
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,7 +8,6 @@ import android.widget.ImageButton
 import androidx.core.graphics.drawable.toBitmap
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.showcaseApp.interfaces.OnImageClickListener
 import com.example.showcaseApp.R
 import com.example.showcaseApp.classes.Utils
 
@@ -38,5 +38,9 @@ class IconListAdapter(private val images : List<String>, private val onImageClic
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val photo: ImageButton = itemView.findViewById(R.id.icv_imageBtn_imagen)
 
+    }
+
+    interface OnImageClickListener {
+        fun onImageClick(data : Bitmap)
     }
 }
