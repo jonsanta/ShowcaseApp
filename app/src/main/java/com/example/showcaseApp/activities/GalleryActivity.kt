@@ -7,6 +7,8 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.example.showcaseApp.R
@@ -15,7 +17,7 @@ import com.example.showcaseApp.adapters.ImageAdapter
 import com.example.showcaseApp.classes.*
 import com.example.showcaseApp.databinding.GalleryActivityBinding
 
-class GalleryActivity : AppCompatActivity(), GalleryAdapter.GalleryListener{
+class GalleryActivity : AppCompatActivity(), GalleryAdapter.GalleryAdapterListener{
     private lateinit var viewBinding : GalleryActivityBinding
 
     private val READ_REQUEST_CODE = 123
@@ -25,10 +27,10 @@ class GalleryActivity : AppCompatActivity(), GalleryAdapter.GalleryListener{
         viewBinding = GalleryActivityBinding.inflate(layoutInflater)
         setContentView(viewBinding.root)
 
-        if(checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
             loadGallery()
         else
-            requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), READ_REQUEST_CODE)
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), READ_REQUEST_CODE)
 
         viewBinding.ac4BtnDiscard.setOnClickListener {
             Utils.preventTwoClick(it)
@@ -65,6 +67,13 @@ class GalleryActivity : AppCompatActivity(), GalleryAdapter.GalleryListener{
             Toast.makeText(this, "Permissions Denied", Toast.LENGTH_SHORT).show()
     }
 
+    /**
+     * Overrides onBacPressed method --> Navigation back button pressed
+     * Button will perform different actions depending on:
+     * 1. if Gallery is in Edit mode : Disable Edit mode
+     * 2. if Gallery is showing a photo in ViewPager: Close ViewPager and runs shrink animation for selected item
+     * 3. else: Close activity
+     */
     override fun onBackPressed(){
         Gallery.setSelectedPhotoPos(-1)
 
@@ -87,6 +96,16 @@ class GalleryActivity : AppCompatActivity(), GalleryAdapter.GalleryListener{
         }
     }
 
+    /**
+     * GalleryAdapter.GalleryListener interface method
+     * Called on GalleryAdapter item onLongClick
+     * Button will perform different actions depending on:
+     * 1. Set Gallery.editMode = true & select photo
+     * 2. select photo
+     * @param holder : clicked items ViewHolder
+     * @param photo : clicked items Photo
+     * @param position : clicked items RecyclerViews holder position
+     */
     override fun onLongItemClick(holder : GalleryAdapter.ViewHolder, photo: Photo, position: Int) {
         if(!Gallery.isEditMode()) {
             Gallery.setEditMode(true, viewBinding)
@@ -95,6 +114,17 @@ class GalleryActivity : AppCompatActivity(), GalleryAdapter.GalleryListener{
         else select(holder, photo, position)
     }
 
+    /**
+     * GalleryAdapter.GalleryListener interface method
+     * Called on GalleryAdapter item onClick
+     * Button will perform different actions depending on:
+     * 1. If: Gallery.editMode is true : select photo
+     * 2. Else: Open ViewPager on given page (@param position)
+     * @param holder : clicked items ViewHolder
+     * @param photo : clicked items Photo
+     * @param position : clicked items RecyclerViews holder position
+     * @param view : pressed button - Will prevent double clicks
+     */
     override fun onShortItemClick(holder : GalleryAdapter.ViewHolder, photo: Photo, position: Int, view : View) {
         if(Gallery.isEditMode())
             select(holder, photo, position)
@@ -106,20 +136,24 @@ class GalleryActivity : AppCompatActivity(), GalleryAdapter.GalleryListener{
         }
     }
 
+    /**
+     * Load RecyclerView & ViewPager (Layout will depend on configuration.orientation)
+     * Checks current EditMode for Portrait <-> Landscape redrawing
+     * if ViewPager was showing a photo while Portrait <-> Landscape redrawing will remain opened
+     */
     private fun loadGallery()
     {
         Gallery.setPhotos(this)
 
         val recyclerView = viewBinding.ac4RecyclerView
         val viewpager = viewBinding.ac4Imagepreview
-        if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+        viewpager.adapter = ImageAdapter(Gallery.getPhotos())
+
+        if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT)
             setRecyclerView(3)
-            viewpager.adapter = ImageAdapter(Gallery.getPhotos(), false)
-        }
-        else{
+        else
             setRecyclerView(5)
-            viewpager.adapter = ImageAdapter(Gallery.getPhotos(), true)
-        }
+
 
         recyclerView.adapter = GalleryAdapter(Gallery.getPhotos(),this)
         recyclerView.setHasFixedSize(true)
@@ -127,8 +161,8 @@ class GalleryActivity : AppCompatActivity(), GalleryAdapter.GalleryListener{
 
         Gallery.setEditMode(Gallery.isEditMode(), viewBinding)
 
-        val position = Gallery.getSelectedPhotoPos()
-        if(position != -1){
+        val position = Gallery.getSelectedPhotoPos() //Obtains ViewPager page
+        if(position != -1){ //If ViewPager returs a page --> Open ViewPager on given page
             viewBinding.ac4Imagepreview.visibility = View.VISIBLE
             viewBinding.ac4Imagepreview.setCurrentItem(position, false)
             viewBinding.ac4RecyclerView.scrollToPosition(position)
@@ -149,13 +183,13 @@ class GalleryActivity : AppCompatActivity(), GalleryAdapter.GalleryListener{
     }
 
     private fun removePhoto(){
-        Gallery.setSelectedPhotoPos(-1)
         val minValue = Gallery.getSelection().values.minOrNull()!!
 
         Gallery.getSelection().keys.forEach {
-            it.setShowing(false)
+            it.setShowing(false) //photo is not showing
         }
 
+        //remove Gallery.selection items from RecyclerView and ViewPager
         Gallery.getSelection().forEach{
             viewBinding.ac4RecyclerView.adapter?.notifyItemRemoved(it.value)
             viewBinding.ac4Imagepreview.adapter?.notifyItemRemoved(it.value)
@@ -165,6 +199,9 @@ class GalleryActivity : AppCompatActivity(), GalleryAdapter.GalleryListener{
         viewBinding.ac4RecyclerView.adapter?.notifyItemRangeChanged(minValue, Gallery.getPhotos().size)
         Gallery.setViewVisibility(viewBinding.ac4Remove, false)
         Gallery.setEditMode(false, viewBinding)
+
+        //Close ViewPager
+        Gallery.setSelectedPhotoPos(-1)
         viewBinding.ac4Imagepreview.visibility = View.GONE
         viewBinding.ac4Imagepreview.currentItem = 0
         viewBinding.ac4RecyclerView.scrollToPosition(minValue)

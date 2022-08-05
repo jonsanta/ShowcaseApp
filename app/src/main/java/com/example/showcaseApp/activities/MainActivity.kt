@@ -15,9 +15,7 @@ class MainActivity : AppCompatActivity() {
         viewBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(viewBinding.root)
 
-        val tempFolder  = File("${getExternalFilesDir(null)}/temp")
-        if(tempFolder.exists())
-            tempFolder.listFiles()?.forEach { it.delete()}
+        loadApp()
 
         //Abre el Activity 2 - Contactos
         viewBinding.acmBtnBd.setOnClickListener { view ->
@@ -40,5 +38,14 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, GalleryActivity::class.java)
             startActivity(intent)
         }
+    }
+
+    private fun loadApp(){
+        File("${getExternalFilesDir(null)}/images/thumbnails").mkdirs()
+        val tempFolder  = File("${getExternalFilesDir(null)}/temp")
+        if(tempFolder.exists())
+            tempFolder.listFiles()?.forEach { it.delete()}
+        else
+            tempFolder.mkdir()
     }
 }

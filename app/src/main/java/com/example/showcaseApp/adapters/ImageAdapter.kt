@@ -13,13 +13,9 @@ import com.example.showcaseApp.R
 import com.example.showcaseApp.classes.Photo
 import com.github.chrisbanes.photoview.PhotoView
 
-class ImageAdapter(private val list : List<Photo>, private val land : Boolean) : RecyclerView.Adapter<ImageAdapter.ViewHolder>() {
+class ImageAdapter(private val list : List<Photo>) : RecyclerView.Adapter<ImageAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view : View
-        if(land)
-            view = LayoutInflater.from(parent.context).inflate(R.layout.image_viewer_land, parent, false)
-        else
-            view = LayoutInflater.from(parent.context).inflate(R.layout.image_viewer, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.image_viewer, parent, false)
         return ViewHolder(view)
     }
 

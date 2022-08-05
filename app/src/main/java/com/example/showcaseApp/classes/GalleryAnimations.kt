@@ -9,7 +9,9 @@ import android.graphics.Rect
 import android.graphics.RectF
 import android.view.View
 import android.view.animation.DecelerateInterpolator
+import androidx.core.app.ActivityCompat
 import androidx.viewpager2.widget.ViewPager2
+import com.example.showcaseApp.R
 import com.example.showcaseApp.adapters.GalleryAdapter
 import com.example.showcaseApp.databinding.GalleryActivityBinding
 
@@ -65,9 +67,11 @@ class GalleryAnimations(private val galleryActivityBinding: GalleryActivityBindi
         if(!photo.isShowing()){
             expand(viewPager, startBounds, finalBounds, startScale)
             (viewPager as ViewPager2).setCurrentItem(position, false)
+            viewPager.setBackgroundColor(ActivityCompat.getColor(galleryActivityBinding.root.context, R.color.appBG))
             Gallery.setSelection(photo, position, galleryActivityBinding)
             photo.setShowing(true)
         }else {
+            viewPager.setBackgroundColor(ActivityCompat.getColor(galleryActivityBinding.root.context, android.R.color.transparent))
             shrink(viewPager, startBounds, startScale)
             photo.setShowing(false)
             Gallery.clearSelection()

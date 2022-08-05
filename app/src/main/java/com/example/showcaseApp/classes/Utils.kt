@@ -13,6 +13,12 @@ import java.io.InputStream
 
 class Utils {
     companion object{
+        /**
+         * Copy given InputStream into given File
+         * @param input : InputStream that contains input file
+         * @param copy : Contains output file
+         * @return output file
+         */
         fun copyFile(input : InputStream?, copy: File) : File {
             FileOutputStream(copy).use { out ->
                 val buf = ByteArray(1024)
@@ -25,11 +31,17 @@ class Utils {
             return copy
         }
 
+        //Close software keyboard
         fun closeKeyboard(context: Context?, view : View?){
             val imm = (context?.getSystemService(Activity.INPUT_METHOD_SERVICE)) as InputMethodManager
             imm.hideSoftInputFromWindow(view?.windowToken, 0)
         }
 
+        /**
+         * Convert input Bitmap on output rounded Bitmap
+         * @param data : input bitmap
+         * @return output file (rounded image)
+         */
         fun roundBitmap(data : Bitmap) : Bitmap {
             val output = Bitmap.createBitmap(data.width, data.height, Bitmap.Config.ARGB_8888)
             val canvas = Canvas(output)
@@ -54,7 +66,6 @@ class Utils {
                 { view.isEnabled = true },
                 500
             )
-
         }
     }
 }

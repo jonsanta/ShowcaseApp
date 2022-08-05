@@ -107,7 +107,7 @@ class ContactListFragment : Fragment(), ContactsAdapter.ContactListener{
         contactsActivity.findViewById<TextView>(R.id.ac2_export).setOnClickListener {
             Utils.preventTwoClick(it)
             contactsActivity.findViewById<LinearLayout>(R.id.ac2_dropdown).isVisible = false
-            XMLReader.export(contactsActivity)
+            XMLReader.export(contactsActivity.getDataBase(), this.requireContext())
         }
 
         contactsActivity.findViewById<TextView>(R.id.ac2_import).setOnClickListener {
@@ -149,7 +149,7 @@ class ContactListFragment : Fragment(), ContactsAdapter.ContactListener{
                 inputStream  = contactsActivity.contentResolver.openInputStream(uri)
 
             val file = Utils.copyFile(inputStream, File("${contactsActivity.getExternalFilesDir(null)}/xml/temp.xml"))
-            XMLReader.import(file, contactsActivity)
+            XMLReader.import(file, contactsActivity.getDataBase(), this.requireContext())
 
             contactsActivity.finish()
             startActivity(contactsActivity.intent)

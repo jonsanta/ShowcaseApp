@@ -6,51 +6,55 @@
     android:layout_height="match_parent"
     android:background="@color/black">
 
-    <ImageView
-        android:id="@+id/ppf_image"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="600dp"
-        android:scaleType="fitCenter"
-        android:contentDescription="@string/ipf_image"
-        android:translationZ="90dp"
+        android:layout_height="500dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.26" >
+
+        <ImageView
+            android:id="@+id/ppf_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/ipf_image"
+            android:scaleType="matrix" />
+    </FrameLayout>
 
     <ImageButton
         android:id="@+id/ipf_btn_save"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:backgroundTint="#00FFFFFF"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@android:color/transparent"
         android:contentDescription="@string/ipf_btn_save"
         android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.8"
+        app:layout_constraintHorizontal_bias="0.73"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.98"
+        app:layout_constraintVertical_bias="0.90999997"
         app:srcCompat="@drawable/check"
-        app:tint="#FFFFFF"
+        app:tint="@color/appBG"
         tools:ignore="SpeakableTextPresentCheck" />
 
     <ImageButton
         android:id="@+id/ipf_btn_del"
-        android:layout_width="60dp"
+        android:layout_width="40dp"
         android:layout_height="60dp"
-        android:backgroundTint="#00FFFFFF"
+        android:background="@android:color/transparent"
         android:contentDescription="@string/ipf_btn_borrar"
         android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.2"
+        app:layout_constraintHorizontal_bias="0.27"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.98"
+        app:layout_constraintVertical_bias="0.92"
         app:srcCompat="@drawable/cancelar"
-        app:tint="#FFFFFF"
+        app:tint="@color/appBG"
         tools:ignore="SpeakableTextPresentCheck" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

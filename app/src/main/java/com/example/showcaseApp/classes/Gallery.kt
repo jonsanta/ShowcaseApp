@@ -14,31 +14,40 @@ class Gallery {
         private var editMode = false
 
         private val photos = mutableListOf<Photo>()
+
+        //contains selected photos during editMode
         private val selection = mutableMapOf<Photo, Int>()
+
+        //if ViewPager is closed = -1, if ViewPager is opened = photo position
         private var selectedPhotoPos : Int = -1
 
-        // Enables UI for editing mode
+        /**
+         * Sets EditMode
+         * Enable/Disable UI & functionality
+         */
         fun setEditMode(flag : Boolean, galleryActivityBinding: GalleryActivityBinding){
-            val btnDiscard = galleryActivityBinding.ac4BtnDiscard
             setViewVisibility(galleryActivityBinding.ac4SelectText, flag)
             setViewVisibility(galleryActivityBinding.ac4Remove, flag)
             if(flag)
-                btnDiscard.setImageResource(R.drawable.cancelar)
+                galleryActivityBinding.ac4BtnDiscard.setImageResource(R.drawable.cancelar)
             else {
-                btnDiscard.setImageResource(R.drawable.arrow)
+                galleryActivityBinding.ac4BtnDiscard.setImageResource(R.drawable.arrow)
                 selection.clear()
             }
 
             countSelected(galleryActivityBinding)
-            editMode = flag
             galleryActivityBinding.ac4RecyclerView.adapter?.notifyItemRangeChanged(0, photos.size)
+
+            editMode = flag
         }
 
         fun isEditMode() : Boolean{
             return editMode
         }
 
-        // Enable-Disable EditMode views (Top box & buttons)
+        /**
+         * Enable/Disable View
+         */
         fun setViewVisibility(view : View, flag: Boolean) {
             view.isEnabled = flag
             if(flag)
@@ -51,6 +60,10 @@ class Gallery {
             photos.add(0, photo)
         }
 
+        /**
+         * Populate photos MutableList<Photo>
+         * API 25 >: list will be sorted with lastModified
+         */
         fun setPhotos(context: Context){
             val directory = removeThumbnailDirectory(File("${context.getExternalFilesDir(null)}/images/").listFiles())
             val thumbnails = File("${context.getExternalFilesDir(null)}/images/thumbnails/").listFiles()
@@ -112,7 +125,9 @@ class Gallery {
             return selectedPhotoPos
         }
 
-        // Selection Text on EditMode
+        /**
+         * @return Custom text depending on selection.size
+         */
         private fun countSelected(galleryActivityBinding: GalleryActivityBinding){
             val textview = galleryActivityBinding.ac4SelectText
             val format = galleryActivityBinding.root.resources.getText(R.string.count_images).toString()

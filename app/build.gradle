@@ -10,8 +10,8 @@ android {
 
     defaultConfig {
         applicationId "com.example.showcaseApp"
-        minSdk 23
-        targetSdk 32
+        minSdk 21
+        targetSdk 28
         versionCode 1
         versionName "1.0"
 
@@ -68,7 +68,7 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.13.2'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.13.2'
 
-    def camerax_version = "1.2.0-alpha03"
+    def camerax_version = "1.2.0-alpha04"
     implementation "androidx.camera:camera-core:${camerax_version}"
     implementation "androidx.camera:camera-camera2:${camerax_version}"
     implementation "androidx.camera:camera-lifecycle:${camerax_version}"

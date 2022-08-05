@@ -5,13 +5,13 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.util.Rational
 import android.util.Size
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
-import android.widget.Toast
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
@@ -44,20 +44,29 @@ class CameraFragment : Fragment() {
         return viewBinding.root.rootView
     }
 
+    override fun onResume() {
+        super.onResume()
+        cameraActivity.window.navigationBarColor = ActivityCompat.getColor(this.requireContext(), R.color.black)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         navController = Navigation.findNavController(view)
-        cameraActivity.window.navigationBarColor = resources.getColor(R.color.black, resources.newTheme())
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
-            cameraActivity.window.setDecorFitsSystemWindows(false)
-        else
-            cameraActivity.window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN //DEPRECATED BUT STILL WORKING IN OLD VERSIONS
+        cameraActivity.window.navigationBarColor = ActivityCompat.getColor(this.requireContext(), R.color.black)
+        cameraActivity.window.statusBarColor = ContextCompat.getColor(cameraActivity, R.color.black)
+        @Suppress("DEPRECATION")
+        cameraActivity.window.decorView.systemUiVisibility = 0
 
         // Request camera permissions
-        if (allPermissionsGranted()) {
+        if(allPermissionsGranted())
             startCamera()
-        } else {
+        else {
             ActivityCompat.requestPermissions(cameraActivity, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS)
+            if(allPermissionsGranted())
+                startCamera()
+            else
+                cameraActivity.finish()
         }
+
 
         // Set up the listeners for take photo and video capture buttons
         viewBinding.imageCaptureButton.setOnClickListener {
@@ -132,9 +141,8 @@ class CameraFragment : Fragment() {
                     it.setSurfaceProvider(viewBinding.viewFinder.surfaceProvider)
                 }
 
-            @androidx.camera.core.ExperimentalZeroShutterLag
             imageCapture = ImageCapture.Builder().setFlashMode(ImageCapture.FLASH_MODE_AUTO).setCaptureMode(
-                ImageCapture.CAPTURE_MODE_ZERO_SHUTTER_LAG
+                ImageCapture.CAPTURE_MODE_MAXIMIZE_QUALITY
             ).setTargetResolution(
                 Size(2160,4096)
             ).build()
@@ -149,11 +157,31 @@ class CameraFragment : Fragment() {
 
             try {
                 // Unbind use cases before rebinding
+                val viewPort: ViewPort = ViewPort.Builder(
+                    Rational(
+                        viewBinding.viewFinder.width,
+                        viewBinding.viewFinder.height
+                    ),
+                    viewBinding.viewFinder.display.rotation
+                ).setScaleType(ViewPort.FILL_CENTER).build()
+
+                val useCaseGroupBuilder: UseCaseGroup.Builder = UseCaseGroup.Builder().setViewPort(
+                    viewPort
+                )
+
+                useCaseGroupBuilder.addUseCase(preview)
+                useCaseGroupBuilder.addUseCase(imageCapture)
+                useCaseGroupBuilder.addUseCase(imageAnalyzer)
+
+
+
                 cameraProvider.unbindAll()
 
                 // Bind use cases to camera
                 cameraProvider.bindToLifecycle(
-                    this, cameraSelector, preview, imageCapture, imageAnalyzer)
+                    this, cameraSelector,
+                    useCaseGroupBuilder.build()
+                )
 
             } catch(exc: Exception) {
                 Log.e(TAG, "Use case binding failed", exc)
@@ -169,20 +197,6 @@ class CameraFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         cameraExecutor.shutdown()
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int, permissions: Array<String>, grantResults:
-        IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == REQUEST_CODE_PERMISSIONS) {
-            if (allPermissionsGranted()) {
-                startCamera()
-            } else {
-                Toast.makeText(requireContext(), "Permissions not granted by the user.", Toast.LENGTH_SHORT).show()
-                cameraActivity.finish()
-            }
-        }
     }
 
     companion object {

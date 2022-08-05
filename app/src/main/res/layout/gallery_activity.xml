@@ -20,7 +20,6 @@
             android:id="@+id/ac4_imagepreview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/appBG"
             android:visibility="invisible"
             android:focusable="true"
             android:clickable="true"/>

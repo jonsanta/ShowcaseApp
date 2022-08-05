@@ -12,7 +12,7 @@ import com.example.showcaseApp.R
 import com.example.showcaseApp.classes.Gallery
 import com.example.showcaseApp.classes.Photo
 
-class GalleryAdapter(private val list: List<Photo>, private val galleryListener: GalleryListener) : RecyclerView.Adapter<GalleryAdapter.ViewHolder>(){
+class GalleryAdapter(private val list: List<Photo>, private val galleryAdapterListener: GalleryAdapterListener) : RecyclerView.Adapter<GalleryAdapter.ViewHolder>(){
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.photo, parent, false)
         return ViewHolder(view)
@@ -30,12 +30,12 @@ class GalleryAdapter(private val list: List<Photo>, private val galleryListener:
         holder.checkBox.isChecked = Gallery.getSelection().contains(photo)
 
         holder.photo.setOnLongClickListener{
-            galleryListener.onLongItemClick(holder, photo, position)
+            galleryAdapterListener.onLongItemClick(holder, photo, position)
             true
         }
 
         holder.photo.setOnClickListener {
-            galleryListener.onShortItemClick(holder, photo, position, it)
+            galleryAdapterListener.onShortItemClick(holder, photo, position, it)
         }
     }
 
@@ -50,7 +50,8 @@ class GalleryAdapter(private val list: List<Photo>, private val galleryListener:
         val checkBox : CheckBox = itemView.findViewById(R.id.icv_checkbox)
     }
 
-    interface GalleryListener{
+    //GalleryActivity will listen this interface
+    interface GalleryAdapterListener{
         fun onLongItemClick(holder : ViewHolder, photo : Photo, position: Int)
         fun onShortItemClick(holder : ViewHolder, photo : Photo, position: Int, view : View)
     }

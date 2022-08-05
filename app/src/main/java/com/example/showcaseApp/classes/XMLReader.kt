@@ -1,10 +1,10 @@
 package com.example.showcaseApp.classes
 
+import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import com.example.showcaseApp.R
-import com.example.showcaseApp.activities.ContactsActivity
 import org.w3c.dom.Element
 import org.w3c.dom.Node
 import org.w3c.dom.NodeList
@@ -16,17 +16,19 @@ import javax.xml.transform.stream.StreamResult
 
 class XMLReader {
     companion object{
-        fun import(file : File, activity: ContactsActivity){
+
+        fun import(file : File, db : SQLiteDatabase, context : Context){
             val factory = DocumentBuilderFactory.newInstance()
             val builder = factory.newDocumentBuilder()
             val document = builder.parse(file)
 
+            //Default contact icon for imported contacts
             val bitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                activity.baseContext.resources,
+                context.resources,
                 R.drawable.male_avatar
             ), 500, 500, true)
 
-            switchContact(document.getElementsByTagName("contacts").item(0).childNodes, bitmap, activity.getDataBase())
+            switchContact(document.getElementsByTagName("contacts").item(0).childNodes, bitmap, db)
             file.delete()
         }
 
@@ -50,6 +52,7 @@ class XMLReader {
             return list
         }
 
+        //forEach implementation for NodeList type
         private fun NodeList.forEach(action: (Node) -> Unit) {
             (0 until this.length)
                 .asSequence()
@@ -57,8 +60,8 @@ class XMLReader {
                 .forEach { action(it) }
         }
 
-        fun export(activity : ContactsActivity){
-            val cursor = activity.getDataBase().rawQuery("SELECT * FROM contacts", null)
+        fun export(db : SQLiteDatabase, context: Context){
+            val cursor = db.rawQuery("SELECT * FROM contacts", null)
 
             val factory = DocumentBuilderFactory.newInstance()
             val builder = factory.newDocumentBuilder()
@@ -86,10 +89,10 @@ class XMLReader {
                 info.textContent = cursor.getString(3)
                 contact.appendChild(info)
 
-                File("${activity.getExternalFilesDir(null)}/xml/").mkdirs()
+                File("${context.getExternalFilesDir(null)}/xml/").mkdirs()
 
                 val source = DOMSource(document)
-                val result = StreamResult(File("${activity.getExternalFilesDir(null)}/xml/export.xml"))
+                val result = StreamResult(File("${context.getExternalFilesDir(null)}/xml/export.xml"))
 
                 val transformer = TransformerFactory.newInstance().newTransformer()
                 transformer.transform(source, result)
