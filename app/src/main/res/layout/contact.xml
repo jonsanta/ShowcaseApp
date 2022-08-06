@@ -38,6 +38,8 @@
                 android:paddingStart="10dp"
                 android:paddingEnd="0dp"
                 android:text=""
+                android:textColor="@color/black"
+                android:textSize="17sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -48,16 +50,7 @@
                 android:paddingStart="10dp"
                 android:paddingEnd="0dp"
                 android:text=""
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/ccv_info"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="start"
-                android:paddingStart="10dp"
-                android:paddingEnd="0dp"
-                android:text=""
+                android:textSize="15sp"
                 android:textStyle="bold" />
 
         </LinearLayout>
