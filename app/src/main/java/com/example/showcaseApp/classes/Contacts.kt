@@ -7,7 +7,6 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.graphics.*
 import android.net.Uri
-import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageButton
@@ -17,7 +16,6 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.showcaseApp.R
-import com.example.showcaseApp.activities.ContactsActivity
 import com.example.showcaseApp.adapters.IconListAdapter
 import java.io.*
 
@@ -97,9 +95,9 @@ class Contacts {
          * @param db : Database instance
          * @param context : Context
          */
-        fun update(data : Array<String>, image : Bitmap, db : SQLiteDatabase, context: Context){
+        fun update(data : Array<String>, bitmap : Bitmap, db : SQLiteDatabase, context: Context){
             if(!checkEmpty(data[1], data[2], context)){
-                val registry = getContentValues(arrayOf(data[1], data[2], data[3]), image)
+                val registry = getContentValues(arrayOf(data[1], data[2], data[3]), bitmap)
                 db.update("Contacts", registry, "id='${data[0].toInt()}'", null)
                 registry.clear()
             }
@@ -119,19 +117,18 @@ class Contacts {
         }
 
         /** build ContentValues with received contact data
-         * Insert XML contact into database
          * @param data : Contact data (name, tel, info)
-         * @param image : Contact icon image
+         * @param bitmap : Contact icon image
          * @return ContactValues containing contact data
          */
-        private fun getContentValues(data : Array<String>, image : Bitmap) : ContentValues{
+        private fun getContentValues(data : Array<String>, bitmap : Bitmap) : ContentValues{
             val contentValues = ContentValues()
             contentValues.put("name", data[0])
             contentValues.put("number", data[1].toInt())
             contentValues.put("info", data[2])
 
             val stream = ByteArrayOutputStream()
-            image.compress(Bitmap.CompressFormat.PNG, 100, stream)
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
 
             contentValues.put("icon", stream.toByteArray())
 

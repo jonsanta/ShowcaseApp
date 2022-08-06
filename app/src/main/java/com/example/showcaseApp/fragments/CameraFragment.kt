@@ -29,6 +29,7 @@ import java.util.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
+//Camera Functionality fragment
 class CameraFragment : Fragment() {
     private lateinit var viewBinding: FragmentCameraBinding
     private lateinit var cameraActivity: CameraActivity
@@ -44,13 +45,9 @@ class CameraFragment : Fragment() {
         return viewBinding.root.rootView
     }
 
-    override fun onResume() {
-        super.onResume()
-        cameraActivity.window.navigationBarColor = ActivityCompat.getColor(this.requireContext(), R.color.black)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         navController = Navigation.findNavController(view)
+        //Set navigation bar & status bar Color
         cameraActivity.window.navigationBarColor = ActivityCompat.getColor(this.requireContext(), R.color.black)
         cameraActivity.window.statusBarColor = ContextCompat.getColor(cameraActivity, R.color.black)
         @Suppress("DEPRECATION")
@@ -214,6 +211,7 @@ class CameraFragment : Fragment() {
                 }
             }.toTypedArray()
 
+        //Prevent double photo captures
         fun isAvailable(flag : Boolean = available) : Boolean{
             available = flag
             return available

@@ -18,6 +18,7 @@ import com.example.showcaseApp.classes.Contacts
 import com.example.showcaseApp.classes.Utils
 import com.example.showcaseApp.databinding.ContactAddFragmentBinding
 
+//Contact adding functionality fragment
 class ContactAddFragment : Fragment(), IconListAdapter.OnImageClickListener {
     private lateinit var viewBinding: ContactAddFragmentBinding
     private lateinit var contactsActivity: ContactsActivity
@@ -37,6 +38,7 @@ class ContactAddFragment : Fragment(), IconListAdapter.OnImageClickListener {
         val cafBtnAdd: ImageButton = contactsActivity.findViewById(R.id.caf_btn_add)
         val cafBtnVolver : ImageButton = contactsActivity.findViewById(R.id.caf_btn_volver)
 
+        //If background clicked close Keyboard and remove focus
         view.setOnClickListener {
             Utils.preventTwoClick(it)
             Utils.closeKeyboard(context, view)
@@ -48,12 +50,14 @@ class ContactAddFragment : Fragment(), IconListAdapter.OnImageClickListener {
         cafBtnAdd.setImageResource(R.drawable.check)
         cafBtnVolver.setImageResource(R.drawable.cancelar)
 
+        //Open icon selection Dialog
         viewBinding.cafBtnAddImage.setOnClickListener {
             Utils.preventTwoClick(it)
             alertDialog = Contacts.getAlertDialog(this, this)
             alertDialog.show()
         }
 
+        //Add new contact into database
         cafBtnAdd.setOnClickListener {
             Utils.preventTwoClick(it)
             val name = viewBinding.cafName.text.toString()
@@ -69,6 +73,7 @@ class ContactAddFragment : Fragment(), IconListAdapter.OnImageClickListener {
                 aux = Contacts.insert(arrayOf(name, tel, info), Utils.getURLOfDrawable(R.drawable.male_avatar), contactsActivity.getDataBase(), this.requireContext())
             }
 
+            //If contact has been inserted --> True
             if(aux)
                 navController.popBackStack()
         }

@@ -20,11 +20,12 @@ import com.example.showcaseApp.classes.Utils
 import com.example.showcaseApp.databinding.ImagePreviewBinding
 import java.io.*
 
+//Camera captured image preview functionality
 class ImagePreviewFragment : Fragment(){
     private lateinit var viewBinding : ImagePreviewBinding
     private lateinit var cameraActivity: CameraActivity
 
-    private lateinit var file: File
+    private lateinit var tempFile: File
 
     private lateinit var navController: NavController
 
@@ -32,7 +33,7 @@ class ImagePreviewFragment : Fragment(){
         viewBinding = ImagePreviewBinding.inflate(layoutInflater)
         cameraActivity = requireActivity() as CameraActivity
         val args : ImagePreviewFragmentArgs by navArgs()
-        file = File(args.file)
+        tempFile = File(args.file)
         cameraActivity.findViewById<ImageButton>(R.id.ac3_btn_volver).visibility = View.GONE
 
 
@@ -42,11 +43,11 @@ class ImagePreviewFragment : Fragment(){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         navController = Navigation.findNavController(view)
 
-        Glide.with(view).load(file).into(viewBinding.ppfImage)
+        Glide.with(view).load(tempFile).into(viewBinding.ppfImage)
 
         viewBinding.ipfBtnSave.setOnClickListener {
             Utils.preventTwoClick(it)
-            val copy = Utils.copyFile(FileInputStream(file), File("${cameraActivity.getExternalFilesDir(null)}/images/"+file.name))
+            val copy = Utils.copyFile(FileInputStream(tempFile), File("${cameraActivity.getExternalFilesDir(null)}/images/"+tempFile.name))
             Gallery.setSinglePhoto(Photo(copy, makeThumbnailFile(copy)))
             closeFragment()
         }
@@ -61,9 +62,10 @@ class ImagePreviewFragment : Fragment(){
         navController.popBackStack()
         cameraActivity.findViewById<ImageButton>(R.id.ac3_btn_volver).visibility = View.VISIBLE
         CameraFragment.isAvailable(true)
-        file.delete()
+        tempFile.delete()
     }
 
+    //Generate captures photo Thumbnail
     private fun makeThumbnailFile(source: File): File {
         val thumbnailSize = 700
         val bounds = BitmapFactory.Options()
@@ -82,7 +84,7 @@ class ImagePreviewFragment : Fragment(){
 
         //Convert bitmap to byte array
         val bos = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.PNG, 0, bos) // YOU can also save it in JPEG
+        bitmap.compress(Bitmap.CompressFormat.PNG, 0, bos)
         val bitmapdata = bos.toByteArray()
 
         //write the bytes in file

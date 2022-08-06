@@ -13,6 +13,9 @@ import com.example.showcaseApp.R
 import com.example.showcaseApp.classes.Photo
 import com.github.chrisbanes.photoview.PhotoView
 
+/** ViewPager adapter class
+ * @param list : list of gallery photos
+ */
 class ImageAdapter(private val list : List<Photo>) : RecyclerView.Adapter<ImageAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.image_viewer, parent, false)
@@ -22,9 +25,11 @@ class ImageAdapter(private val list : List<Photo>) : RecyclerView.Adapter<ImageA
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val photo = list[position]
 
+        //load ViewPager imageview with thumbnail placeholder
         val requestOptions = RequestOptions().diskCacheStrategy(DiskCacheStrategy.RESOURCE)
             .placeholder(Drawable.createFromPath(photo.getThumbnail().path))
 
+        //Load imageView with Glide Library
         Glide.with(holder.imageView.context)
             .load(photo.getFile().toUri())
             .apply(requestOptions)

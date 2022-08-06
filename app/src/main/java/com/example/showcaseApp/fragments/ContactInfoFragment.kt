@@ -22,6 +22,7 @@ import com.example.showcaseApp.classes.Contacts
 import com.example.showcaseApp.classes.Utils
 import com.example.showcaseApp.databinding.ContactInfoFragmentBinding
 
+//Contact info showing functionality fragment
 class ContactInfoFragment: Fragment(), IconListAdapter.OnImageClickListener {
     private lateinit var viewBinding : ContactInfoFragmentBinding
     private lateinit var contactsActivity: ContactsActivity
@@ -49,10 +50,13 @@ class ContactInfoFragment: Fragment(), IconListAdapter.OnImageClickListener {
         val tel = viewBinding.cafTel
         val info = viewBinding.cafInfo
         val icon = viewBinding.cafBtnAddImage
+        //Disable editing mode
         setEditMode(editMode, listOf(name, tel, info), icon)
 
+        //Load contact data
         Contacts.select(contactID, name, tel, info, icon, contactsActivity.getDataBase())
 
+        //If background clicked close Keyboard and remove focus
         view.setOnClickListener {
             Utils.preventTwoClick(it)
             Utils.closeKeyboard(this.requireContext(), view)
@@ -61,6 +65,7 @@ class ContactInfoFragment: Fragment(), IconListAdapter.OnImageClickListener {
             viewBinding.cafInfo.clearFocus()
         }
 
+        //Open Telephone Dial
         viewBinding.cafTelLinear.setOnClickListener {
             Utils.preventTwoClick(it)
             if(!editMode){
@@ -70,18 +75,21 @@ class ContactInfoFragment: Fragment(), IconListAdapter.OnImageClickListener {
             }
         }
 
+        //Open icon selection Dialog
         viewBinding.cafBtnAddImage.setOnClickListener {
             Utils.preventTwoClick(it)
             alertDialog = Contacts.getAlertDialog(this, this)
             alertDialog.show()
         }
 
+        //Delete contact
         viewBinding.cafBtnBorrar.setOnClickListener {
             Utils.preventTwoClick(it)
             contactsActivity.getDataBase().delete("Contacts", "id='$contactID'", null)
             Navigation.findNavController(view).popBackStack()
         }
 
+        //swap between editmode True - False & Updates database contact data
         cafBtnAdd.setOnClickListener {
             Utils.preventTwoClick(it)
             if(editMode){
@@ -101,6 +109,7 @@ class ContactInfoFragment: Fragment(), IconListAdapter.OnImageClickListener {
         }
     }
 
+    //Enable - Disable EditMode UI
     private fun swapMode(name : EditText, tel : EditText, info : EditText, icon : ImageButton, cafBtnAdd : ImageButton, cafBtnVolver : ImageButton)
     {
         setEditMode(!editMode, listOf(name, tel, info), icon)
@@ -117,6 +126,7 @@ class ContactInfoFragment: Fragment(), IconListAdapter.OnImageClickListener {
         }
     }
 
+    //Enable - Disable EditMode UI
     private fun setEditMode(flag : Boolean, list : List<EditText>, icon : ImageButton){
         editMode = flag
         icon.isEnabled = flag

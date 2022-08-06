@@ -11,6 +11,10 @@ import com.bumptech.glide.Glide
 import com.example.showcaseApp.R
 import com.example.showcaseApp.classes.Utils
 
+/** Contact icon list selection RecyclerView adapter
+ * @param images : list of icon Uri's
+ * @param onImageClickListener : Icon click Listener
+ */
 class IconListAdapter(private val images : List<String>, private val onImageClickListener: OnImageClickListener) : RecyclerView.Adapter<IconListAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

@@ -102,6 +102,7 @@ class GalleryAnimations(private val galleryActivityBinding: GalleryActivityBindi
                 }
 
                 override fun onAnimationCancel(animation: Animator) {
+                    //Not used
                 }
             })
             start()

@@ -11,8 +11,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.showcaseApp.R
 import com.example.showcaseApp.classes.Utils
 
+/** Contact list RecyclerView adapter
+ * @param cursor : cursor containing all selected contacts
+ * @param contactListener : Contact item click Listener
+ */
 class ContactsAdapter(private var cursor : Cursor, private val contactListener: ContactListener) : RecyclerView.Adapter<ContactsAdapter.ViewHolder>() {
 
+    //Refresh contact RecyclerView list
     fun setCursor(c : Cursor){
         cursor = c
         this.notifyDataSetChanged()
@@ -25,6 +30,8 @@ class ContactsAdapter(private var cursor : Cursor, private val contactListener: 
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+
+        //set cursor position & get his data
         cursor.moveToPosition(position)
         val id = cursor.getString(0)
         val name = cursor.getString(1).substring(0, 1).uppercase() + cursor.getString(1).substring(1)
@@ -58,6 +65,6 @@ class ContactsAdapter(private var cursor : Cursor, private val contactListener: 
     }
 
     interface ContactListener{
-        fun onItemClick(ContactId : Int)
+        fun onItemClick(contactId : Int)
     }
 }

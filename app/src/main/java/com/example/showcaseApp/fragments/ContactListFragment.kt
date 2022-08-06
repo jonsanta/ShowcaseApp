@@ -30,7 +30,7 @@ import com.example.showcaseApp.databinding.ContactListFragmentBinding
 import java.io.File
 import java.io.InputStream
 
-@Suppress("UNUSED_ANONYMOUS_PARAMETER")
+//Initial Contact Activity Fragment - Contact Listing
 class ContactListFragment : Fragment(), ContactsAdapter.ContactListener{
     private lateinit var viewBinding : ContactListFragmentBinding
     private lateinit var navController: NavController
@@ -49,23 +49,26 @@ class ContactListFragment : Fragment(), ContactsAdapter.ContactListener{
         super.onViewCreated(view, savedInstanceState)
         navController = Navigation.findNavController(view)
 
+        //Show all contacts on activity start
         var cursor = contactsActivity.getDataBase().rawQuery("SELECT * FROM contacts ORDER BY UPPER(name) ASC" , null)
 
         contactsActivity.findViewById<ImageButton>(R.id.caf_btn_add).setImageResource(R.drawable.menu)
         contactsActivity.findViewById<ImageButton>(R.id.caf_btn_volver).setImageResource(R.drawable.arrow)
 
+        //populate RecyclerView with cursor
         val recyclerView = viewBinding.iconsRv
         recyclerView.layoutManager = LinearLayoutManager(this.requireContext())
         val adapter = ContactsAdapter(cursor, this)
         recyclerView.adapter = adapter
 
-        viewBinding.clfSearch.setOnTouchListener { v, event -> //show dialog here
+        viewBinding.clfSearch.setOnTouchListener { _, _ ->
             recyclerView.stopScroll()
             false
         }
 
         var textChanged = false
 
+        //If SearchBar editText is edited, makes new db Select.
         viewBinding.clfSearch.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
                 //Never used. Implementation required for addTextChangedListener
@@ -86,6 +89,7 @@ class ContactListFragment : Fragment(), ContactsAdapter.ContactListener{
             }
         })
 
+        //Close EditText when contact list is scrolled
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 if(!textChanged) {
@@ -96,6 +100,7 @@ class ContactListFragment : Fragment(), ContactsAdapter.ContactListener{
             }
         })
 
+        //Open ContactAdd Fragment
         viewBinding.clfBtnAdd.setOnClickListener {
             Utils.preventTwoClick(it)
             contactsActivity.findViewById<LinearLayout>(R.id.ac2_dropdown).isVisible = false
@@ -104,12 +109,14 @@ class ContactListFragment : Fragment(), ContactsAdapter.ContactListener{
             findNavController().navigate(R.id.action_contactListFragment_to_contactAddFragment)
         }
 
+        //Export actual contacts into XML file
         contactsActivity.findViewById<TextView>(R.id.ac2_export).setOnClickListener {
             Utils.preventTwoClick(it)
             contactsActivity.findViewById<LinearLayout>(R.id.ac2_dropdown).isVisible = false
             XMLReader.export(contactsActivity.getDataBase(), this.requireContext())
         }
 
+        //Import selected XML file as new Contacts
         contactsActivity.findViewById<TextView>(R.id.ac2_import).setOnClickListener {
             Utils.preventTwoClick(it)
             contactsActivity.findViewById<LinearLayout>(R.id.ac2_dropdown).isVisible = false
@@ -124,6 +131,7 @@ class ContactListFragment : Fragment(), ContactsAdapter.ContactListener{
             contactsActivity.findViewById<LinearLayout>(R.id.ac2_dropdown).isVisible = !contactsActivity.findViewById<LinearLayout>(R.id.ac2_dropdown).isVisible
         }
 
+        //Close Activity
         contactsActivity.findViewById<ImageButton>(R.id.caf_btn_volver).setOnClickListener {
             Utils.preventTwoClick(it)
             contactsActivity.getDataBase().close()
@@ -134,20 +142,23 @@ class ContactListFragment : Fragment(), ContactsAdapter.ContactListener{
         }
     }
 
-    override fun onItemClick(ContactId : Int) {
-        val action = ContactListFragmentDirections.actionContactListFragmentToContactInfoFragment(ContactId)
+    override fun onItemClick(contactId : Int) {
+        val action = ContactListFragmentDirections.actionContactListFragmentToContactInfoFragment(contactId)
         navController.navigate(action)
         contactsActivity.findViewById<LinearLayout>(R.id.ac2_dropdown).isVisible = false
     }
 
+    //Launch File selection Dialog
     private val import = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
+            //Receive Content scheme Uri
             val uri: Uri? = result.data?.data
             var inputStream : InputStream? = null
 
             if(uri != null)
                 inputStream  = contactsActivity.contentResolver.openInputStream(uri)
 
+            //Write content scheme Uri into new file & load his content
             val file = Utils.copyFile(inputStream, File("${contactsActivity.getExternalFilesDir(null)}/xml/temp.xml"))
             XMLReader.import(file, contactsActivity.getDataBase(), this.requireContext())
 

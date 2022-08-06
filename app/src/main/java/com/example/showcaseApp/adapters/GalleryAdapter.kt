@@ -12,6 +12,10 @@ import com.example.showcaseApp.R
 import com.example.showcaseApp.classes.Gallery
 import com.example.showcaseApp.classes.Photo
 
+/** Contact icon list selection RecyclerView adapter
+ * @param list : list of gallery photos
+ * @param galleryAdapterListener : Gallery photo click Listener
+ */
 class GalleryAdapter(private val list: List<Photo>, private val galleryAdapterListener: GalleryAdapterListener) : RecyclerView.Adapter<GalleryAdapter.ViewHolder>(){
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.photo, parent, false)
@@ -21,6 +25,7 @@ class GalleryAdapter(private val list: List<Photo>, private val galleryAdapterLi
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val photo = list[position]
 
+        //Load gallery images with Thumbnail
         holder.photo.adjustViewBounds = true
         Glide.with(holder.itemView).load(photo.getThumbnail()).centerCrop().into(holder.photo)
 

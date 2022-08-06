@@ -6,6 +6,9 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.showcaseApp.classes.AdminSQLiteOpenHelper
 import com.example.showcaseApp.databinding.ContactsActivityBinding
 
+/** Contact Listing Activity
+* Contains Database instance
+*/
 class ContactsActivity : AppCompatActivity() {
     private lateinit var viewBinding : ContactsActivityBinding
     private lateinit var admin : AdminSQLiteOpenHelper

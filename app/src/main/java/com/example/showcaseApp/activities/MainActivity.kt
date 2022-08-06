@@ -17,14 +17,14 @@ class MainActivity : AppCompatActivity() {
 
         loadApp()
 
-        //Abre el Activity 2 - Contactos
+        //Load Activity 2 - Contact Listing
         viewBinding.acmBtnBd.setOnClickListener { view ->
             Utils.preventTwoClick(view)
             val intent = Intent(this, ContactsActivity::class.java)
             startActivity(intent)
         }
 
-        //Abre el Activity 3 - Camara
+        //Load Activity 3 - Camera
         viewBinding.acmBtnCamara.setOnClickListener { view ->
             Utils.preventTwoClick(view)
             Toast.makeText(this, "Accediendo a la Camara", Toast.LENGTH_SHORT).show()
@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        //Abre el Activity 4 - Galería
+        //Load Activity 4 - Gallery
         viewBinding.acmBtnGaleria.setOnClickListener { view ->
             Utils.preventTwoClick(view)
             val intent = Intent(this, GalleryActivity::class.java)
@@ -40,6 +40,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    //Create app folder structure & delete old temp files
     private fun loadApp(){
         File("${getExternalFilesDir(null)}/images/thumbnails").mkdirs()
         val tempFolder  = File("${getExternalFilesDir(null)}/temp")
