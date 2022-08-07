@@ -8,8 +8,9 @@
     <LinearLayout
         android:id="@+id/clf_top_panel"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="48dp"
         android:orientation="horizontal"
+        android:paddingTop="7dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -20,36 +21,36 @@
         <ImageButton
             android:id="@+id/clf_btn_volver"
             android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_height="match_parent"
             android:layout_gravity="center_vertical|start"
-            android:scaleType="centerInside"
-            android:backgroundTint="@android:color/transparent"
             android:layout_marginStart="8dp"
-            android:src="@drawable/arrow"
+            android:backgroundTint="@android:color/transparent"
             android:contentDescription="@string/ac2_btn_volver"
+            android:scaleType="centerInside"
+            android:src="@drawable/arrow"
             tools:ignore="TouchTargetSizeCheck" />
 
         <TextView
             android:id="@+id/clf_titulo"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:gravity="center"
             android:layout_weight="1"
+            android:gravity="center"
             android:text="@string/clf_titulo"
             android:textColor="#474545"
-            android:textSize="30sp"
+            android:textSize="28sp"
             android:textStyle="bold" />
 
         <ImageButton
             android:id="@+id/clf_menu"
             android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_height="match_parent"
             android:layout_gravity="center_vertical|end"
-            android:scaleType="centerInside"
-            android:backgroundTint="@android:color/transparent"
             android:layout_marginEnd="8dp"
-            android:src="@drawable/menu"
+            android:backgroundTint="@android:color/transparent"
             android:contentDescription="@string/ac2_btn_add"
+            android:scaleType="centerInside"
+            android:src="@drawable/menu"
             tools:ignore="TouchTargetSizeCheck" />
     </LinearLayout>
 
@@ -62,10 +63,10 @@
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.89"
+        app:layout_constraintHorizontal_bias="0.88"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/clf_top_panel"
-        app:layout_constraintVertical_bias="0.075">
+        app:layout_constraintVertical_bias="0.065">
 
         <TextView
             android:id="@+id/clf_import"
@@ -94,39 +95,51 @@
             android:textSize="18sp" />
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/clf_search_layout"
-        android:layout_width="350dp"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/materialCardView"
+        android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:background="@android:drawable/editbox_dropdown_light_frame"
-        android:orientation="horizontal"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        app:cardElevation="5dp"
+        app:strokeColor="@color/jet_black"
+        app:strokeWidth="0.8dp"
+        app:cardCornerRadius="3dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/clf_top_panel"
         app:layout_constraintVertical_bias="0.0">
 
-        <ImageView
-            android:id="@+id/clf_icon_search"
-            android:layout_width="30dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="4dp"
-            android:layout_marginRight="4dp"
-            android:contentDescription="@string/clf_btn_search"
-            app:srcCompat="@android:drawable/ic_menu_search"
-            tools:ignore="ImageContrastCheck" />
-
-        <EditText
-            android:id="@+id/clf_search"
+        <LinearLayout
+            android:id="@+id/clf_search_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@null"
-            android:hint="@string/clf_editText_search"
-            android:importantForAutofill="no"
-            android:inputType="textNoSuggestions"
-            tools:ignore="TouchTargetSizeCheck,TextContrastCheck" />
+            android:orientation="horizontal">
 
-    </LinearLayout>
+            <ImageView
+                android:id="@+id/clf_icon_search"
+                android:layout_width="30dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="4dp"
+                android:contentDescription="@string/clf_btn_search"
+                app:srcCompat="@android:drawable/ic_menu_search"
+                tools:ignore="ImageContrastCheck" />
+
+            <EditText
+                android:id="@+id/clf_search"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:hint="@string/clf_editText_search"
+                android:importantForAutofill="no"
+                android:inputType="textNoSuggestions"
+                tools:ignore="TouchTargetSizeCheck,TextContrastCheck" />
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
 
     <ImageButton
         android:id="@+id/clf_btn_add"
@@ -141,7 +154,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.9"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/clf_search_layout"
+        app:layout_constraintTop_toBottomOf="@+id/materialCardView"
         app:layout_constraintVertical_bias="0.923"
         app:srcCompat="@drawable/add"
         tools:ignore="ImageContrastCheck" />
@@ -154,7 +167,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/clf_search_layout"
+        app:layout_constraintTop_toBottomOf="@+id/materialCardView"
         app:layout_constraintVertical_bias="0.594" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

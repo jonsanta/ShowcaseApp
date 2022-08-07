@@ -9,9 +9,10 @@
     <LinearLayout
         android:id="@+id/cif_top_panel"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="48dp"
         android:orientation="horizontal"
         android:background="@color/light_gray"
+        android:paddingTop="7dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -22,7 +23,7 @@
         <ImageButton
             android:id="@+id/cif_btn_volver"
             android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_height="match_parent"
             android:layout_gravity="center_vertical|start"
             android:scaleType="centerInside"
             android:backgroundTint="@android:color/transparent"
@@ -39,13 +40,13 @@
             android:layout_weight="1"
             android:text="@string/cif_title"
             android:textColor="#474545"
-            android:textSize="30sp"
+            android:textSize="28sp"
             android:textStyle="bold" />
 
         <ImageButton
             android:id="@+id/cif_btn_add"
             android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_height="match_parent"
             android:layout_gravity="center_vertical|end"
             android:scaleType="centerInside"
             android:backgroundTint="@android:color/transparent"

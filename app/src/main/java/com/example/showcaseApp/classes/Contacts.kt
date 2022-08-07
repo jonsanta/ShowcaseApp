@@ -4,12 +4,9 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.content.ContentValues
 import android.content.Context
-import android.content.res.Resources
 import android.database.sqlite.SQLiteDatabase
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.Color
-import android.graphics.Typeface
 import android.net.Uri
 import android.view.Gravity
 import android.view.ViewGroup
@@ -17,7 +14,6 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
