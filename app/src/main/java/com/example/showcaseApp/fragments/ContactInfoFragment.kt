@@ -11,6 +11,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.LinearLayout
+import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
@@ -41,10 +44,9 @@ class ContactInfoFragment: Fragment(), IconListAdapter.OnImageClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val cafBtnAdd: ImageButton = contactsActivity.findViewById(R.id.caf_btn_add)
-        val cafBtnVolver : ImageButton = contactsActivity.findViewById(R.id.caf_btn_volver)
+        contactsActivity.window.statusBarColor = ContextCompat.getColor(requireContext(), R.color.light_gray)
 
-        cafBtnAdd.setImageResource(R.drawable.edit)
+        viewBinding.cifBtnAdd.setImageResource(R.drawable.edit)
 
         val name = viewBinding.cafName
         val tel = viewBinding.cafTel
@@ -90,22 +92,22 @@ class ContactInfoFragment: Fragment(), IconListAdapter.OnImageClickListener {
         }
 
         //swap between editmode True - False & Updates database contact data
-        cafBtnAdd.setOnClickListener {
+        viewBinding.cifBtnAdd.setOnClickListener {
             Utils.preventTwoClick(it)
             if(editMode){
                 Contacts.update(arrayOf(contactID.toString(), name.text.toString(), tel.text.toString(), info.text.toString()), icon.drawable.toBitmap(), contactsActivity.getDataBase(), this.requireContext())
-                swapMode(name, tel, info, icon, cafBtnAdd, cafBtnVolver)
+                swapMode(name, tel, info, icon, viewBinding.cifBtnAdd, viewBinding.cifBtnVolver)
             }else{
-                swapMode(name, tel, info, icon, cafBtnAdd, cafBtnVolver)
+                swapMode(name, tel, info, icon, viewBinding.cifBtnAdd, viewBinding.cifBtnVolver)
             }
         }
 
-        cafBtnVolver.setOnClickListener {
+        viewBinding.cifBtnVolver.setOnClickListener {
             Utils.preventTwoClick(it)
             if(!editMode)
                 Navigation.findNavController(view).popBackStack()
             else
-                swapMode(name, tel, info, icon, cafBtnAdd, cafBtnVolver)
+                swapMode(name, tel, info, icon, viewBinding.cifBtnAdd, viewBinding.cifBtnVolver)
         }
     }
 

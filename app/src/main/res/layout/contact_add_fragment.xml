@@ -6,23 +6,89 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageButton
-        android:id="@+id/caf_btn_add_image"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:adjustViewBounds="true"
-        android:background="@drawable/circular_shape"
-        android:backgroundTint="#CFCBCB"
-        android:contentDescription="@string/caf_btn_image"
-        android:scaleType="fitCenter"
+    <LinearLayout
+        android:id="@+id/caf_top_panel"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        android:background="@color/light_gray"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.100000024"
-        app:srcCompat="@android:drawable/ic_menu_camera"
-        tools:ignore="ImageContrastCheck" />
+        app:layout_constraintVertical_bias="0.0">
+
+        <ImageButton
+            android:id="@+id/caf_btn_volver"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center_vertical|start"
+            android:scaleType="centerInside"
+            android:backgroundTint="@android:color/transparent"
+            android:layout_marginStart="8dp"
+            android:src="@drawable/cancelar"
+            android:contentDescription="@string/ac2_btn_volver"
+            tools:ignore="TouchTargetSizeCheck" />
+
+        <TextView
+            android:id="@+id/caf_titulo"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:text="@string/caf_title"
+            android:textColor="#474545"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
+        <ImageButton
+            android:id="@+id/caf_btn_add"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center_vertical|end"
+            android:scaleType="centerInside"
+            android:backgroundTint="@android:color/transparent"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/check"
+            android:contentDescription="@string/ac2_btn_add"
+            tools:ignore="TouchTargetSizeCheck" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/light_gray"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/caf_top_panel"
+        app:layout_constraintVertical_bias="0.0">
+
+        <ImageButton
+            android:id="@+id/caf_btn_add_image"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginBottom="100dp"
+            android:adjustViewBounds="true"
+            android:background="@drawable/circular_shape"
+            android:backgroundTint="#CFCBCB"
+            android:contentDescription="@string/caf_btn_image"
+            android:scaleType="fitCenter"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.100000024"
+            app:srcCompat="@android:drawable/ic_menu_camera"
+            tools:ignore="ImageContrastCheck" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/caf_name_linear"
@@ -35,7 +101,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/caf_btn_add_image"
+        app:layout_constraintTop_toBottomOf="@+id/top"
         app:layout_constraintVertical_bias="0.100000024">
 
         <ImageView

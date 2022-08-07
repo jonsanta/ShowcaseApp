@@ -1,0 +1,70 @@
+<resources>
+    <string name="app_name">ShowcaseApp</string>
+
+    <!--Strings Actividad 1 -->
+    <string name="acm_btn_bd">Contacts</string>
+    <string name="acm_btn_camara">Camera</string>
+    <string name="acm_btn_galeria">Gallery</string>
+    <string name="acm_title">SHOWCASE APP</string>
+
+    <!--Strings Actividad 2 -->
+    <string name="ac2_btn_volver">Back</string>
+    <string name="ac2_btn_add">Add</string>
+
+    <!--Strings Actividad 3 -->
+    <string name="ac3_error">Image capture failed: </string>
+    <string name="ac3_capture">Image capture success: </string>
+    <string name="ac3_btn_capture">Capture</string>
+    <string name="ac3_btn_switch_cam">Swap camera</string>
+    <string name="ac3_btn_volver">Back</string>
+
+    <!--Strings Actividad 4 -->
+    <string name="ac4_btn_discard">Discard</string>
+    <string name="ac4_btn_borrar">Delete</string>
+    <string name="ac4_btn_volver">Back</string>
+    <string name="count_images">{0,choice,0#None selected|1#1 item selected|1&lt;{0} items selected}</string>
+
+    <!--Strings Contact CardView -->
+    <string name="ccv_icon">Contact icon</string>
+
+    <!--Strings Contact add Fragment -->
+    <string name="caf_editText_name_hint">Name</string>
+    <string name="caf_editText_tel_hint">Telephone</string>
+    <string name="caf_editText_info_hint">Description</string>
+    <string name="caf_btn_add">Add</string>
+    <string name="caf_btn_volver">Back</string>
+    <string name="caf_btn_image">Add Image</string>
+    <string name="caf_name_ico_description">Name icon</string>
+    <string name="caf_tel_ico_description">Telephone icon</string>
+    <string name="caf_info_ico_description">Description icon</string>
+    <string name="caf_title">New contact</string>
+
+    <!--Strings Contact info Fragment -->
+    <string name="cif_editText_name_hint">Type name..</string>
+    <string name="cif_editText_tel_hint">Type number..</string>
+    <string name="cif_editText_info_hint">Type description..</string>
+    <string name="cif_btn_add">Edit</string>
+    <string name="cif_imagebtn_edit">Edit button</string>
+    <string name="cif_imagebtn_borrar">Delete button</string>
+    <string name="cif_btn_volver">Back button</string>
+    <string name="cif_title"> </string>
+
+    <!-- Contact list Fragment -->
+    <string name="clf_btn_search">Search button</string>
+    <string name="clf_editText_search">Search</string>
+    <string name="clf_btn_add">Add</string>
+    <string name="clf_import">Import</string>
+    <string name="clf_export">Export</string>
+    <string name="clf_titulo">Contacts</string>
+
+    <!--Image Preview Fragment -->
+    <string name="ipf_btn_save">Save button</string>
+    <string name="ipf_btn_borrar">Delete button</string>
+    <string name="ipf_image">Show captured image</string>
+    <!-- Imagen CardView -->
+    <string name="icv_imageButton_image">Image</string>
+
+    <!-- Contact Icon Alert Dialog -->
+    <string name="ad_titulo_alert_dialog">Select image</string>
+    <string name="ad_btn_cancelar">Cancel</string>
+</resources>

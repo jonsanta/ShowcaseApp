@@ -5,15 +5,11 @@
     <string name="acm_btn_bd">Contactos</string>
     <string name="acm_btn_camara">Cámara</string>
     <string name="acm_btn_galeria">Galería</string>
-    <string name="acm_image_logo">Logo</string>
-    <string name="acm_imagebtn_play">Boton play</string>
-    <string name="acm_imagebtn_pause">Boton pause</string>
+    <string name="acm_title">SHOWCASE APP</string>
 
     <!--Strings Actividad 2 -->
     <string name="ac2_btn_volver">Volver</string>
     <string name="ac2_btn_add">Añadir</string>
-    <string name="ac2_import">Importar</string>
-    <string name="ac2_export">Exportar</string>
 
     <!--Strings Actividad 3 -->
     <string name="ac3_error">Captura de imagen fallida: </string>
@@ -41,6 +37,7 @@
     <string name="caf_name_ico_description">Icono de nombre</string>
     <string name="caf_tel_ico_description">Icono de telefono</string>
     <string name="caf_info_ico_description">Icono de descripción</string>
+    <string name="caf_title">Nuevo contacto</string>
 
     <!--Strings Contact info Fragment -->
     <string name="cif_editText_name_hint">Escribe nombre..</string>
@@ -50,11 +47,15 @@
     <string name="cif_imagebtn_edit">Boton editar</string>
     <string name="cif_imagebtn_borrar">Boton borrar</string>
     <string name="cif_btn_volver">Boton volver</string>
+    <string name="cif_title"> </string>
 
     <!-- Contact list Fragment -->
     <string name="clf_btn_search">Boton buscar</string>
     <string name="clf_editText_search">Buscar</string>
     <string name="clf_btn_add">Boton Añadir</string>
+    <string name="clf_import">Importar</string>
+    <string name="clf_export">Exportar</string>
+    <string name="clf_titulo">Contactos</string>
 
     <!--Image Preview Fragment -->
     <string name="ipf_btn_save">Boton guardar</string>
@@ -62,5 +63,8 @@
     <string name="ipf_image">Muestra imagen capturada</string>
     <!-- Imagen CardView -->
     <string name="icv_imageButton_image">Image</string>
-    <string name="title_activity_main2">MainActivity2</string>
+
+    <!-- Contact Icon Alert Dialog -->
+    <string name="ad_titulo_alert_dialog">Selecciona imagen</string>
+    <string name="ad_btn_cancelar">Cancelar</string>
 </resources>

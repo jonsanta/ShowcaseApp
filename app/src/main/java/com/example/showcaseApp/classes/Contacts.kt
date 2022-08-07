@@ -4,20 +4,28 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.content.ContentValues
 import android.content.Context
+import android.content.res.Resources
 import android.database.sqlite.SQLiteDatabase
-import android.graphics.*
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Color
+import android.graphics.Typeface
 import android.net.Uri
+import android.view.Gravity
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.showcaseApp.R
 import com.example.showcaseApp.adapters.IconListAdapter
-import java.io.*
+import java.io.ByteArrayOutputStream
+
 
 class Contacts {
     companion object{
@@ -142,11 +150,19 @@ class Contacts {
          */
         fun getAlertDialog(fragment: Fragment, onImageClickListener: IconListAdapter.OnImageClickListener) : AlertDialog{
             val builder = AlertDialog.Builder(fragment.requireContext())
-            builder.setTitle("Selecciona Imagen")
+            val title = TextView(fragment.requireContext())
+            title.text = fragment.resources.getString(R.string.ad_titulo_alert_dialog)
+            title.setPadding(0, 30, 0, 30)
+            title.gravity = Gravity.CENTER
+            //title.setTypeface(Typeface.DEFAULT_BOLD)
+            //title.setTextColor(Color.BLACK)
+            title.textSize = 23f
+
+            builder.setCustomTitle(title)
 
             val alertDialog = builder.create()
 
-            alertDialog.setButton(Dialog.BUTTON_NEGATIVE, "CANCELAR"){ dialog, _ ->
+            alertDialog.setButton(Dialog.BUTTON_NEGATIVE, fragment.resources.getText(R.string.ad_btn_cancelar)){ dialog, _ ->
                 dialog.dismiss()
             }
 

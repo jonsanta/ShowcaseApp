@@ -10,10 +10,8 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
@@ -51,9 +49,7 @@ class ContactListFragment : Fragment(), ContactsAdapter.ContactListener{
 
         //Show all contacts on activity start
         var cursor = contactsActivity.getDataBase().rawQuery("SELECT * FROM contacts ORDER BY UPPER(name) ASC" , null)
-
-        contactsActivity.findViewById<ImageButton>(R.id.caf_btn_add).setImageResource(R.drawable.menu)
-        contactsActivity.findViewById<ImageButton>(R.id.caf_btn_volver).setImageResource(R.drawable.arrow)
+        contactsActivity.window.statusBarColor = ContextCompat.getColor(requireContext(), R.color.appBG)
 
         //populate RecyclerView with cursor
         val recyclerView = viewBinding.iconsRv
@@ -103,23 +99,23 @@ class ContactListFragment : Fragment(), ContactsAdapter.ContactListener{
         //Open ContactAdd Fragment
         viewBinding.clfBtnAdd.setOnClickListener {
             Utils.preventTwoClick(it)
-            contactsActivity.findViewById<LinearLayout>(R.id.ac2_dropdown).isVisible = false
+            viewBinding.clfDropdown.isVisible = false
             cursor.close()
 
             findNavController().navigate(R.id.action_contactListFragment_to_contactAddFragment)
         }
 
         //Export actual contacts into XML file
-        contactsActivity.findViewById<TextView>(R.id.ac2_export).setOnClickListener {
+        viewBinding.clfExport.setOnClickListener {
             Utils.preventTwoClick(it)
-            contactsActivity.findViewById<LinearLayout>(R.id.ac2_dropdown).isVisible = false
+            viewBinding.clfDropdown.isVisible = false
             XMLReader.export(contactsActivity.getDataBase(), this.requireContext())
         }
 
         //Import selected XML file as new Contacts
-        contactsActivity.findViewById<TextView>(R.id.ac2_import).setOnClickListener {
+        viewBinding.clfImport.setOnClickListener {
             Utils.preventTwoClick(it)
-            contactsActivity.findViewById<LinearLayout>(R.id.ac2_dropdown).isVisible = false
+            viewBinding.clfDropdown.isVisible = false
             val intent = Intent(Intent.ACTION_GET_CONTENT)
             intent.addCategory(Intent.CATEGORY_OPENABLE)
             intent.type = "text/xml"
@@ -127,17 +123,17 @@ class ContactListFragment : Fragment(), ContactsAdapter.ContactListener{
             import.launch(Intent.createChooser(intent, "Select file."))
         }
 
-        contactsActivity.findViewById<ImageButton>(R.id.caf_btn_add).setOnClickListener {
-            contactsActivity.findViewById<LinearLayout>(R.id.ac2_dropdown).isVisible = !contactsActivity.findViewById<LinearLayout>(R.id.ac2_dropdown).isVisible
+        viewBinding.clfMenu.setOnClickListener {
+            viewBinding.clfDropdown.isVisible = !viewBinding.clfDropdown.isVisible
         }
 
         //Close Activity
-        contactsActivity.findViewById<ImageButton>(R.id.caf_btn_volver).setOnClickListener {
+        viewBinding.clfBtnVolver.setOnClickListener {
             Utils.preventTwoClick(it)
             contactsActivity.getDataBase().close()
             contactsActivity.getDataBaseAdmin().close()
             cursor.close()
-            contactsActivity.findViewById<LinearLayout>(R.id.ac2_dropdown).isVisible = false
+            viewBinding.clfDropdown.isVisible = false
             contactsActivity.finish()
         }
     }
@@ -145,7 +141,7 @@ class ContactListFragment : Fragment(), ContactsAdapter.ContactListener{
     override fun onItemClick(contactId : Int) {
         val action = ContactListFragmentDirections.actionContactListFragmentToContactInfoFragment(contactId)
         navController.navigate(action)
-        contactsActivity.findViewById<LinearLayout>(R.id.ac2_dropdown).isVisible = false
+        viewBinding.clfDropdown.isVisible = false
     }
 
     //Launch File selection Dialog

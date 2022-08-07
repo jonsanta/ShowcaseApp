@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
@@ -35,8 +36,9 @@ class ContactAddFragment : Fragment(), IconListAdapter.OnImageClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         navController = Navigation.findNavController(view)
-        val cafBtnAdd: ImageButton = contactsActivity.findViewById(R.id.caf_btn_add)
-        val cafBtnVolver : ImageButton = contactsActivity.findViewById(R.id.caf_btn_volver)
+        val cafBtnAdd: ImageButton = viewBinding.cafBtnAdd
+        val cafBtnVolver : ImageButton = viewBinding.cafBtnVolver
+        contactsActivity.window.statusBarColor = ContextCompat.getColor(requireContext(), R.color.light_gray)
 
         //If background clicked close Keyboard and remove focus
         view.setOnClickListener {
@@ -47,9 +49,6 @@ class ContactAddFragment : Fragment(), IconListAdapter.OnImageClickListener {
             viewBinding.cafInfo.clearFocus()
         }
 
-        cafBtnAdd.setImageResource(R.drawable.check)
-        cafBtnVolver.setImageResource(R.drawable.cancelar)
-
         //Open icon selection Dialog
         viewBinding.cafBtnAddImage.setOnClickListener {
             Utils.preventTwoClick(it)
@@ -58,7 +57,7 @@ class ContactAddFragment : Fragment(), IconListAdapter.OnImageClickListener {
         }
 
         //Add new contact into database
-        cafBtnAdd.setOnClickListener {
+        viewBinding.cafBtnAdd.setOnClickListener {
             Utils.preventTwoClick(it)
             val name = viewBinding.cafName.text.toString()
             val tel = viewBinding.cafTel.text.toString()
@@ -78,7 +77,7 @@ class ContactAddFragment : Fragment(), IconListAdapter.OnImageClickListener {
                 navController.popBackStack()
         }
 
-        cafBtnVolver.setOnClickListener {
+        viewBinding.cafBtnVolver.setOnClickListener {
             Utils.preventTwoClick(it)
             navController.popBackStack()
         }
