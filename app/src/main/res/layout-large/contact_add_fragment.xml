@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/appBG"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/caf_top_panel"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:orientation="horizontal"
+        android:background="@color/light_gray"
+        android:paddingTop="7dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
+        <ImageButton
+            android:id="@+id/caf_btn_volver"
+            android:layout_width="65dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical|start"
+            android:layout_marginStart="20dp"
+            android:scaleType="centerInside"
+            android:backgroundTint="@android:color/transparent"
+            android:src="@drawable/cancelar"
+            android:contentDescription="@string/ac2_btn_volver"
+            tools:ignore="TouchTargetSizeCheck" />
+
+        <TextView
+            android:id="@+id/caf_titulo"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:text="@string/caf_title"
+            android:textColor="#474545"
+            android:textSize="43sp"
+            android:textStyle="bold" />
+
+        <ImageButton
+            android:id="@+id/caf_btn_add"
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical|end"
+            android:layout_marginEnd="22dp"
+            android:scaleType="centerInside"
+            android:backgroundTint="@android:color/transparent"
+            android:src="@drawable/check"
+            android:contentDescription="@string/ac2_btn_add"
+            tools:ignore="TouchTargetSizeCheck" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/light_gray"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/caf_top_panel"
+        app:layout_constraintVertical_bias="0.0">
+
+        <ImageButton
+            android:id="@+id/caf_btn_add_image"
+            android:layout_width="220dp"
+            android:layout_height="220dp"
+            android:layout_marginTop="110dp"
+            android:layout_marginBottom="200dp"
+            android:adjustViewBounds="true"
+            android:background="@drawable/circular_shape"
+            android:contentDescription="@string/caf_btn_image"
+            android:scaleType="centerInside"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.100000024"
+            app:srcCompat="@drawable/camara"
+            tools:ignore="ImageContrastCheck" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/caf_name_linear"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginStart="120dp"
+        android:layout_marginEnd="40dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/top"
+        app:layout_constraintVertical_bias="0.100000024">
+
+        <ImageView
+            android:id="@+id/caf_name_ico"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginEnd="2dp"
+            android:contentDescription="@string/caf_name_ico_description"
+            app:srcCompat="@android:drawable/ic_menu_my_calendar"
+            tools:ignore="ImageContrastCheck" />
+
+        <EditText
+            android:id="@+id/caf_name"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:hint="@string/caf_editText_name_hint"
+            android:importantForAutofill="no"
+            android:textSize="29sp"
+            android:inputType="text"
+            tools:ignore="TouchTargetSizeCheck,TextContrastCheck" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/caf_tel_linear"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginStart="120dp"
+        android:layout_marginEnd="40dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/caf_name_linear"
+        app:layout_constraintVertical_bias="0.060000002">
+
+        <ImageView
+            android:id="@+id/caf_tel_ico"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginEnd="2dp"
+            android:contentDescription="@string/caf_tel_ico_description"
+            app:srcCompat="@android:drawable/ic_menu_call"
+            tools:ignore="ImageContrastCheck" />
+
+        <EditText
+            android:id="@+id/caf_tel"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:hint="@string/caf_editText_tel_hint"
+            android:importantForAutofill="no"
+            android:textSize="29sp"
+            android:inputType="number"
+            tools:ignore="TouchTargetSizeCheck,TextContrastCheck" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/caf_info_linear"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginStart="120dp"
+        android:layout_marginEnd="40dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/caf_tel_linear"
+        app:layout_constraintVertical_bias="0.060000002">
+
+        <ImageView
+            android:id="@+id/caf_info_ico"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginEnd="2dp"
+            android:contentDescription="@string/caf_tel_ico_description"
+            app:srcCompat="@android:drawable/ic_menu_sort_by_size" />
+
+        <EditText
+            android:id="@+id/caf_info"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:hint="@string/caf_editText_info_hint"
+            android:importantForAutofill="no"
+            android:textSize="29sp"
+            android:inputType="textNoSuggestions"
+            tools:ignore="TouchTargetSizeCheck,TextContrastCheck" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

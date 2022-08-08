@@ -77,6 +77,15 @@
         <entry key="..\:/AppData/Android-Projects/ShowcaseApp/app/src/main/res/drawable/start_button.xml" value="0.1515" />
         <entry key="..\:/AppData/Android-Projects/ShowcaseApp/app/src/main/res/drawable/top_border.xml" value="0.1515" />
         <entry key="..\:/AppData/Android-Projects/ShowcaseApp/app/src/main/res/layout-land/gallery_activity.xml" value="0.25440917107583777" />
+        <entry key="..\:/AppData/Android-Projects/ShowcaseApp/app/src/main/res/layout-large/activity_main.xml" value="0.22" />
+        <entry key="..\:/AppData/Android-Projects/ShowcaseApp/app/src/main/res/layout-large/contact.xml" value="0.16666666666666666" />
+        <entry key="..\:/AppData/Android-Projects/ShowcaseApp/app/src/main/res/layout-large/contact_add_fragment.xml" value="0.14666666666666667" />
+        <entry key="..\:/AppData/Android-Projects/ShowcaseApp/app/src/main/res/layout-large/contact_info_fragment.xml" value="0.21584699453551912" />
+        <entry key="..\:/AppData/Android-Projects/ShowcaseApp/app/src/main/res/layout-large/contact_list_fragment.xml" value="0.21584699453551912" />
+        <entry key="..\:/AppData/Android-Projects/ShowcaseApp/app/src/main/res/layout-large/fragment_camera.xml" value="0.14666666666666667" />
+        <entry key="..\:/AppData/Android-Projects/ShowcaseApp/app/src/main/res/layout-large/gallery_activity.xml" value="0.21584699453551912" />
+        <entry key="..\:/AppData/Android-Projects/ShowcaseApp/app/src/main/res/layout-large/image_preview.xml" value="0.21584699453551912" />
+        <entry key="..\:/AppData/Android-Projects/ShowcaseApp/app/src/main/res/layout-large/photo.xml" value="0.21584699453551912" />
         <entry key="..\:/AppData/Android-Projects/ShowcaseApp/app/src/main/res/layout/activity_main.xml" value="0.16666666666666666" />
         <entry key="..\:/AppData/Android-Projects/ShowcaseApp/app/src/main/res/layout/camera_activity.xml" value="0.16666666666666666" />
         <entry key="..\:/AppData/Android-Projects/ShowcaseApp/app/src/main/res/layout/contact.xml" value="0.286231884057971" />
