@@ -67,4 +67,6 @@
     <!-- Contact Icon Alert Dialog -->
     <string name="ad_titulo_alert_dialog">Select image</string>
     <string name="ad_btn_cancelar">Cancel</string>
+
+    <string name="developed">Developed by Jon Santamaria</string>
 </resources>

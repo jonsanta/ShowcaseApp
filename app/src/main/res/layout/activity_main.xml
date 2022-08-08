@@ -9,36 +9,54 @@
     tools:layout_editor_absoluteX="-41dp"
     tools:layout_editor_absoluteY="36dp">
 
+    <ImageView
+        android:id="@+id/acm_image_logo"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:background="#001B8AEC"
+        android:contentDescription="@string/acm_title"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="1:0.4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.25"
+        app:srcCompat="@drawable/logo" />
+
     <Button
         android:id="@+id/acm_btn_bd"
-        android:layout_width="155dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/acm_btn_bd"
         app:backgroundTint="@null"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="3:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        app:layout_constraintTop_toBottomOf="@+id/acm_image_logo"
         app:layout_constraintVertical_bias="0.19999999"
         tools:ignore="DuplicateSpeakableTextCheck" />
 
     <Button
         android:id="@+id/acm_btn_camara"
-        android:layout_width="155dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/acm_btn_camara"
         app:backgroundTint="@null"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="3:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/acm_btn_bd"
-        app:layout_constraintVertical_bias="0.1" />
+        app:layout_constraintVertical_bias="0.07999998" />
 
     <Button
         android:id="@+id/acm_btn_galeria"
-        android:layout_width="155dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/acm_btn_galeria"
+        app:layout_constraintDimensionRatio="3:1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -46,29 +64,17 @@
         app:layout_constraintVertical_bias="0.1"
         app:backgroundTint="@null"/>
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="50dp"
-        android:orientation="vertical"
+        android:fontFamily="sans-serif-thin"
+        android:text="@string/developed"
+        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.13">
-
-        <ImageView
-            android:id="@+id/acm_image_logo"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_marginStart="50dp"
-            android:layout_marginEnd="50dp"
-            android:background="#001B8AEC"
-            android:contentDescription="@string/acm_title"
-            app:srcCompat="@drawable/logo" />
-
-    </LinearLayout>
+        app:layout_constraintTop_toBottomOf="@+id/acm_btn_galeria"
+        app:layout_constraintVertical_bias="0.7" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
