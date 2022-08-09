@@ -57,6 +57,7 @@ class ContactListFragment : Fragment(), ContactsAdapter.ContactListener{
         val adapter = ContactsAdapter(cursor, this)
         recyclerView.adapter = adapter
 
+
         viewBinding.clfSearch.setOnTouchListener { _, _ ->
             recyclerView.stopScroll()
             false
@@ -95,6 +96,20 @@ class ContactListFragment : Fragment(), ContactsAdapter.ContactListener{
                 textChanged = false
             }
         })
+
+        //Close EditText if touch outside
+        viewBinding.root.setOnTouchListener{ _, _ ->
+            Utils.closeKeyboard(view.context, view)
+            viewBinding.clfSearch.clearFocus()
+            false
+        }
+
+        //Close EditText if touch outside
+        recyclerView.setOnTouchListener{ _, _ ->
+            Utils.closeKeyboard(view.context, view)
+            viewBinding.clfSearch.clearFocus()
+            false
+        }
 
         //Open ContactAdd Fragment
         viewBinding.clfBtnAdd.setOnClickListener {
