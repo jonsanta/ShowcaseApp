@@ -8,6 +8,9 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.request.RequestOptions
 import com.example.showcaseApp.R
 import com.example.showcaseApp.classes.Utils
 
@@ -40,7 +43,10 @@ class ContactsAdapter(private var cursor : Cursor, private val contactListener: 
 
         holder.name.text = name
         holder.tel.text = tel
-        holder.icon.setImageBitmap(icon)
+        Glide.with(holder.itemView).load(icon).apply(
+            RequestOptions
+            .bitmapTransform(RoundedCorners(360)))
+            .into(holder.icon)
 
         holder.itemView.setOnClickListener { view ->
             Utils.preventTwoClick(view)

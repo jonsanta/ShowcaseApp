@@ -78,7 +78,7 @@
             android:adjustViewBounds="true"
             android:background="@drawable/circular_shape"
             android:contentDescription="@string/caf_btn_image"
-            android:scaleType="centerInside"
+            android:scaleType="fitXY"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"

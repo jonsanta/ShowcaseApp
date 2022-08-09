@@ -74,7 +74,7 @@ class Contacts {
             if(!checkEmpty(data[0], data[1], context)){
                 val stream = context.contentResolver.openInputStream(Uri.parse(path))
                 val bitmap = BitmapFactory.decodeStream(stream)
-                val registry = getContentValues(data, Utils.roundBitmap(Bitmap.createScaledBitmap(bitmap, 500, 500, true)))
+                val registry = getContentValues(data, Bitmap.createScaledBitmap(bitmap, 500, 500, true))
                 db.insert("Contacts", null, registry)
                 registry.clear()
                 return true
@@ -88,7 +88,7 @@ class Contacts {
          * @param db : Database instance
          */
         fun import(data : Array<String>, bitmap : Bitmap, db: SQLiteDatabase){
-            val registry = getContentValues(data, Utils.roundBitmap(bitmap))
+            val registry = getContentValues(data, bitmap)
             db.insert("Contacts", null, registry)
             registry.clear()
         }

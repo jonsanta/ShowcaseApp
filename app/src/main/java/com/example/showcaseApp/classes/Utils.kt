@@ -36,26 +36,7 @@ class Utils {
             val imm = (context?.getSystemService(Activity.INPUT_METHOD_SERVICE)) as InputMethodManager
             imm.hideSoftInputFromWindow(view?.windowToken, 0)
         }
-
-        /**
-         * Convert input Bitmap on output rounded Bitmap
-         * @param data : input bitmap
-         * @return output file (rounded image)
-         */
-        fun roundBitmap(data : Bitmap) : Bitmap {
-            val output = Bitmap.createBitmap(data.width, data.height, Bitmap.Config.ARGB_8888)
-            val canvas = Canvas(output)
-            val paint = Paint()
-            val rect = Rect(0, 0, data.width, data.height)
-            val roundPx = 360f
-            paint.isAntiAlias = true
-            canvas.drawRoundRect(RectF(rect), roundPx, roundPx, paint)
-            paint.xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_IN)
-            canvas.drawBitmap(data, rect, rect, paint)
-
-            return output
-        }
-
+        
         fun getURLOfDrawable(resId : Int) : String{
             return Uri.parse("android.resource://"+ BuildConfig.APPLICATION_ID+"/" +resId).toString()
         }

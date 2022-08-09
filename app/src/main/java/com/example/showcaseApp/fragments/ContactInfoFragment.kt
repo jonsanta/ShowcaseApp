@@ -16,6 +16,9 @@ import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.request.RequestOptions
 import com.example.showcaseApp.R
 import com.example.showcaseApp.activities.ContactsActivity
 import com.example.showcaseApp.adapters.IconListAdapter
@@ -149,7 +152,10 @@ class ContactInfoFragment: Fragment(), IconListAdapter.OnImageClickListener {
     }
 
     override fun onImageClick(data: Bitmap) {
-        viewBinding.cafBtnAddImage.setImageBitmap(Utils.roundBitmap(data))
+        Glide.with(this).load(data).apply(
+            RequestOptions
+            .bitmapTransform(RoundedCorners(360)))
+            .into(viewBinding.cafBtnAddImage)
         alertDialog.cancel()
     }
 
