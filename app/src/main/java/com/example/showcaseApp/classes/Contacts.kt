@@ -18,6 +18,9 @@ import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.request.RequestOptions
 import com.example.showcaseApp.R
 import com.example.showcaseApp.adapters.IconListAdapter
 import java.io.ByteArrayOutputStream
@@ -41,7 +44,10 @@ class Contacts {
                 name.setText(capitalizedName)
                 tel.setText(cursor.getString(2))
                 info.setText(cursor.getString(3))
-                icon.setImageBitmap(BitmapFactory.decodeByteArray(cursor.getBlob(4), 0, cursor.getBlob(4).size))
+                
+                Glide.with(icon).load(BitmapFactory.decodeByteArray(cursor.getBlob(4), 0, cursor.getBlob(4).size))
+                    .apply(RequestOptions.bitmapTransform(RoundedCorners(360)))
+                    .into(icon)
             }
             cursor.close()
         }
